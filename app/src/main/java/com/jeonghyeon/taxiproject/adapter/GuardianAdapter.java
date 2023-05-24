@@ -2,6 +2,7 @@ package com.jeonghyeon.taxiproject.adapter;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,10 @@ import java.util.List;
 public class GuardianAdapter extends RecyclerView.Adapter<GuardianAdapter.ViewHolder>
 {
     private List<Guardian> guardians;
-    private Activity context;
+    private Context context;
     private RoomDB database;
 
-    public GuardianAdapter(Activity context, List<Guardian> guardians)
+    public GuardianAdapter(Context context, List<Guardian> guardians)
     {
         this.context = context;
         this.guardians = guardians;

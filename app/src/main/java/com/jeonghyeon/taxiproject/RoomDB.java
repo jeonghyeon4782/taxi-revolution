@@ -6,12 +6,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.jeonghyeon.taxiproject.dao.FrequencyDao;
 import com.jeonghyeon.taxiproject.dao.GuardianDao;
+import com.jeonghyeon.taxiproject.model.Frequency;
 import com.jeonghyeon.taxiproject.model.Guardian;
 
 // 만약 엔티티가 두개라면?
 // ex) @Database(entities = {Order.class, Product.class}, version = 1, exportSchema = false)
-@Database(entities = {Guardian.class}, version = 1, exportSchema = false)
+@Database(entities = {Guardian.class, Frequency.class}, version = 3, exportSchema = false)
 public abstract class RoomDB extends RoomDatabase
 {
     private static RoomDB database;
@@ -30,6 +32,7 @@ public abstract class RoomDB extends RoomDatabase
         return database;
     }
 
+    public abstract FrequencyDao frequencyDao();
     public abstract GuardianDao guardianDao();
 
 }

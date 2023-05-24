@@ -1,22 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/action_guardianNum"
+        android:enabled="true"
+        android:icon="@drawable/baseline_family_restroom_24"
+        android:title="보호자번호" />
+    <item
         android:id="@+id/action_record"
+        android:enabled="true"
         android:icon="@drawable/baseline_book_24"
         android:title="탑승기록" />
     <item
-        android:id="@+id/action_message"
-        android:icon="@drawable/baseline_message_24"
-        android:title="채팅" />
-    <item
         android:id="@+id/action_taxi"
+        android:enabled="true"
         android:icon="@drawable/baseline_local_taxi_24"
         android:title="승차" />
     <item
+        android:id="@+id/action_board"
+        android:enabled="true"
+        android:icon="@drawable/baseline_dashboard_24"
+        android:title="합승" />
+    <item
         android:id="@+id/action_taxiStop"
+        android:enabled="true"
         android:icon="@drawable/baseline_car_repair_24"
         android:title="택시승강장" />
-    <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/baseline_settings_24"
-        android:title="설정" />
 </menu>
