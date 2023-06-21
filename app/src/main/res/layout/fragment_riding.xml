@@ -1,84 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activity.MainActivity">
+    android:orientation="vertical">
 
-    <FrameLayout
+    <Button
+        android:id="@+id/sos_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/border"
+        android:drawableBottom="@drawable/emergencyxml"
+        android:padding="10dp"
+        android:text="SOS" />
+
+    <Button
+        android:id="@+id/police_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/fire_btn"
+        android:background="@drawable/border"
+        android:drawableBottom="@drawable/policexml"
+        android:padding="10dp"
+        android:text="112" />
+
+    <Button
+        android:id="@+id/fire_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/sos_btn"
+        android:background="@drawable/border"
+        android:drawableBottom="@drawable/ambulancexml"
+        android:padding="10dp"
+        android:text="119" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.3">
+        android:contentDescription="Google 지도" />
 
-        <TextureView
-            android:id="@+id/texture"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:id="@+id/imageResult"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:layout_gravity="bottom|left"
-            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="bottom|right"
-            app:srcCompat="@android:drawable/screen_background_dark_transparent" />
-
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btn_startAndStop"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical">
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:background="@drawable/rounded_button"
+        android:text="문자전송" />
 
-        <EditText
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:text="ex)123가4568"
-            android:textSize="30dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnTakePicture"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/rounded_button"
-                android:textSize="25dp"
-                android:text="촬영"
-                tools:ignore="TextSizeCheck" />
-
-            <Button
-                android:id="@+id/btnComplete"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/rounded_button"
-                android:textSize="25dp"
-                android:text="완료"
-                tools:ignore="TextSizeCheck" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

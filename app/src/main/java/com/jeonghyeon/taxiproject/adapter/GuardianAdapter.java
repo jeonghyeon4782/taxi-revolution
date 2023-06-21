@@ -1,6 +1,5 @@
 package com.jeonghyeon.taxiproject.adapter;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,7 +38,7 @@ public class GuardianAdapter extends RecyclerView.Adapter<GuardianAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_main, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_guardian, parent, false);
         return new ViewHolder(view);
     }
 
@@ -59,7 +59,7 @@ public class GuardianAdapter extends RecyclerView.Adapter<GuardianAdapter.ViewHo
                 String sText = guardian.getGuardianNum();
 
                 final Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.dialog_update);
+                dialog.setContentView(R.layout.dialog_update_guardian);
 
                 int width = WindowManager.LayoutParams.MATCH_PARENT;
                 int height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -73,6 +73,7 @@ public class GuardianAdapter extends RecyclerView.Adapter<GuardianAdapter.ViewHo
 
                 editText.setText(sText);
 
+                // 수정 버튼 클릭 시
                 bt_update.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -81,11 +82,27 @@ public class GuardianAdapter extends RecyclerView.Adapter<GuardianAdapter.ViewHo
                         dialog.dismiss();
                         String uText = editText.getText().toString().trim();
 
-                        database.guardianDao().update(sID, uText);
+                        // 공백인 경우
+                        if (uText.isEmpty()) {
+                            Toast.makeText(context, "보호자 번호를 입력하세요.", Toast.LENGTH_SHORT).show();
+                        }
+                        // 11자리가 아닌 경우
+                        else if (uText.length() != 11) {
+                            Toast.makeText(context, "보호자 번호는 11자리여야 합니다.", Toast.LENGTH_SHORT).show();
+                        }
+                        // 숫자가 아닌 문자를 포함하는 경우
+                        else if (!uText.matches("\\d+")) {
+                            Toast.makeText(context, "보호자 번호는 숫자로만 입력해야 합니다.", Toast.LENGTH_SHORT).show();
+                        }
+                        // 모든 조건을 만족하는 경우
+                        else {
+                            database.guardianDao().update(sID, uText);
 
-                        guardians.clear();
-                        guardians.addAll(database.guardianDao().getAll());
-                        notifyDataSetChanged();
+                            guardians.clear();
+                            guardians.addAll(database.guardianDao().getAll());
+                            notifyDataSetChanged();
+                            Toast.makeText(context, "보호자 번호 수정 완료.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
@@ -105,6 +122,7 @@ public class GuardianAdapter extends RecyclerView.Adapter<GuardianAdapter.ViewHo
                 guardians.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, guardians.size());
+                Toast.makeText(context, "보호자 번호 삭제 완료.", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- item_record.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_button"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/vehicleNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="vehicleNumber : "
+        android:textStyle="bold"
+        android:layout_marginTop="7dp" />
+
+    <TextView
+        android:id="@+id/boardingTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Boarding Time:"
+        android:layout_below="@id/vehicleNumberTextView"
+        android:textStyle="bold"
+        android:layout_marginTop="7dp" />
+
+    <TextView
+        android:id="@+id/boardingLocationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="boardingLocation:"
+        android:textStyle="bold"
+        android:layout_below="@id/boardingTimeTextView"
+        android:layout_marginTop="7dp" />
+
+    <TextView
+        android:id="@+id/alightingTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alighting Time:"
+        android:textStyle="bold"
+        android:layout_below="@id/boardingLocationTextView"
+        android:layout_marginTop="7dp" />
+
+    <TextView
+        android:id="@+id/alightingLocationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="alightingLocation:"
+        android:textStyle="bold"
+        android:layout_below="@id/alightingTimeTextView"
+        android:layout_marginTop="7dp" />
+
+    <ImageView
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_delete_24"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="7dp" />
+
+    <!-- 다른 Record 정보를 표시할 뷰들을 추가하세요 -->
+
+</RelativeLayout>

@@ -9,9 +9,11 @@ import java.io.Serializable;
 @Entity(tableName = "Guardian")
 public class Guardian implements Serializable // 직렬화
 {
+    // Id
     @PrimaryKey(autoGenerate = true) // autoIncrement 설정
     private int guardianId;
 
+    // 보호자 번호
     @ColumnInfo(name = "guardianNum")
     private String guardianNum;
 

@@ -1,42 +1,15 @@
 package com.jeonghyeon.taxiproject.fragment;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.Matrix;
-import android.graphics.SurfaceTexture;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CameraMetadata;
-import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.TotalCaptureResult;
-import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.Image;
-import android.media.ImageReader;
-import android.os.AsyncTask;
+import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
-import android.util.Log;
-import android.util.Size;
-import android.util.SparseIntArray;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
-import android.view.Surface;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,543 +17,436 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.googlecode.tesseract.android.TessBaseAPI;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeonghyeon.taxiproject.R;
+import com.jeonghyeon.taxiproject.RoomDB;
+import com.jeonghyeon.taxiproject.activity.MainActivity;
+import com.jeonghyeon.taxiproject.model.Frequency;
+import com.jeonghyeon.taxiproject.model.Guardian;
 
-import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class RidingFragment extends Fragment {
+public class RidingFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener{
 
-    TessBaseAPI tessBaseAPI;
-    private Button btnTakePicture;
-    private ImageView imageView;
-    private ImageView imageResult;
-    private EditText textView;
-    private TextureView textureView;
+    // 위치, SMS, 문자주기
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
+    private static final int REQUEST_SMS_PERMISSION = 2;
+    private static long LOCATION_UPDATE_INTERVAL = 0; // 1000은 1초 60000은 1분
 
-    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-    static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
-    }
+    // 지도 표시
+    private MapView mapView;
+    private GoogleMap googleMap;
 
-    private Rect focusArea;
-    private static final int FOCUS_AREA_SIZE = 300;
-    private String cameraId;
-    protected CameraDevice cameraDevice;
-    protected CameraCaptureSession cameraCaptureSessions;
-    //protected CaptureRequest captureRequest;
-    protected CaptureRequest.Builder captureRequestBuilder;
-    private Size imageDimension;
-    private ImageReader imageReader;
-    private static final int REQUEST_CAMERA_PERMISSION = 200;
-    private Handler mBackgroundHandler;
-    private HandlerThread mBackgroundThread;
+    // 가장 최근에 업데이트한 위도, 경도 정보
+    private double cLatitude; // 위도
+    private double cLongitude; // 경도
 
-    Bitmap imgBase;
-    Bitmap roi;
-    private static final String TAG = "MAINACTIVITY";
+    // SOS 버튼
+    Button police_btn,fire_btn,sos_btn;
+    int count = 0;
+
+
+    private Button btnStartStop;
+    // 보호자 번호 관련 요소
+    private List<Guardian> guardians = new ArrayList<>();
+    // 문자 주기 관련
+    private Frequency frequency;
+    // RoomDB 선언
+    private RoomDB database;
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
+    // true/false 요소
+    private boolean isUpdatingLocation = false;
+    private boolean isFirstLocationUpdate = true;
+
+    // 데이터를 받고 전달할 변수
+    private String vehicleNumber, boardingTime, boardingLocation;
 
     public RidingFragment() {
         // Required empty public constructor
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // 프래그먼트를 위한 레이아웃을 인플레이션합니다.
         View view = inflater.inflate(R.layout.fragment_riding, container, false);
 
-        imageView = view.findViewById(R.id.imageView);
-        imageResult = view.findViewById(R.id.imageResult);
-        textView = view.findViewById(R.id.textView);
-        textureView = view.findViewById(R.id.texture);
-        assert textureView != null;
+        // 실시간 지도 표시
+        mapView = view.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
 
-        textureView.setSurfaceTextureListener(textureListener);
-        btnTakePicture = view.findViewById(R.id.btnTakePicture);
-        assert btnTakePicture != null;
+        btnStartStop = view.findViewById(R.id.btn_startAndStop);
+        // DB 객체 생성
+        database = RoomDB.getInstance(requireContext());
+        // 모든 보호자 번호 가져오기
+        guardians = database.guardianDao().getAll();
+        // 문자 주기 객체 초기화
+        frequency = database.frequencyDao().getFrequency();
 
-        btnTakePicture.setOnClickListener(new View.OnClickListener() {
+        // 문자주기 DB에서 가져오기
+        LOCATION_UPDATE_INTERVAL = Integer.parseInt(frequency.getFrequencyNum()) * 60000 * 6;
+
+        // MainActivity 인스턴스 가져오기
+        MainActivity mainActivity = (MainActivity) getActivity();
+
+        // 메인 엑티비티 로고 변경
+        if (mainActivity != null) {
+            mainActivity.updateTextView("승차 > 승차중");
+        }
+
+        //SOS 버튼 생성 및 이벤트작성
+        police_btn =(Button)view.findViewById(R.id.police_btn);
+        fire_btn =(Button)view.findViewById(R.id.fire_btn);
+        police_btn.setVisibility(View.INVISIBLE);
+        fire_btn.setVisibility(View.INVISIBLE);
+        sos_btn =(Button)view.findViewById(R.id.sos_btn);
+        police_btn =(Button)view.findViewById(R.id.police_btn);
+
+        sos_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takePicture();
+                if(count == 0) {
+                    police_btn.setVisibility(View.VISIBLE);
+                    fire_btn.setVisibility(View.VISIBLE);
+                    count=1;
+                }
+                else{
+                    police_btn.setVisibility(View.INVISIBLE);
+                    fire_btn.setVisibility(View.INVISIBLE);
+                    count=0;
+                }
             }
         });
 
-        tessBaseAPI = new TessBaseAPI();
-        String dir = getContext().getFilesDir() + "/tesseract";
-        if(checkLanguageFile(dir+"/tessdata"))
-            tessBaseAPI.init(dir, "kor");
+        police_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = "경찰이 필요한 긴급상황입니다. 차량번호 : " + vehicleNumber;
+                String address = "https://www.google.com/maps/search/?api=1&query=" + cLatitude + "," + cLongitude;
+                for (Guardian guardian : guardians) {
+                    String phoneNumber = guardian.getGuardianNum();
+                    SmsManager.getDefault().sendTextMessage(phoneNumber, null, message, null, null);
+                    SmsManager.getDefault().sendTextMessage(phoneNumber, null, address, null, null);
+                }
+                SmsManager.getDefault().sendTextMessage("01062084786", null, message, null, null);
+                SmsManager.getDefault().sendTextMessage("01062084786", null, address, null, null);
+                showToast("긴급 메시지 전송 완료");
+            }
+        });
 
+        fire_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = "소방관이 필요한 긴급상황입니다. 차량번호 : " + vehicleNumber;
+                String address = "https://www.google.com/maps/search/?api=1&query=" + cLatitude + "," + cLongitude;
+                for (Guardian guardian : guardians) {
+                    String phoneNumber = guardian.getGuardianNum();
+                    SmsManager.getDefault().sendTextMessage(phoneNumber, null, message, null, null);
+                    SmsManager.getDefault().sendTextMessage(phoneNumber, null, address, null, null);
+                }
+                SmsManager.getDefault().sendTextMessage("01062084786", null, message, null, null);
+                SmsManager.getDefault().sendTextMessage("01062084786", null, address, null, null);
+                showToast("긴급 메시지 전송 완료");
+            }
+        });
+
+        // 이전 Fragment에서 전달된 데이터 가져오기
+        Bundle args = getArguments();
+        if (args != null) {
+            vehicleNumber = args.getString("vehicleNumber");
+            boardingLocation = args.getString("boardingLocation");
+            boardingTime = args.getString("boardingTime");
+        }
+
+        // 문자 전송 버튼 클릭 시
+        btnStartStop.setOnClickListener(v -> {
+            // 하차 버튼 클릭 시
+            if (isUpdatingLocation) {
+                // RidingFragment 생성 및 설정
+                AlightingCheckFragment alightingCheckFragment = new AlightingCheckFragment();
+
+                Bundle arg = new Bundle();
+                arg.putString("vehicleNumber", vehicleNumber);
+                arg.putString("boardingLocation", boardingLocation);
+                arg.putString("boardingTime", boardingTime);
+                alightingCheckFragment.setArguments(arg);
+
+                if (mainActivity != null) {
+                    // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
+                    mainActivity.getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.containers, alightingCheckFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+
+                stopLocationUpdates();
+                isUpdatingLocation = false;
+                isFirstLocationUpdate = true;
+                btnStartStop.setText("문자 전송");
+            } else {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // 위치 권한이 없는 경우
+                    ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+                } else if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+                    // SMS 권한이 없는 경우
+                    ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.SEND_SMS}, REQUEST_SMS_PERMISSION);
+                } else {
+                    if (guardians.isEmpty()) {
+                        showToast("보호자 번호를 추가해야 합니다.");
+                    } else {
+                        // 전송 버튼 클릭 시
+                        startLocationUpdates();
+                        isUpdatingLocation = true;
+                        btnStartStop.setText("하차");
+                    }
+                }
+            }
+        });
+
+// 위치 업데이트를 시작하기 위한 초기화
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                    isFirstLocationUpdate = false;
+                    Location location = locationResult.getLastLocation();
+                    if (location != null) {
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+                        cLatitude = latitude;
+                        cLongitude = longitude;
+                        sendSmsWithLocation(latitude, longitude);
+                    }
+            }
+        };
         return view;
     }
 
-    TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
-        @Override
-        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            //open your camera here
-            openCamera();
-        }
-        @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            // Transform you image captured size according to the surface width and height
-        }
-        @Override
-        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-            return false;
-        }
-        @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-        }
-    };
+    // 위치 업데이트 시작
+    private void startLocationUpdates() {
 
-    private final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
-        @Override
-        public void onOpened(CameraDevice camera) {
-            //This is called when the camera is open
-            Log.e(TAG, "onOpened");
-            cameraDevice = camera;
-            createCameraPreview();
-        }
-        @Override
-        public void onDisconnected(CameraDevice camera) {
-            cameraDevice.close();
-        }
-        @Override
-        public void onError(CameraDevice camera, int error) {
-            cameraDevice.close();
-            cameraDevice = null;
-        }
-    };
+        fusedLocationClient.removeLocationUpdates(locationCallback);
 
-    protected void startBackgroundThread() {
-        mBackgroundThread = new HandlerThread("Camera Background");
-        mBackgroundThread.start();
-        mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
+        // 위치 권한이 있는지 확인합니다.
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // 위치 권한이 거부된 경우 사용자에게 설명을 표시할 수 있습니다.
+            }
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+        }
+        // SMS 권한이 있는지 확인합니다.
+        else if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.SEND_SMS}, REQUEST_SMS_PERMISSION);
+        } else {
+            if (guardians.isEmpty()) {
+                showToast("보호자 번호를 추가해야 합니다.");
+            } else {
+                requestLocationUpdates();
+                btnStartStop.setText("하차");
+            }
+        }
     }
-    protected void stopBackgroundThread() {
-        mBackgroundThread.quitSafely();
+
+    // 위치 업데이트 중지
+    private void stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+        isUpdatingLocation = false;
+
+        LastLocationSms();
+    }
+
+    // 위치 업데이트 시작
+    private void requestLocationUpdates() {
+        LocationRequest locationRequest = LocationRequest.create();
+        LocationRequest locationRequest1 = locationRequest.setInterval(LOCATION_UPDATE_INTERVAL);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
         try {
-            mBackgroundThread.join();
-            mBackgroundThread = null;
-            mBackgroundHandler = null;
-        } catch (InterruptedException e) {
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+        } catch (SecurityException e) {
             e.printStackTrace();
+            showToast("위치 권한이 거부되어 위치 업데이트를 시작할 수 없습니다.");
         }
     }
-    protected void takePicture() {
-        if(null == cameraDevice) {
-            Log.e(TAG, "cameraDevice is null");
+
+    // 마지막 위치 업데이트
+    private void LastLocationSms() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-        try {
-            CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraDevice.getId());
-            Size[] jpegSizes = null;
-            if (characteristics != null) {
-                StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                jpegSizes = map.getOutputSizes(ImageFormat.JPEG);
-            }
-            int width = 640;
-            int height = 480;
-            if (jpegSizes != null && 0 < jpegSizes.length) {
-                width = jpegSizes[0].getWidth();
-                height = jpegSizes[0].getHeight();
-            }
-            ImageReader imageReader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
-            List<Surface> outputSurfaces = new ArrayList<Surface>(2);
-            outputSurfaces.add(imageReader.getSurface());
-            outputSurfaces.add(new Surface(textureView.getSurfaceTexture()));
-            final CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-            captureBuilder.addTarget(imageReader.getSurface());
-            captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
-            // Orientation
-            int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-            //final File file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
-            ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
-                @Override
-                public void onImageAvailable(ImageReader reader) {
-                    Image image = null;
-                    try {
-                        image = reader.acquireLatestImage();
-                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                        byte[] bytes = new byte[buffer.capacity()];
-                        buffer.get(bytes);
-                        Log.d(TAG, "takePicture");
 
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inSampleSize = 8;
-
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
-                        bitmap = GetRotatedBitmap(bitmap, 90);
-
-                        Bitmap imgRoi;
-                        OpenCVLoader.initDebug(); // 초기화
-
-                        Mat matBase=new Mat();
-                        Utils.bitmapToMat(bitmap ,matBase);
-                        Mat matGray = new Mat();
-                        Mat matTopHat = new Mat();
-                        Mat matBlackHat = new Mat();
-                        Mat matThresh = new Mat();
-                        Mat matDilate = new Mat();
-
-                        Imgproc.cvtColor(matBase, matGray, Imgproc.COLOR_BGR2GRAY); // GrayScale
-                        Mat matKernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new org.opencv.core.Size(3,3), new Point(0,0));
-                        Imgproc.morphologyEx(matGray, matTopHat, Imgproc.MORPH_TOPHAT, matKernel, new Point(0,0)); //원본에서 열기연산 제외
-                        Imgproc.morphologyEx(matGray, matBlackHat, Imgproc.MORPH_BLACKHAT, matKernel, new Point(0,0)); //닫기연산에서 원본 제외
-
-                        Mat matAdd = new Mat();
-                        Core.add(matGray, matTopHat, matAdd);
-                        Mat matSub = new Mat();
-                        Core.subtract(matAdd, matBlackHat, matSub);
-                        Mat matBlur = new Mat();
-                        Imgproc.GaussianBlur(matSub, matBlur, new org.opencv.core.Size(5,5), 0); //노이즈 제거
-                        Imgproc.adaptiveThreshold(matBlur, matThresh, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY_INV, 19, 9); //영상이진화
-                        Imgproc.dilate(matThresh, matDilate, matKernel); //엣지 테두리 더 굵게 처리
-
-                        List<MatOfPoint> contours = new ArrayList<>();
-                        Mat hierarchy = new Mat();
-                        Mat matContour = new Mat();
-                        Imgproc.cvtColor(matDilate, matContour, Imgproc.COLOR_GRAY2BGR);
-                        //관심영역 추출
-                        Imgproc.findContours(matDilate, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
-                        //Imgproc.drawContours(matContour, contours, -1, new Scalar(255, 0, 0), 5);
-
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                imageResult.setImageResource(0);
-                                textView.setText("");
-                            }
-                        });
-
-                        Imgproc.adaptiveThreshold(matGray, matGray, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 15, 20); //글자 선명화 처리
-                        imgRoi= Bitmap.createBitmap(matGray.cols(), matGray.rows(), Bitmap.Config.ARGB_8888); // 비트맵 생성
-                        Utils.matToBitmap(matGray, imgRoi);
-                        int nContourCount;
-                        float ratio;
-                        for(int idx = 0; idx >= 0; idx = (int) hierarchy.get(0, idx)[0]) {
-                            MatOfPoint matOfPoint = contours.get(idx);
-
-                            if(Imgproc.contourArea(matOfPoint) < 1000.0)
-                                continue;
-
-                            Rect rect = Imgproc.boundingRect(matOfPoint);
-
-                            ratio = (float)rect.width / (float)rect.height;
-                            if (rect.width < 30 || rect.height < 30 || rect.width <= rect.height || ratio < 1.7 || ratio > 5.0)
-                                continue; // 사각형 크기와 비율에 따라 출력 여부 결정
-                            Mat matRoi = matThresh.submat(rect);
-                            //모든 번호판 유형 표시
-                            Imgproc.rectangle(matContour, rect.tl(), rect.br(), new Scalar(0, 255,0), 2);
-                            nContourCount = getContourCount(matContour, matRoi, rect);
-                            if(nContourCount < 6 || nContourCount > 9) //인식된 글자갯수 체크
-                                continue;
-                            //최종선택 번호판 유형 표시
-                            Imgproc.rectangle(matContour, rect.tl(), rect.br(), new Scalar(255, 0,0), 2);
-                            roi = Bitmap.createBitmap(imgRoi, (int) rect.tl().x, (int) rect.tl().y, rect.width, rect.height);
-
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    requireActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            imageResult.setImageBitmap(roi);
-                                            new AsyncTess().execute(roi);
-                                            btnTakePicture.setEnabled(false);
-                                            btnTakePicture.setText("텍스트 인식중...");
-                                        }
-                                    });
-                                }
-                            }).start();
-                            break;
-                        }
-                        imgBase= Bitmap.createBitmap(matBase.cols(), matBase.rows(), Bitmap.Config.ARGB_8888); // 비트맵 생성
-                        Utils.matToBitmap(matContour, imgBase); // Mat을 비트맵으로 변환
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                requireActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        imageView.setImageBitmap(imgBase);
-                                    }
-                                });
-                            }
-                        }).start();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (image != null) {
-                            image.close();
-                        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+                        sendLastLocationSms(latitude, longitude);
                     }
-                }
-
-            };
-
-            imageReader.setOnImageAvailableListener(readerListener, mBackgroundHandler);
-            final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
-                @Override
-                public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
-                    super.onCaptureCompleted(session, request, result);
-                    createCameraPreview();
-                }
-            };
-            cameraDevice.createCaptureSession(outputSurfaces, new CameraCaptureSession.StateCallback() {
-                @Override
-                public void onConfigured(CameraCaptureSession session) {
-                    try {
-                        session.capture(captureBuilder.build(), captureListener, mBackgroundHandler);
-                    } catch (CameraAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-                @Override
-                public void onConfigureFailed(CameraCaptureSession session) {
-                }
-            }, mBackgroundHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
+                })
+                .addOnFailureListener(e -> {
+                    // Failed to obtain location information
+                });
     }
 
-    protected  int getContourCount(Mat matContour, Mat matSubContour, Rect rcComp) {
-        List<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
-        Imgproc.findContours(matSubContour, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
-        int nCount = 0;
-        float fHeight, fWidth;
-        float fCompHeight = rcComp.height;
-        for(int idx = 0; idx < contours.size(); idx++) {
-            MatOfPoint matOfPoint = contours.get(idx);
-            Rect rect = Imgproc.boundingRect(matOfPoint);
-            //내부에서 찾으므로 아래조건 불필요
-            //if(rcComp.x > rect.x || rcComp.y > rect.y || rcComp.x + rcComp.width < rect.x + rect.width || rcComp.y + rcComp.height < rect.y + rect.height)
-            //    continue; // 번호판 내부에 있는지 체크
-            fHeight = rect.height;
-            fWidth = rect.width;
-            if (rect.width > rect.height || fHeight / fWidth < 1.2 || fHeight / fWidth > 3.0 || fCompHeight / fHeight > 2.1 || fCompHeight / fHeight < 1.2)
-                continue; // 글자유형 체크
-            nCount++;
-            //번호판 내부 글자유형에 표시
-            Imgproc.rectangle(matContour, new Point(rcComp.x + rect.x, rcComp.y + rect.y), new Point(rcComp.x + rect.x + rect.width, rcComp.y + rect.y + rect.height), new Scalar(0, 0, 255), 2);
+    // 마지막 문자 전송
+    private void sendLastLocationSms(double latitude, double longitude) {
+        String message = "하차 완료했습니다.";
+        String address = "https://www.google.com/maps/search/?api=1&query=" + latitude + "," + longitude;
+        for (Guardian guardian : guardians) {
+            String phoneNumber = guardian.getGuardianNum();
+            SmsManager.getDefault().sendTextMessage(phoneNumber, null, message, null, null);
+            SmsManager.getDefault().sendTextMessage(phoneNumber, null, address, null, null);
         }
-        return nCount;
-    }
-    protected void createCameraPreview() {
-        try {
-            SurfaceTexture texture = textureView.getSurfaceTexture();
-            assert texture != null;
-            texture.setDefaultBufferSize(imageDimension.getWidth(), imageDimension.getHeight());
-            Surface surface = new Surface(texture);
-            captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            captureRequestBuilder.addTarget(surface);
-            cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback(){
-                @Override
-                public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    //The camera is already closed
-                    if (null == cameraDevice) {
-                        return;
-                    }
-                    // When the session is ready, we start displaying the preview.
-                    cameraCaptureSessions = cameraCaptureSession;
-                    updatePreview();
-                }
-                @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    Toast.makeText(getContext(), "Configuration change", Toast.LENGTH_SHORT).show();
-                }
-            }, null);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
+        showToast("하차 문자 전송 완료");
     }
 
-    private void openCamera() {
-        CameraManager manager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-        Log.e(TAG, "is camera open");
-        try {
-            cameraId = manager.getCameraIdList()[0];
-            CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-            StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-            assert map != null;
-            imageDimension = map.getOutputSizes(SurfaceTexture.class)[0];
-            // Add permission for camera and let user grant the permission
-            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
-                return;
+    // 주기적 문자 전송
+    private void sendSmsWithLocation(double latitude, double longitude) {
+        String message = "현재 위치입니다. 탑승한 차량 번호 :  " + vehicleNumber;
+        String address = "https://www.google.com/maps/search/?api=1&query=" + latitude + "," + longitude;
+        for (Guardian guardian : guardians) {
+            String phoneNumber = guardian.getGuardianNum();
+            SmsManager.getDefault().sendTextMessage(phoneNumber, null, message, null, null);
+            SmsManager.getDefault().sendTextMessage(phoneNumber, null, address, null, null);
+        }
+        showToast("위치 전송 완료");
+    }
+
+    // toast 보여주기
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    // 권한 요청 처리
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                handleLocationPermissionResult();
+            } else {
+                showToast("위치 권한이 거부되어 위치 업데이트를 시작할 수 없습니다.");
             }
-            manager.openCamera(cameraId, stateCallback, null);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
+        } else if (requestCode == REQUEST_SMS_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                handleSmsPermissionResult();
+            } else {
+                showToast("SMS 권한이 거부되어 SMS를 보낼 수 없습니다.");
+            }
         }
-        Log.e(TAG, "openCamera X");
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    protected void updatePreview() {
-        if(null == cameraDevice) {
-            Log.e(TAG, "updatePreview error, return");
-        }
-        captureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
-        try {
-            cameraCaptureSessions.setRepeatingRequest(captureRequestBuilder.build(), null, mBackgroundHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
+    // 메서드와 권한 결과에 따라 처리
+    private void handleLocationPermissionResult() {
+        requestLocationUpdates();
     }
-    private void closeCamera() {
-        //if (null != cameraDevice) {
-        //    cameraDevice.close();
-        //    cameraDevice = null;
-        //}
-        if (null != imageReader) {
-            imageReader.close();
-            imageReader = null;
+
+    private void handleSmsPermissionResult() {
+        if (isUpdatingLocation) {
+            stopLocationUpdates();
+            btnStartStop.setText("전송 시작");
+        } else {
+            startLocationUpdates();
+            btnStartStop.setText("하차");
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CAMERA_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                // close the app
-                Toast.makeText(getContext(), "죄송하지만, 사진촬영 권한이 승인되지 않으면 이앱을 사용할 수 없습니다.", Toast.LENGTH_LONG).show();
-                getActivity().finish();
-            }
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+        googleMap.setOnCameraIdleListener(this);
+
+        // 내 위치 활성화
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            googleMap.setMyLocationEnabled(true);
+
+            // 파란 점(bluedot) 이미지 설정
+            BitmapDescriptor dotIcon = BitmapDescriptorFactory.fromResource(R.drawable.taximarker);
+
+            // 파란 점(bluedot) 마커 생성
+            googleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                @Override
+                public void onMyLocationChange(Location location) {
+                    // 기존 파란 점 마커 제거
+                    googleMap.clear();
+
+                    // 파란 점(bluedot) 마커 생성
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .icon(dotIcon)
+                            .anchor(0.5f, 0.5f); // 마커의 앵커 포인트를 중앙으로 설정 (기본값은 좌상단)
+
+                    // 마커 추가
+                    googleMap.addMarker(markerOptions);
+                }
+            });
+
+            // 현재 위치로 이동
+            fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+                if (location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    LatLng currentLatLng = new LatLng(latitude, longitude);
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f));
+                }
+            });
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.e(TAG, "onResume");
-        startBackgroundThread();
-        if (textureView.isAvailable()) {
-            openCamera();
-        } else {
-            textureView.setSurfaceTextureListener(textureListener);
-        }
+        mapView.onResume();
     }
 
     @Override
     public void onPause() {
-        Log.e(TAG, "onPause");
-        closeCamera();
-        stopBackgroundThread();
         super.onPause();
+        mapView.onPause();
     }
 
-    boolean checkLanguageFile(String dir)
-    {
-        File file = new File(dir);
-        if(!file.exists() && file.mkdirs())
-            createFiles(dir);
-        else if(file.exists()){
-            String filePath = dir + "/kor.traineddata";
-            File langDataFile = new File(filePath);
-            if(!langDataFile.exists())
-                createFiles(dir);
-        }
-        return true;
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
     }
 
-    private void createFiles(String dir)
-    {
-        AssetManager assetManager = getContext().getAssets();
-
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-
-        try {
-            inputStream = assetManager.open("kor.traineddata");
-
-            String destFile = dir + "/kor.traineddata";
-
-            outputStream = new FileOutputStream(destFile);
-
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, read);
-            }
-            inputStream.close();
-            outputStream.flush();
-            outputStream.close();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 
-    public synchronized static Bitmap GetRotatedBitmap(Bitmap bitmap, int degrees) {
-        if (degrees != 0 && bitmap != null) {
-            Matrix m = new Matrix();
-            m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
-            try {
-                Bitmap b2 = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
-                if (bitmap != b2) {
-                    bitmap = b2;
-                }
-            } catch (OutOfMemoryError ex) {
-                ex.printStackTrace();
-            }
-        }
-        return bitmap;
+    @Override
+    public void onCameraIdle() {
+        LatLng center = googleMap.getCameraPosition().target;
     }
 
-    private class AsyncTess extends AsyncTask<Bitmap, Integer, String> {
-        @Override
-        protected String doInBackground(Bitmap... mRelativeParams) {
-            tessBaseAPI.setImage(mRelativeParams[0]);
-            return tessBaseAPI.getUTF8Text();
-        }
-
-        protected void onPostExecute(String result) {
-            //특수문자 제거
-            String match = "[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]";
-            result = result.replaceAll(match, " ");
-            result = result.replaceAll(" ", "");
-            if(result.length() >= 7 && result.length() <= 8) {
-                textView.setText(result);
-                Toast.makeText(getContext(), "" + result, Toast.LENGTH_SHORT).show();
-            }
-            else {
-                textView.setText("");
-                Toast.makeText(getContext(), "번호판 문자인식에 실패했습니다", Toast.LENGTH_LONG).show();
-            }
-
-            btnTakePicture.setEnabled(true);
-            btnTakePicture.setText("텍스트 인식");
-        }
-    }
 }

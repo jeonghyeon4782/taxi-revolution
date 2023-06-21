@@ -11,12 +11,31 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
         <EditText
             android:id="@+id/et_guardianNum"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="보호자 번호를 입력하시오"
-            android:padding="12dp" />
+            android:layout_weight="1"
+            android:minHeight="48dp"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:hint="보호자 번호를 입력하세요."
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageView
+            android:id="@+id/btn_addGuardian"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/baseline_add_24"/>
+
+    </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -24,97 +43,49 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="8dp"
-            tools:listitem="@layout/list_row_main" />
+            tools:listitem="@layout/list_row_guardian" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:orientation="horizontal"
+            android:background="@drawable/rounded_button"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:gravity="center">
 
             <TextView
-                android:id="@+id/et_number"
+                android:id="@+id/text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="12dp"
-                android:textSize="20dp"
-                android:background="@drawable/rounded_button"
+                android:text="전송 주기"
+                android:textSize="25sp"
                 android:textStyle="bold"
-                android:layout_marginRight="8dp"
-                android:text="문자 주기(분)" />
+                android:gravity="center"/>
 
             <TextView
-                android:id="@+id/et_number2"
+                android:id="@+id/txt_frequency"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="20dp"
-                android:background="@drawable/rounded_button"
+                android:textSize="35sp"
                 android:textStyle="bold"
-                android:padding="12dp" />
+                android:gravity="center"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="10dp">
-
-            <Button
-                android:id="@+id/btn_addGuardian"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_button"
-                android:textStyle="bold"
-                android:textSize="17dp"
-                android:text="번호 추가" />
-
-            <Space
-                android:layout_width="8dp"
-                android:layout_height="match_parent" />
-
-            <Button
-                android:id="@+id/btn_sendSms"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:textSize="17dp"
-                android:background="@drawable/rounded_button"
-                android:text="문자 전송" />
-
-            <Space
-                android:layout_width="8dp"
-                android:layout_height="match_parent" />
-
-            <Button
+            <ImageView
                 android:id="@+id/btn_increase"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_button"
-                android:textStyle="bold"
-                android:textSize="17dp"
-                android:text="+" />
+                android:layout_width="45dp"
+                android:layout_height="55dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/baseline_add_circle_24"/>
 
-            <Space
-                android:layout_width="8dp"
-                android:layout_height="match_parent" />
-
-            <Button
+            <ImageView
                 android:id="@+id/btn_decrease"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:textSize="17dp"
-                android:background="@drawable/rounded_button"
-                android:text="-" />
+                android:layout_width="45dp"
+                android:layout_height="55dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/baseline_remove_circle_24"/>
 
         </LinearLayout>
 

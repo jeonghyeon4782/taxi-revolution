@@ -9,9 +9,11 @@ import java.io.Serializable;
 @Entity(tableName = "Frequency")
 public class Frequency implements Serializable {
 
+    // Id
     @PrimaryKey(autoGenerate = true) // autoIncrement 설정
     private int frequencyId;
 
+    // 문자 주기
     @ColumnInfo(name = "frequencyNum")
     private String frequencyNum;
 

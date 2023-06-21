@@ -9,6 +9,7 @@ import com.jeonghyeon.taxiproject.model.Frequency;
 
 @Dao
 public interface FrequencyDao {
+
     // 상위 하나의 객체만을 가져온다
     @Query("SELECT * FROM frequency LIMIT 1")
     Frequency getFrequency();
