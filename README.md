@@ -4,5 +4,5 @@
 - JAVA
 
 ### 사용 TOOL🖱️
-- Android Studio, Firebse
+- Android Studio, RoomDB
 
