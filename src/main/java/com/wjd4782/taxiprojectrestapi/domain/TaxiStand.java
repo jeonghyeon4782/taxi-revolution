@@ -1,14 +1,11 @@
-package com.wjd4782.taxiprojectrestapi.model;
+package com.wjd4782.taxiprojectrestapi.domain;
 
+import com.wjd4782.taxiprojectrestapi.dto.TaxiStandResponseDto;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor // 빈생성자
 public class TaxiStand {
 

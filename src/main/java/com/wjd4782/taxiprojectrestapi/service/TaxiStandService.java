@@ -1,6 +1,6 @@
 package com.wjd4782.taxiprojectrestapi.service;
 
-import com.wjd4782.taxiprojectrestapi.model.TaxiStand;
+import com.wjd4782.taxiprojectrestapi.domain.TaxiStand;
 import com.wjd4782.taxiprojectrestapi.repository.TaxiStandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,8 @@ import java.util.List;
 public class TaxiStandService {
     private final TaxiStandRepository taxiStandRepository;
 
-    public List<TaxiStand> findAll() {
+    public List<TaxiStand> getAllTaxiStand() {
         return taxiStandRepository.findAll();
     }
 }
+
