@@ -79,29 +79,29 @@ public class GuardianAdapter extends RecyclerView.Adapter<GuardianAdapter.ViewHo
                     @Override
                     public void onClick(View v)
                     {
-                        dialog.dismiss();
                         String uText = editText.getText().toString().trim();
 
                         // 공백인 경우
                         if (uText.isEmpty()) {
-                            Toast.makeText(context, "보호자 번호를 입력하세요.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "보호자 번호를 입력하세요", Toast.LENGTH_SHORT).show();
                         }
                         // 11자리가 아닌 경우
                         else if (uText.length() != 11) {
-                            Toast.makeText(context, "보호자 번호는 11자리여야 합니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "보호자 번호는 11자리여야 합니다", Toast.LENGTH_SHORT).show();
                         }
                         // 숫자가 아닌 문자를 포함하는 경우
                         else if (!uText.matches("\\d+")) {
-                            Toast.makeText(context, "보호자 번호는 숫자로만 입력해야 합니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "보호자 번호는 숫자로만 입력해야 합니다", Toast.LENGTH_SHORT).show();
                         }
                         // 모든 조건을 만족하는 경우
                         else {
+                            dialog.dismiss();
                             database.guardianDao().update(sID, uText);
 
                             guardians.clear();
                             guardians.addAll(database.guardianDao().getAll());
                             notifyDataSetChanged();
-                            Toast.makeText(context, "보호자 번호 수정 완료.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "보호자 번호 수정 완료", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -122,7 +122,7 @@ public class GuardianAdapter extends RecyclerView.Adapter<GuardianAdapter.ViewHo
                 guardians.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, guardians.size());
-                Toast.makeText(context, "보호자 번호 삭제 완료.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "보호자 번호 삭제 완료", Toast.LENGTH_SHORT).show();
             }
         });
     }

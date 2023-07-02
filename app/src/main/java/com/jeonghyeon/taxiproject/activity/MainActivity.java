@@ -19,6 +19,7 @@ import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.fragment.GuardianFragment;
 import com.jeonghyeon.taxiproject.fragment.RecognizeFragment;
 import com.jeonghyeon.taxiproject.fragment.RecordFragment;
+import com.jeonghyeon.taxiproject.fragment.TaxiStandFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private GuardianFragment guardianFragment;
     private RecognizeFragment recognizeFragment;
     private RecordFragment recordFragment;
+    private TaxiStandFragment taxiStandFragment;
 
     private TextView logo;
 
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         guardianFragment = new GuardianFragment();
         recognizeFragment = new RecognizeFragment();
         recordFragment = new RecordFragment();
+        taxiStandFragment = new TaxiStandFragment();
 
         // main.xml 요소 초기화
         infoImageView = findViewById(R.id.infoImageView);
@@ -95,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.action_taxi:
                         getSupportFragmentManager().beginTransaction().replace(R.id.containers, recognizeFragment).commit();
+                        return true;
+                    case R.id.action_taxiStop:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.containers, taxiStandFragment).commit();
                         return true;
                 }
                 return false;

@@ -44,6 +44,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
             android:hint="ex)123가5678"
+            android:textColorHint="#CFA9A9"
             android:textSize="30dp" />
 
         <LinearLayout

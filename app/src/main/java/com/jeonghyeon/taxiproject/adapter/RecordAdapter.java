@@ -55,7 +55,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
                 recordList.remove(record1);
                 // 어댑터에 변경 사항 알림
                 notifyDataSetChanged();
-                Toast.makeText(context, "탑승 기록 삭제 완료.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "탑승 기록 삭제 완료", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -96,11 +96,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
             String boardingLocation = record.getBoardingLocation();
             String alightingLocation = record.getAlightingLocation();
 
-            boardingTimeTextView.setText("승차시간: " + boardingTime);
-            alightingTimeTextView.setText("하차시간: " + alightingTime);
-            vehicleNumberTextView.setText("차량번호: " + vehicleNumber);
-            boardingLocationTextView.setText("승차위치: " + boardingLocation);
-            alightingLocationTextView.setText("하차위치: " + alightingLocation);
+            boardingTimeTextView.setText("승차시간:   " + boardingTime);
+            alightingTimeTextView.setText("하차시간:   " + alightingTime);
+            vehicleNumberTextView.setText("차량번호:   " + vehicleNumber);
+            boardingLocationTextView.setText("승차위치:   " + boardingLocation);
+            alightingLocationTextView.setText("하차위치:   " + alightingLocation);
 
             // Record의 정보를 표시할 뷰들에 대한 설정 추가
         }
