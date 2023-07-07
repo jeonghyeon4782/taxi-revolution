@@ -5,12 +5,15 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -49,7 +52,7 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
     private EditText etPotion;
 
     public TaxiStandFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -108,6 +111,30 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
     public void onResume() {
         super.onResume();
         mapView.onResume();
+
+        // 뒤로가기 버튼 이벤트를 감지하는 리스너를 설정
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            private boolean doubleBackToExitPressedOnce = false;
+
+            @Override
+            public void handleOnBackPressed() {
+                if (doubleBackToExitPressedOnce) {
+                    // 앱 종료
+                    requireActivity().finish();
+                } else {
+                    doubleBackToExitPressedOnce = true;
+                    Toast.makeText(requireContext(), "뒤로가기 버튼을 한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+
+                    // 2초 후에 doubleBackToExitPressedOnce 변수를 초기화
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            doubleBackToExitPressedOnce = false;
+                        }
+                    }, 2000);
+                }
+            }
+        });
     }
 
     @Override
@@ -132,15 +159,15 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap map) {
         googleMap = map;
 
-        // 위치 권한이 허용되었는지 확인합니다.
+        // 위치 권한이 허용되었는지 확인
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            googleMap.setMyLocationEnabled(true); // 내 위치를 블루 닷으로 표시합니다.
+            googleMap.setMyLocationEnabled(true); // 내 위치를 블루 닷으로 표시
 
             // 현재 위치로 지도 이동
             getCurrentLocation();
 
-            // API에서 데이터를 가져와서 지도에 마커를 추가합니다.
+            // API에서 데이터를 가져와서 지도에 마커를 추가
             fetchDataFromAPI();
         } else {
             // 위치 권한을 요청합니다.
@@ -156,10 +183,6 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
             fusedLocationProviderClient.getLastLocation()
                     .addOnSuccessListener(location -> {
                         if (location != null) {
-                            // 현재 위치 마커 추가 (주석 처리 또는 삭제)
-                            // LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                            // googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("Current Location"));
-
                             // 현재 위치로 지도 이동
                             LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f));
@@ -182,11 +205,9 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 권한이 승인된 경우
                 getCurrentLocation();
             } else {
-                // 권한이 거부된 경우
-                // 사용자에게 위치 권한이 필요하다는 안내 메시지를 표시하거나 다른 대체 동작을 수행할 수 있습니다.
+
             }
         }
     }
@@ -212,7 +233,7 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
     private void fetchDataFromAPI() {
         // Retrofit 객체 생성
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정합니다.
+                .baseUrl("http://192.168.134.20:8000/") // 스프링부트 API의 기본 URL을 설정
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -234,7 +255,7 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
                         LatLng position = new LatLng(latitude, longitude);
 
                         // 마커 이미지 설정
-                        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.taximarker);
+                        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.taxistand);
                         googleMap.addMarker(new MarkerOptions().position(position).title("Taxi Stand").icon(icon));
                     }
                 } else {

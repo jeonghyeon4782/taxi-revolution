@@ -73,7 +73,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         private TextView boardingLocationTextView;
         private TextView alightingLocationTextView;
         private ImageView deleteButton;
-        // 여기에 Record의 정보를 표시할 뷰들을 선언하세요
 
         public RecordViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,7 +82,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
             boardingLocationTextView = itemView.findViewById(R.id.boardingLocationTextView);
             alightingLocationTextView = itemView.findViewById(R.id.alightingLocationTextView);
             deleteButton = itemView.findViewById(R.id.btn_delete);
-            // 여기에 Record의 정보를 표시할 뷰들을 초기화하세요
         }
 
         public void bind(Record record) {

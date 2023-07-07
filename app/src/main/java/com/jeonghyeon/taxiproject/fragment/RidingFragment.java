@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.telephony.SmsManager;
 import android.view.LayoutInflater;
@@ -12,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -401,7 +404,7 @@ public class RidingFragment extends Fragment implements OnMapReadyCallback, Goog
                     MarkerOptions markerOptions = new MarkerOptions()
                             .position(new LatLng(location.getLatitude(), location.getLongitude()))
                             .icon(dotIcon)
-                            .anchor(0.5f, 0.5f); // 마커의 앵커 포인트를 중앙으로 설정 (기본값은 좌상단)
+                            .anchor(0.5f, 0.5f); // 마커의 앵커 포인트를 중앙으로 설정
 
                     // 마커 추가
                     googleMap.addMarker(markerOptions);
@@ -424,6 +427,25 @@ public class RidingFragment extends Fragment implements OnMapReadyCallback, Goog
     public void onResume() {
         super.onResume();
         mapView.onResume();
+
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+
+            @Override
+            public void handleOnBackPressed() {
+                if (isUpdatingLocation) {
+                    fusedLocationClient.removeLocationUpdates(locationCallback);
+                    isUpdatingLocation = false;
+                }
+                navigateBack();
+            }
+        });
+    }
+
+    // 이전 프래그먼트로 이동하는 메서드
+    public void navigateBack() {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        fragmentManager.popBackStack();
     }
 
     @Override

@@ -176,9 +176,6 @@ public class AlightingCheckFragment extends Fragment {
     }
 
     private String getAddressFromLocation(Location location) {
-        // 위치 정보를 이용하여 주소 변환 등 필요한 작업을 수행합니다.
-        // 이 예시에서는 위치의 위도와 경도를 이용하여 구글 지오코딩 API를 호출하여 주소를 가져오는 방법을 보여줍니다.
-
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 
@@ -193,7 +190,7 @@ public class AlightingCheckFragment extends Fragment {
             e.printStackTrace();
         }
 
-        return ""; // 주소를 가져오지 못한 경우 빈 문자열을 반환합니다.
+        return "";
     }
 
     private String getLastTime() {

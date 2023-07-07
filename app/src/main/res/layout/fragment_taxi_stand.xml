@@ -16,15 +16,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="한글주소를 입력하세요"
+            android:hint="주소를 입력하세요"
             android:textSize="25dp"
             android:inputType="text" />
 
         <ImageButton
             android:id="@+id/positionButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/baseline_search_24"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/search"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="3dp"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
             android:contentDescription="Image Button" />
     </LinearLayout>
 

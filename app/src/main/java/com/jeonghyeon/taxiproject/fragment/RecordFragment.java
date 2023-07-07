@@ -1,11 +1,14 @@
 package com.jeonghyeon.taxiproject.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +30,7 @@ public class RecordFragment extends Fragment {
     private TextView tvEmptyList;
 
     public RecordFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -53,33 +56,51 @@ public class RecordFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         // RoomDB에서 Record 정보 가져오기
         fetchRecordsFromDatabase();
+
+        // 뒤로가기 버튼 이벤트를 감지하는 리스너를 설정
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            private boolean doubleBackToExitPressedOnce = false;
+
+            @Override
+            public void handleOnBackPressed() {
+                if (doubleBackToExitPressedOnce) {
+                    // 앱 종료
+                    requireActivity().finish();
+                } else {
+                    doubleBackToExitPressedOnce = true;
+                    Toast.makeText(requireContext(), "뒤로가기 버튼을 한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+
+                    // 2초 후에 doubleBackToExitPressedOnce 변수를 초기화
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            doubleBackToExitPressedOnce = false;
+                        }
+                    }, 2000);
+                }
+            }
+        });
     }
 
     private void fetchRecordsFromDatabase() {
-        // RoomDB에서 Record 정보를 가져오는 작업을 수행합니다.
 
-        // 레코드 목록을 비웁니다.
         recordList.clear();
 
-        // RoomDB에서 모든 Record 가져오기
         List<Record> records = database.recordDao().getAll();
 
-        // 가져온 Record들을 recordList에 추가합니다.
         recordList.addAll(records);
 
         if (recordList.isEmpty()) {
-            // 탑승 기록이 없을 경우 텍스트뷰를 표시하고, 리사이클러뷰는 숨깁니다.
             tvEmptyList.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         } else {
-            // 탑승 기록이 있을 경우 텍스트뷰를 숨기고, 리사이클러뷰를 표시합니다.
             tvEmptyList.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
 
-        // 어댑터에 데이터 변경을 알립니다.
         recordAdapter.notifyDataSetChanged();
     }
 }

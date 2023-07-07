@@ -38,6 +38,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -441,10 +442,7 @@ public class RecognizeFragment extends Fragment {
         for(int idx = 0; idx < contours.size(); idx++) {
             MatOfPoint matOfPoint = contours.get(idx);
             Rect rect = Imgproc.boundingRect(matOfPoint);
-            //내부에서 찾으므로 아래조건 불필요
-            //if(rcComp.x > rect.x || rcComp.y > rect.y || rcComp.x + rcComp.width < rect.x + rect.width || rcComp.y + rcComp.height < rect.y + rect.height)
-            //    continue; // 번호판 내부에 있는지 체크
-            fHeight = rect.height;
+                       fHeight = rect.height;
             fWidth = rect.width;
             if (rect.width > rect.height || fHeight / fWidth < 1.2 || fHeight / fWidth > 3.0 || fCompHeight / fHeight > 2.1 || fCompHeight / fHeight < 1.2)
                 continue; // 글자유형 체크
@@ -465,11 +463,9 @@ public class RecognizeFragment extends Fragment {
             cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback(){
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    //The camera is already closed
                     if (null == cameraDevice) {
                         return;
                     }
-                    // When the session is ready, we start displaying the preview.
                     cameraCaptureSessions = cameraCaptureSession;
                     updatePreview();
                 }
@@ -492,7 +488,6 @@ public class RecognizeFragment extends Fragment {
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             assert map != null;
             imageDimension = map.getOutputSizes(SurfaceTexture.class)[0];
-            // Add permission for camera and let user grant the permission
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
                 return;
@@ -516,10 +511,6 @@ public class RecognizeFragment extends Fragment {
         }
     }
     private void closeCamera() {
-        //if (null != cameraDevice) {
-        //    cameraDevice.close();
-        //    cameraDevice = null;
-        //}
         if (null != imageReader) {
             imageReader.close();
             imageReader = null;
@@ -531,7 +522,6 @@ public class RecognizeFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                // close the app
                 Toast.makeText(getContext(), "죄송하지만, 사진촬영 권한이 승인되지 않으면 이앱을 사용할 수 없습니다", Toast.LENGTH_LONG).show();
                 getActivity().finish();
             }
@@ -548,6 +538,30 @@ public class RecognizeFragment extends Fragment {
         } else {
             textureView.setSurfaceTextureListener(textureListener);
         }
+
+        // 뒤로가기 버튼
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            private boolean doubleBackToExitPressedOnce = false;
+
+            @Override
+            public void handleOnBackPressed() {
+                if (doubleBackToExitPressedOnce) {
+                    // 앱 종료
+                    requireActivity().finish();
+                } else {
+                    doubleBackToExitPressedOnce = true;
+                    Toast.makeText(requireContext(), "뒤로가기 버튼을 한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+
+                    // 2초 후에 doubleBackToExitPressedOnce 변수를 초기화
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            doubleBackToExitPressedOnce = false;
+                        }
+                    }, 2000);
+                }
+            }
+        });
     }
 
     @Override
