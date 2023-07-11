@@ -1,12 +1,11 @@
 package com.wjd4782.taxiprojectrestapi.domain;
 
-import com.wjd4782.taxiprojectrestapi.dto.TaxiStandResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Getter
-@NoArgsConstructor // 빈생성자
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TaxiStand {
 
     @Id
