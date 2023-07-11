@@ -31,7 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
 import com.jeonghyeon.taxiproject.api.API;
-import com.jeonghyeon.taxiproject.dto.TaxiStandResponse;
+import com.jeonghyeon.taxiproject.dto.response.TaxiStandResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -233,7 +233,7 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
     private void fetchDataFromAPI() {
         // Retrofit 객체 생성
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.134.20:8000/") // 스프링부트 API의 기본 URL을 설정
+                .baseUrl("http://192.168.85.20:8000/") // 스프링부트 API의 기본 URL을 설정
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

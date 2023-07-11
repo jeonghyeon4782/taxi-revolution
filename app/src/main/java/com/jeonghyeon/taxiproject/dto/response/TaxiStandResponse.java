@@ -1,4 +1,4 @@
-package com.jeonghyeon.taxiproject.dto;
+package com.jeonghyeon.taxiproject.dto.response;
 
 public class TaxiStandResponse {
     private Long id;

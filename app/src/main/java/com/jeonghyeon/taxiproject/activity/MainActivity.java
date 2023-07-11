@@ -23,6 +23,7 @@ import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.fragment.AlightingCheckFragment;
 import com.jeonghyeon.taxiproject.fragment.BoardingCheckFragment;
 import com.jeonghyeon.taxiproject.fragment.GuardianFragment;
+import com.jeonghyeon.taxiproject.fragment.LoginFragment;
 import com.jeonghyeon.taxiproject.fragment.RecognizeFragment;
 import com.jeonghyeon.taxiproject.fragment.RecordFragment;
 import com.jeonghyeon.taxiproject.fragment.RidingFragment;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
     // Fragment 선언
+    private LoginFragment loginFragment;
     private GuardianFragment guardianFragment;
     private RecognizeFragment recognizeFragment;
     private RecordFragment recordFragment;
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Fragment 객체 초기화
+        loginFragment = new LoginFragment();
         guardianFragment = new GuardianFragment();
         recognizeFragment = new RecognizeFragment();
         recordFragment = new RecordFragment();
@@ -131,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
                         startAnimation();
                         logo.setText("보호자번호");
                         getSupportFragmentManager().beginTransaction().replace(R.id.containers, guardianFragment).commit();
+                        return true;
+                    case R.id.action_board:
+                        startAnimation();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.containers, loginFragment).commit();
                         return true;
                     case R.id.action_taxi:
                         startAnimation();
