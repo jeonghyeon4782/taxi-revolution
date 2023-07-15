@@ -1,9 +1,10 @@
 package com.wjd4782.taxiprojectrestapi.controller;
 
-import com.wjd4782.taxiprojectrestapi.dto.request.MemberLoginRequestDto;
-import com.wjd4782.taxiprojectrestapi.dto.request.MemberRegisterRequestDto;
-import com.wjd4782.taxiprojectrestapi.dto.response.MemberResponseDto;
+import com.wjd4782.taxiprojectrestapi.dto.request.MemberLoginRequest;
+import com.wjd4782.taxiprojectrestapi.dto.request.MemberRegisterRequest;
+import com.wjd4782.taxiprojectrestapi.dto.response.ResponseDto;
 import com.wjd4782.taxiprojectrestapi.service.AuthService;
+import com.wjd4782.taxiprojectrestapi.dto.info.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,22 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthService signService;
 
     // 회원가입
     @PostMapping("/register")
-    public MemberResponseDto<Long> register(@RequestBody MemberRegisterRequestDto requestDto) {
-        MemberResponseDto<Long> responseDto = signService.register(requestDto);
+    public ResponseDto<String> register(@RequestBody MemberRegisterRequest requestDto) {
+        ResponseDto<String> responseDto = signService.register(requestDto);
         return responseDto;
     }
 
     // 로그인
     @PostMapping("/login")
-    public MemberResponseDto<String> login(@RequestBody MemberLoginRequestDto requestDto) {
-        MemberResponseDto<String> responseDto = signService.login(requestDto);
+    public ResponseDto<TokenResponse> login(@RequestBody MemberLoginRequest requestDto) {
+        ResponseDto<TokenResponse> responseDto = signService.login(requestDto);
         return responseDto;
     }
 }

@@ -29,6 +29,7 @@ spring:
       hibernate.format_sql: true
 
 jwt:
-  secretKey: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+
 
 
