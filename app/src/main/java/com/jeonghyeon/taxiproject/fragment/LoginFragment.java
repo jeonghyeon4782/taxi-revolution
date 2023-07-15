@@ -15,7 +15,9 @@ import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
 import com.jeonghyeon.taxiproject.api.API;
 import com.jeonghyeon.taxiproject.dto.request.LoginRequest;
-import com.jeonghyeon.taxiproject.dto.response.MemberResponse;
+import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
+import com.jeonghyeon.taxiproject.dto.info.TokenInfo;
+import com.jeonghyeon.taxiproject.token.TokenManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,7 +29,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LoginFragment extends Fragment {
 
     private EditText etId, etPassword;
-    private Button btnLogin, btnResister;
+    private Button btnLogin, btnRegister;
+
+    private TokenManager tokenManager; // TokenManager 객체 추가
+
 
     public LoginFragment() {
 
@@ -36,6 +41,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tokenManager = new TokenManager(requireContext()); // TokenManager 초기화
 
     }
 
@@ -47,7 +53,7 @@ public class LoginFragment extends Fragment {
         etId = view.findViewById(R.id.et_id);
         etPassword = view.findViewById(R.id.et_password);
         btnLogin = view.findViewById(R.id.btn_login);
-        btnResister = view.findViewById(R.id.btn_resister);
+        btnRegister = view.findViewById(R.id.btn_register);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,19 +62,19 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        btnResister.setOnClickListener(new View.OnClickListener() {
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) getActivity();
 
                 // RidingFragment 생성 및 설정
-                ResisterFragment resisterFragment = new ResisterFragment();
+                RegisterFragment registerFragment = new RegisterFragment();
 
                 if (mainActivity != null) {
                     // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
                     mainActivity.getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.containers, resisterFragment)
+                            .replace(R.id.containers, registerFragment)
                             .addToBackStack(null)
                             .commit();
                 }
@@ -93,23 +99,46 @@ public class LoginFragment extends Fragment {
         LoginRequest loginRequest = new LoginRequest(username, password);
 
         // API 호출
-        Call<MemberResponse> call = apiService.login(loginRequest);
-        call.enqueue(new Callback<MemberResponse>() {
+        Call<ResponseDto<TokenInfo>> call = apiService.login(loginRequest);
+        call.enqueue(new Callback<ResponseDto<TokenInfo>>() {
             @Override
-            public void onResponse(Call<MemberResponse> call, Response<MemberResponse> response) {
+            public void onResponse(Call<ResponseDto<TokenInfo>> call, Response<ResponseDto<TokenInfo>> response) {
                 if (response.isSuccessful()) {
-                    MemberResponse memberResponse = response.body();
-                    String token = memberResponse.getData();
-                    showToast(token);
+                    ResponseDto<TokenInfo> responseDto = response.body();
+                    int statusCode = responseDto.getStatus();
 
-                } else {
-                    // API 호출이 실패한 경우에 대한 처리 작성
+                    if (statusCode == 200) {
+                        TokenInfo tokenInfo = responseDto.getData();
+                        String accessToken = tokenInfo.getAccessToken();
+                        String refreshToken = tokenInfo.getRefreshToken();
+
+                        tokenManager.deleteTokens();
+                        tokenManager.saveTokens(accessToken, refreshToken);
+
+                        MainActivity mainActivity = (MainActivity) getActivity();
+
+                        // RidingFragment 생성 및 설정
+                        MemberInfoFragment memberInfoFragment = new MemberInfoFragment();
+
+                        if (mainActivity != null) {
+                            // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
+                            mainActivity.getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.containers, memberInfoFragment)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
+
+                    } else {
+                        String msg = responseDto.getMsg();
+                        showToast(msg);
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<MemberResponse> call, Throwable t) {
-                // API 호출이 실패한 경우에 대한 처리 작성
+            public void onFailure(Call<ResponseDto<TokenInfo>> call, Throwable t) {
+
             }
         });
     }

@@ -1,15 +1,20 @@
 package com.jeonghyeon.taxiproject.dto.request;
 
 public class LoginRequest {
-    private String username;
+    private String memberId;
     private String password;
 
-    public String getUsername() {
-        return username;
+    public LoginRequest(String memberId, String password) {
+        this.memberId = memberId;
+        this.password = password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public String getPassword() {
@@ -17,11 +22,6 @@ public class LoginRequest {
     }
 
     public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LoginRequest(String username, String password) {
-        this.username = username;
         this.password = password;
     }
 }

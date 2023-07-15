@@ -31,7 +31,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
 import com.jeonghyeon.taxiproject.api.API;
-import com.jeonghyeon.taxiproject.dto.response.TaxiStandResponse;
+import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
+import com.jeonghyeon.taxiproject.dto.info.TaxiStandInfo;
 
 import java.io.IOException;
 import java.util.List;
@@ -241,17 +242,18 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
         API apiService = retrofit.create(API.class);
 
         // API 호출
-        Call<List<TaxiStandResponse>> call = apiService.findAllTaxiStand();
-        call.enqueue(new Callback<List<TaxiStandResponse>>() {
+        Call<ResponseDto<List<TaxiStandInfo>>> call = apiService.findAllTaxiStand();
+        call.enqueue(new Callback<ResponseDto<List<TaxiStandInfo>>>() {
             @Override
-            public void onResponse(Call<List<TaxiStandResponse>> call, Response<List<TaxiStandResponse>> response) {
+            public void onResponse(Call<ResponseDto<List<TaxiStandInfo>>> call, Response<ResponseDto<List<TaxiStandInfo>>> response) {
                 if (response.isSuccessful()) {
-                    List<TaxiStandResponse> taxiStands = response.body();
+                    ResponseDto<List<TaxiStandInfo>> responseDto = response.body();
+                    List<TaxiStandInfo> taxiStands = responseDto.getData();
 
-                    for (TaxiStandResponse taxiStand : taxiStands) {
+                    for (TaxiStandInfo taxiStand : taxiStands) {
                         // 지도에 마커 추가
-                        double latitude = Double.parseDouble(String.valueOf(taxiStand.getLatitude()));
-                        double longitude = Double.parseDouble(String.valueOf(taxiStand.getLongitude()));
+                        double latitude = taxiStand.getLatitude();
+                        double longitude = taxiStand.getLongitude();
                         LatLng position = new LatLng(latitude, longitude);
 
                         // 마커 이미지 설정
@@ -264,9 +266,14 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
             }
 
             @Override
-            public void onFailure(Call<List<TaxiStandResponse>> call, Throwable t) {
+            public void onFailure(Call<ResponseDto<List<TaxiStandInfo>>> call, Throwable t) {
                 // API 호출이 실패한 경우에 대한 처리 작성
             }
         });
+    }
+
+    // toast 보여주기
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
