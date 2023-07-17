@@ -1,4 +1,4 @@
-package com.jeonghyeon.taxiproject;
+package com.jeonghyeon.taxiproject.roomDB;
 
 import android.content.Context;
 
@@ -6,12 +6,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.jeonghyeon.taxiproject.dao.FrequencyDao;
-import com.jeonghyeon.taxiproject.dao.GuardianDao;
-import com.jeonghyeon.taxiproject.dao.RecordDao;
-import com.jeonghyeon.taxiproject.model.Frequency;
-import com.jeonghyeon.taxiproject.model.Guardian;
-import com.jeonghyeon.taxiproject.model.Record;
+import com.jeonghyeon.taxiproject.roomDB.dao.FrequencyDao;
+import com.jeonghyeon.taxiproject.roomDB.dao.GuardianDao;
+import com.jeonghyeon.taxiproject.roomDB.dao.RecordDao;
+import com.jeonghyeon.taxiproject.domain.Frequency;
+import com.jeonghyeon.taxiproject.domain.Guardian;
+import com.jeonghyeon.taxiproject.domain.Record;
 
 // 만약 엔티티가 두개라면?
 // ex) @Database(entities = {Order.class, Product.class}, version = 1, exportSchema = false)

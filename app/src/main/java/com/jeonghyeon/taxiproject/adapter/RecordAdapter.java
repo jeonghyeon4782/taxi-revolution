@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jeonghyeon.taxiproject.R;
-import com.jeonghyeon.taxiproject.RoomDB;
-import com.jeonghyeon.taxiproject.model.Record;
+import com.jeonghyeon.taxiproject.roomDB.RoomDB;
+import com.jeonghyeon.taxiproject.domain.Record;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

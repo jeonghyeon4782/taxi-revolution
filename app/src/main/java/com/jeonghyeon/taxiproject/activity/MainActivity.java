@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,14 +21,25 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.jeonghyeon.taxiproject.R;
+import com.jeonghyeon.taxiproject.api.API;
+import com.jeonghyeon.taxiproject.dto.response.MemberResponseDto;
+import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
 import com.jeonghyeon.taxiproject.fragment.AlightingCheckFragment;
 import com.jeonghyeon.taxiproject.fragment.BoardingCheckFragment;
 import com.jeonghyeon.taxiproject.fragment.GuardianFragment;
 import com.jeonghyeon.taxiproject.fragment.LoginFragment;
+import com.jeonghyeon.taxiproject.fragment.MemberInfoFragment;
 import com.jeonghyeon.taxiproject.fragment.RecognizeFragment;
 import com.jeonghyeon.taxiproject.fragment.RecordFragment;
 import com.jeonghyeon.taxiproject.fragment.RidingFragment;
 import com.jeonghyeon.taxiproject.fragment.TaxiStandFragment;
+import com.jeonghyeon.taxiproject.token.TokenManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,11 +62,16 @@ public class MainActivity extends AppCompatActivity {
 
     // main.xml 요소 선언
     private FrameLayout containers;
-    private ImageView infoImageView, chatImageView;
+    private ImageView infoImageView, chatImageView, logoutImageView;
 
     private ImageView leftIconImageView;
     private Handler handler;
     private AnimatorSet animatorSet;
+
+    private TokenManager tokenManager;
+    private String memberId;
+    private String nickname;
+    private int gender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,34 +97,38 @@ public class MainActivity extends AppCompatActivity {
         leftIconImageView = findViewById(R.id.leftIconImageView);
         infoImageView = findViewById(R.id.infoImageView);
         chatImageView = findViewById(R.id.chatImageView);
+        logoutImageView = findViewById(R.id.logoutImageView);
         containers = findViewById(R.id.containers);
         logo = findViewById(R.id.txt_logo);
 
         // 하단 메뉴바 초기화
         bottomNavigationView = findViewById(R.id.bottom_navigationview);
 
+        // TokenManager 초기화
+        tokenManager = new TokenManager(getApplicationContext());
+
         // Handler 초기화
         handler = new Handler();
-
-        // 애니메이션 설정
-        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(leftIconImageView, "scaleX", 1f, 1.5f, 1f);
-        scaleXAnimator.setDuration(1000);
-        scaleXAnimator.setRepeatCount(ObjectAnimator.INFINITE);
-        scaleXAnimator.setRepeatMode(ObjectAnimator.REVERSE);
-
-        ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(leftIconImageView, "scaleY", 1f, 1.5f, 1f);
-        scaleYAnimator.setDuration(1000);
-        scaleYAnimator.setRepeatCount(ObjectAnimator.INFINITE);
-        scaleYAnimator.setRepeatMode(ObjectAnimator.REVERSE);
-
-        animatorSet = new AnimatorSet();
-        animatorSet.playTogether(scaleXAnimator, scaleYAnimator);
 
         // 내 정보 버튼 클릭 시
         infoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 내 정보 버튼을 클릭했을 때의 동작 구현
+                bottomNavigationView.getMenu().setGroupCheckable(0, false, true);
+                fetchDataFromAPI();
+            }
+        });
+
+        // 로그아웃 버튼 클릭 시
+        logoutImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tokenManager.getAccessToken() != null) {
+                    tokenManager.deleteTokens();
+                    Toast.makeText(MainActivity.this, "로그아웃 완료", Toast.LENGTH_SHORT).show();
+                    // R.id.action_taxi 선택
+                    bottomNavigationView.setSelectedItemId(R.id.action_taxi);
+                }
             }
         });
 
@@ -126,25 +147,25 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_record:
+                        // 내비게이션 선택 가능
+                        bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
                         logo.setText("탑승기록");
-                        startAnimation();
                         getSupportFragmentManager().beginTransaction().replace(R.id.containers, recordFragment).commit();
                         return true;
                     case R.id.action_guardianNum:
-                        startAnimation();
+                        bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
                         logo.setText("보호자번호");
                         getSupportFragmentManager().beginTransaction().replace(R.id.containers, guardianFragment).commit();
                         return true;
-                    case R.id.action_board:
-                        startAnimation();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.containers, loginFragment).commit();
+                    case R.id.action_board: // 합승 게시판
+                        bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
                         return true;
-                    case R.id.action_taxi:
-                        startAnimation();
+                    case R.id.action_taxi: // 승차
+                        bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
                         getSupportFragmentManager().beginTransaction().replace(R.id.containers, recognizeFragment).commit();
                         return true;
-                    case R.id.action_taxiStop:
-                        startAnimation();
+                    case R.id.action_taxiStop: // 택시 승차장
+                        bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
                         getSupportFragmentManager().beginTransaction().replace(R.id.containers, taxiStandFragment).commit();
                         return true;
                 }
@@ -175,38 +196,69 @@ public class MainActivity extends AppCompatActivity {
         wakeLock.release();
     }
 
-    private void startAnimation() {
-        if (animatorSet != null) {
-            // 이미 실행 중인 애니메이션을 취소하고 초기화
-            animatorSet.cancel();
-            animatorSet.removeAllListeners();
-            animatorSet.end();
-        }
-
-        // 애니메이션 시작
-        leftIconImageView.setVisibility(View.VISIBLE);
-
-        ObjectAnimator translationYAnimator = ObjectAnimator.ofFloat(leftIconImageView, "translationY", 0f, -50f, 0f);
-        translationYAnimator.setDuration(1000);
-        translationYAnimator.setRepeatCount(ObjectAnimator.INFINITE);
-        translationYAnimator.setRepeatMode(ObjectAnimator.REVERSE);
-
-        animatorSet = new AnimatorSet();
-        animatorSet.play(translationYAnimator);
-        animatorSet.start();
-
-        // 2초 후 애니메이션 정지
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // 애니메이션 정지
-                animatorSet.cancel();
-            }
-        }, 2000);
-    }
-
     // 바텀 메뉴바 리턴 함수
     public BottomNavigationView publicBottomNavigationView() {
         return bottomNavigationView;
+    }
+
+    // 내 정보 화면 이동 시
+    private void fetchDataFromAPI() {
+        String accessToken = tokenManager.getAccessToken();
+
+        if (accessToken == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.containers, loginFragment).commit();
+            Toast.makeText(MainActivity.this, "로그인이 필요합니다", Toast.LENGTH_SHORT).show();
+        } else {
+            // Retrofit 객체 생성
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            // API 인터페이스 생성
+            API apiService = retrofit.create(API.class);
+
+            // API 호출
+            Call<ResponseDto<MemberResponseDto>> call = apiService.getMyInfo("Bearer " + accessToken);
+            call.enqueue(new Callback<ResponseDto<MemberResponseDto>>() {
+                @Override
+                public void onResponse(Call<ResponseDto<MemberResponseDto>> call, Response<ResponseDto<MemberResponseDto>> response) {
+                    if (response.isSuccessful()) {
+                        ResponseDto<MemberResponseDto> responseDto = response.body();
+                        int statusCode = responseDto.getStatus();
+
+                        if (statusCode == 200) {
+                            MemberResponseDto memberResponseDto = responseDto.getData();
+                            memberId = memberResponseDto.getMemberId();
+                            nickname = memberResponseDto.getNickName();
+                            gender = memberResponseDto.getGender();
+
+                            // RidingFragment 생성 및 설정
+                            MemberInfoFragment memberInfoFragment = new MemberInfoFragment();
+
+                            Bundle args = new Bundle();
+                            args.putString("memberId", memberId);
+                            args.putString("nickname", nickname);
+                            args.putString("gender", String.valueOf(gender));
+                            memberInfoFragment.setArguments(args);
+
+                            getSupportFragmentManager().beginTransaction().replace(R.id.containers, memberInfoFragment).commit();
+
+                        } else if (statusCode == 423) { // 만료된 토큰이라면?
+                            getSupportFragmentManager().beginTransaction().replace(R.id.containers, loginFragment).commit();
+                            Toast.makeText(MainActivity.this, "로그인이 필요합니다", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String msg = responseDto.getMsg();
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseDto<MemberResponseDto>> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "API 요청 실패", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

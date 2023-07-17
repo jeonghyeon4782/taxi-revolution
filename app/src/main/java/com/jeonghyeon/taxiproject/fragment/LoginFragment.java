@@ -16,7 +16,7 @@ import com.jeonghyeon.taxiproject.activity.MainActivity;
 import com.jeonghyeon.taxiproject.api.API;
 import com.jeonghyeon.taxiproject.dto.request.LoginRequest;
 import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
-import com.jeonghyeon.taxiproject.dto.info.TokenInfo;
+import com.jeonghyeon.taxiproject.dto.response.TokenResponseDto;
 import com.jeonghyeon.taxiproject.token.TokenManager;
 
 import retrofit2.Call;
@@ -88,7 +88,7 @@ public class LoginFragment extends Fragment {
 
         // Retrofit 객체 생성
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.85.20:8000/") // 스프링부트 API의 기본 URL을 설정
+                .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -99,18 +99,18 @@ public class LoginFragment extends Fragment {
         LoginRequest loginRequest = new LoginRequest(username, password);
 
         // API 호출
-        Call<ResponseDto<TokenInfo>> call = apiService.login(loginRequest);
-        call.enqueue(new Callback<ResponseDto<TokenInfo>>() {
+        Call<ResponseDto<TokenResponseDto>> call = apiService.login(loginRequest);
+        call.enqueue(new Callback<ResponseDto<TokenResponseDto>>() {
             @Override
-            public void onResponse(Call<ResponseDto<TokenInfo>> call, Response<ResponseDto<TokenInfo>> response) {
+            public void onResponse(Call<ResponseDto<TokenResponseDto>> call, Response<ResponseDto<TokenResponseDto>> response) {
                 if (response.isSuccessful()) {
-                    ResponseDto<TokenInfo> responseDto = response.body();
+                    ResponseDto<TokenResponseDto> responseDto = response.body();
                     int statusCode = responseDto.getStatus();
 
                     if (statusCode == 200) {
-                        TokenInfo tokenInfo = responseDto.getData();
-                        String accessToken = tokenInfo.getAccessToken();
-                        String refreshToken = tokenInfo.getRefreshToken();
+                        TokenResponseDto tokenResponseDto = responseDto.getData();
+                        String accessToken = tokenResponseDto.getAccessToken();
+                        String refreshToken = tokenResponseDto.getRefreshToken();
 
                         tokenManager.deleteTokens();
                         tokenManager.saveTokens(accessToken, refreshToken);
@@ -118,13 +118,13 @@ public class LoginFragment extends Fragment {
                         MainActivity mainActivity = (MainActivity) getActivity();
 
                         // RidingFragment 생성 및 설정
-                        MemberInfoFragment memberInfoFragment = new MemberInfoFragment();
+                        RecognizeFragment recognizeFragment = new RecognizeFragment();
 
                         if (mainActivity != null) {
                             // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
                             mainActivity.getSupportFragmentManager()
                                     .beginTransaction()
-                                    .replace(R.id.containers, memberInfoFragment)
+                                    .replace(R.id.containers, recognizeFragment)
                                     .addToBackStack(null)
                                     .commit();
                         }
@@ -137,7 +137,7 @@ public class LoginFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ResponseDto<TokenInfo>> call, Throwable t) {
+            public void onFailure(Call<ResponseDto<TokenResponseDto>> call, Throwable t) {
 
             }
         });

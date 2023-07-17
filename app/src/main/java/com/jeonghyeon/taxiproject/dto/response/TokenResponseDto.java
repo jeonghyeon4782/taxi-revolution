@@ -1,6 +1,6 @@
-package com.jeonghyeon.taxiproject.dto.info;
+package com.jeonghyeon.taxiproject.dto.response;
 
-public class TokenInfo {
+public class TokenResponseDto {
     private String grantType;
     private String accessToken;
     private String refreshToken;

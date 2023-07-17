@@ -16,8 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jeonghyeon.taxiproject.R;
-import com.jeonghyeon.taxiproject.RoomDB;
-import com.jeonghyeon.taxiproject.model.Guardian;
+import com.jeonghyeon.taxiproject.roomDB.RoomDB;
+import com.jeonghyeon.taxiproject.domain.Guardian;
 
 import java.util.List;
 
@@ -108,7 +108,7 @@ public class GuardianAdapter extends RecyclerView.Adapter<GuardianAdapter.ViewHo
             }
         });
 
-        /* 삭제 클릭 */
+        // 삭제 버튼 클릭 시
         holder.btDelete.setOnClickListener(new View.OnClickListener()
         {
             @Override

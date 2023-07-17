@@ -25,9 +25,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jeonghyeon.taxiproject.R;
-import com.jeonghyeon.taxiproject.RoomDB;
+import com.jeonghyeon.taxiproject.roomDB.RoomDB;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
-import com.jeonghyeon.taxiproject.model.Record;
+import com.jeonghyeon.taxiproject.domain.Record;
 
 import java.io.IOException;
 import java.text.ParseException;

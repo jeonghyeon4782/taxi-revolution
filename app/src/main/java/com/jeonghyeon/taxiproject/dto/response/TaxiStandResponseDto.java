@@ -1,6 +1,6 @@
-package com.jeonghyeon.taxiproject.dto.info;
+package com.jeonghyeon.taxiproject.dto.response;
 
-public class TaxiStandInfo {
+public class TaxiStandResponseDto {
     private double latitude; // 위도
     private double longitude; // 경도
 

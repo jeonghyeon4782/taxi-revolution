@@ -1,4 +1,4 @@
-package com.jeonghyeon.taxiproject.dao;
+package com.jeonghyeon.taxiproject.roomDB.dao;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
 
@@ -7,7 +7,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.jeonghyeon.taxiproject.model.Guardian;
+import com.jeonghyeon.taxiproject.domain.Guardian;
 
 import java.util.List;
 

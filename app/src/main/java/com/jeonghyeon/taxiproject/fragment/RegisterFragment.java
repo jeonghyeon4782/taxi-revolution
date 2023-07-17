@@ -1,9 +1,6 @@
 package com.jeonghyeon.taxiproject.fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +8,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.jeonghyeon.taxiproject.R;
+import com.jeonghyeon.taxiproject.activity.MainActivity;
 import com.jeonghyeon.taxiproject.api.API;
 import com.jeonghyeon.taxiproject.dto.request.RegisterRequest;
 import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
+import com.jeonghyeon.taxiproject.dto.response.TokenResponseDto;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +62,7 @@ public class RegisterFragment extends Fragment {
     private void fetchDataFromAPI(String username, String password, String nickname, int gender) {
         // Retrofit 객체 생성
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.85.20:8000/") // 스프링부트 API의 기본 URL을 설정
+                .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -78,17 +79,35 @@ public class RegisterFragment extends Fragment {
             public void onResponse(Call<ResponseDto<String>> call, Response<ResponseDto<String>> response) {
                 if (response.isSuccessful()) {
                     ResponseDto<String> responseDto = response.body();
-                    String id = responseDto.getData();
-                    showToast(id);
+                    int statusCode = responseDto.getStatus();
 
-                } else {
-                    // API 호출이 실패한 경우에 대한 처리 작성
+                    if (statusCode == 200) {
+                        MainActivity mainActivity = (MainActivity) getActivity();
+
+                        // RidingFragment 생성 및 설정
+                        LoginFragment loginFragment = new LoginFragment();
+
+                        if (mainActivity != null) {
+                            // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
+                            mainActivity.getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.containers, loginFragment)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
+                        
+                        showToast("회원가입 완료");
+
+                    } else {
+                        String msg = responseDto.getMsg();
+                        showToast(msg);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseDto<String>> call, Throwable t) {
-                // API 호출이 실패한 경우에 대한 처리 작성
+                showToast("API 호출 실패");
             }
         });
     }

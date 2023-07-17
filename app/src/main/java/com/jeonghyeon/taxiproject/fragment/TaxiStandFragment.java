@@ -32,7 +32,7 @@ import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
 import com.jeonghyeon.taxiproject.api.API;
 import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
-import com.jeonghyeon.taxiproject.dto.info.TaxiStandInfo;
+import com.jeonghyeon.taxiproject.dto.response.TaxiStandResponseDto;
 
 import java.io.IOException;
 import java.util.List;
@@ -234,7 +234,7 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
     private void fetchDataFromAPI() {
         // Retrofit 객체 생성
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.85.20:8000/") // 스프링부트 API의 기본 URL을 설정
+                .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -242,15 +242,15 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
         API apiService = retrofit.create(API.class);
 
         // API 호출
-        Call<ResponseDto<List<TaxiStandInfo>>> call = apiService.findAllTaxiStand();
-        call.enqueue(new Callback<ResponseDto<List<TaxiStandInfo>>>() {
+        Call<ResponseDto<List<TaxiStandResponseDto>>> call = apiService.findAllTaxiStand();
+        call.enqueue(new Callback<ResponseDto<List<TaxiStandResponseDto>>>() {
             @Override
-            public void onResponse(Call<ResponseDto<List<TaxiStandInfo>>> call, Response<ResponseDto<List<TaxiStandInfo>>> response) {
+            public void onResponse(Call<ResponseDto<List<TaxiStandResponseDto>>> call, Response<ResponseDto<List<TaxiStandResponseDto>>> response) {
                 if (response.isSuccessful()) {
-                    ResponseDto<List<TaxiStandInfo>> responseDto = response.body();
-                    List<TaxiStandInfo> taxiStands = responseDto.getData();
+                    ResponseDto<List<TaxiStandResponseDto>> responseDto = response.body();
+                    List<TaxiStandResponseDto> taxiStands = responseDto.getData();
 
-                    for (TaxiStandInfo taxiStand : taxiStands) {
+                    for (TaxiStandResponseDto taxiStand : taxiStands) {
                         // 지도에 마커 추가
                         double latitude = taxiStand.getLatitude();
                         double longitude = taxiStand.getLongitude();
@@ -266,7 +266,7 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
             }
 
             @Override
-            public void onFailure(Call<ResponseDto<List<TaxiStandInfo>>> call, Throwable t) {
+            public void onFailure(Call<ResponseDto<List<TaxiStandResponseDto>>> call, Throwable t) {
                 // API 호출이 실패한 경우에 대한 처리 작성
             }
         });

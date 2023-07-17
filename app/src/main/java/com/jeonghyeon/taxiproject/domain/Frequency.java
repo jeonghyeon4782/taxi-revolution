@@ -1,4 +1,4 @@
-package com.jeonghyeon.taxiproject.model;
+package com.jeonghyeon.taxiproject.domain;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

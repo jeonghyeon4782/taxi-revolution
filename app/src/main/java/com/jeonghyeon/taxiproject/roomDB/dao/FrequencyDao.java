@@ -1,11 +1,11 @@
-package com.jeonghyeon.taxiproject.dao;
+package com.jeonghyeon.taxiproject.roomDB.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.jeonghyeon.taxiproject.model.Frequency;
+import com.jeonghyeon.taxiproject.domain.Frequency;
 
 @Dao
 public interface FrequencyDao {

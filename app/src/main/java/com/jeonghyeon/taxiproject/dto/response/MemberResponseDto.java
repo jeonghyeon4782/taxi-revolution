@@ -1,6 +1,6 @@
-package com.jeonghyeon.taxiproject.dto.info;
+package com.jeonghyeon.taxiproject.dto.response;
 
-public class MemberInfo {
+public class MemberResponseDto {
     private String memberId;
     private String nickName;
     private int gender;

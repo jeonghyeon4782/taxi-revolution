@@ -46,9 +46,9 @@ import androidx.fragment.app.Fragment;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.jeonghyeon.taxiproject.R;
-import com.jeonghyeon.taxiproject.RoomDB;
+import com.jeonghyeon.taxiproject.roomDB.RoomDB;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
-import com.jeonghyeon.taxiproject.model.Guardian;
+import com.jeonghyeon.taxiproject.domain.Guardian;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
@@ -178,7 +178,7 @@ public class RecognizeFragment extends Fragment {
                     mainActivity.getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.containers, boardingCheckFragment)
-                            .addToBackStack(null)
+                            .addToBackStack(null) // 이전 화면으로 이동 가능
                             .commit();
                 }
             }
