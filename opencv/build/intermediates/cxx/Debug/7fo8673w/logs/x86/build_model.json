@@ -126,7 +126,7 @@
         "rootBuildGradleFolder": "C:\\Users\\wjd47\\Desktop\\JeongHyeon\\TaxiProject",
         "sdkFolder": "C:\\Users\\wjd47\\AppData\\Local\\Android\\Sdk",
         "isBuildOnlyTargetAbiEnabled": true,
-        "ideBuildTargetAbi": "x86,armeabi-v7a,armeabi",
+        "ideBuildTargetAbi": "x86",
         "isCmakeBuildCohabitationEnabled": false,
         "isPrefabEnabled": false
       },

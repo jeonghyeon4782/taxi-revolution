@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,7 +73,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         private TextView vehicleNumberTextView;
         private TextView boardingLocationTextView;
         private TextView alightingLocationTextView;
-        private ImageView deleteButton;
+        private Button deleteButton;
 
         public RecordViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,11 +95,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
             String boardingLocation = record.getBoardingLocation();
             String alightingLocation = record.getAlightingLocation();
 
-            boardingTimeTextView.setText("승차시간:   " + boardingTime);
-            alightingTimeTextView.setText("하차시간:   " + alightingTime);
-            vehicleNumberTextView.setText("차량번호:   " + vehicleNumber);
-            boardingLocationTextView.setText("승차위치:   " + boardingLocation);
-            alightingLocationTextView.setText("하차위치:   " + alightingLocation);
+            boardingTimeTextView.setText(boardingTime);
+            alightingTimeTextView.setText(alightingTime);
+            vehicleNumberTextView.setText(vehicleNumber);
+            boardingLocationTextView.setText(boardingLocation);
+            alightingLocationTextView.setText(alightingLocation);
 
             // Record의 정보를 표시할 뷰들에 대한 설정 추가
         }

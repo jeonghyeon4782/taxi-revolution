@@ -135,6 +135,7 @@ public class RecognizeFragment extends Fragment {
         assert btnTakePicture != null;
         
         textView.setHint("ex)123가5678");
+        textView.setText("");
 
         // MainActivity 인스턴스 가져오기
         MainActivity mainActivity = (MainActivity) getActivity();
@@ -161,6 +162,25 @@ public class RecognizeFragment extends Fragment {
 
                 // textView에서 입력된 차량 번호 가져오기
                 String vehicleNumber = textView.getText().toString();
+
+                // 글자 수 유효성 검사
+                if (vehicleNumber.length() < 7 || vehicleNumber.length() > 8) {
+                    Toast.makeText(requireContext(), "차량 번호는 7글자나 8글자이어야 합니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 공백 포함 여부 검사
+                if (vehicleNumber.contains(" ")) {
+                    Toast.makeText(requireContext(), "차량 번호에는 공백이 포함될 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 특정 문자 포함 유효성 검사
+                boolean hasValidCharacters = vehicleNumber.matches("^[가-힣0-9]*$");
+                if (!hasValidCharacters) {
+                    Toast.makeText(requireContext(), "차량 번호는 한글과 숫자로만 이루어져야 합니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // MainActivity 인스턴스 가져오기
                 MainActivity mainActivity = (MainActivity) getActivity();

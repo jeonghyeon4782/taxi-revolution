@@ -138,7 +138,7 @@ public class AlightingCheckFragment extends Fragment {
 
                 // "Record" 아이템 선택
                 bottomNavigationView.setSelectedItemId(R.id.action_record);
-                Toast.makeText(context, "탑승기록 추가 완료.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "탑승기록 추가 완료", Toast.LENGTH_SHORT).show();
             }
         });
 

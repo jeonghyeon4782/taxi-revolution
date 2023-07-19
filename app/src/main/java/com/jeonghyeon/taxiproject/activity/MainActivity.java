@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout containers;
     private ImageView infoImageView, chatImageView, logoutImageView;
 
-    private ImageView leftIconImageView;
     private Handler handler;
     private AnimatorSet animatorSet;
 
@@ -72,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private String memberId;
     private String nickname;
     private int gender;
+    private int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,10 +94,9 @@ public class MainActivity extends AppCompatActivity {
         ridingFragment = new RidingFragment();
 
         // main.xml 요소 초기화
-        leftIconImageView = findViewById(R.id.leftIconImageView);
         infoImageView = findViewById(R.id.infoImageView);
         chatImageView = findViewById(R.id.chatImageView);
-        logoutImageView = findViewById(R.id.logoutImageView);
+//        logoutImageView = findViewById(R.id.logoutImageView);
         containers = findViewById(R.id.containers);
         logo = findViewById(R.id.txt_logo);
 
@@ -116,19 +115,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 bottomNavigationView.getMenu().setGroupCheckable(0, false, true);
                 fetchDataFromAPI();
-            }
-        });
-
-        // 로그아웃 버튼 클릭 시
-        logoutImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (tokenManager.getAccessToken() != null) {
-                    tokenManager.deleteTokens();
-                    Toast.makeText(MainActivity.this, "로그아웃 완료", Toast.LENGTH_SHORT).show();
-                    // R.id.action_taxi 선택
-                    bottomNavigationView.setSelectedItemId(R.id.action_taxi);
-                }
             }
         });
 
@@ -154,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.action_guardianNum:
                         bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
-                        logo.setText("보호자번호");
+                        logo.setText("안심연락처");
                         getSupportFragmentManager().beginTransaction().replace(R.id.containers, guardianFragment).commit();
                         return true;
                     case R.id.action_board: // 합승 게시판
@@ -180,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
     public void updateTextView(String newText) {
         logo.setText(newText);
     }
-
 
     @Override
     protected void onResume() {
@@ -256,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseDto<MemberResponseDto>> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, "API 요청 실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "API 호출 실패", Toast.LENGTH_SHORT).show();
                 }
             });
         }

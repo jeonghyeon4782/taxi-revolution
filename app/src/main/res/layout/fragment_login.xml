@@ -1,33 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragment.LoginFragment">
+    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/et_id"
+
+    <!--    로고 레이아웃-->
+    <RelativeLayout
+        android:id="@+id/layout_logo"
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+        <TextView
+            android:id="@+id/txt_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:text="      안녕하세요\n택시혁명 입니다."
+            android:textColor="@color/black"
+            android:fontFamily="@font/welcome"
+            android:textSize="20dp" />
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="ID 입력"/>
+        android:layout_below="@id/layout_logo"
+        android:padding="30dp">
 
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="비밀번호 입력"/>
+        <!--        로그인레이아웃-->
+        <RelativeLayout
+            android:id="@+id/layout_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            >
+            <EditText
+                android:id="@+id/et_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="아이디를 입력하세요."
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="13dp"
+                android:fontFamily="@font/welcome"
+                android:background="@drawable/room" />
+            <EditText
+                android:id="@+id/et_password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_id"
+                android:layout_marginTop="10dp"
+                android:padding="12dp"
+                android:hint="비밀번호를 입력하세요."
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="13dp"
+                android:background="@drawable/room" />
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="로그인"/>
 
-    <Button
-        android:id="@+id/btn_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="회원가입"/>
+            <!--            비밀번호 보이기 버튼-->
+            <Button
+                android:id="@+id/btn_showPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_id"
+                android:layout_marginTop="23dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:background="#00ff0000"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="표시"
+                android:textColor="@color/letter"
+                android:fontFamily="@font/welcome" />
 
-</LinearLayout>
+
+        </RelativeLayout>
+
+
+        <!--        버튼레이아웃-->
+        <RelativeLayout
+            android:id="@+id/layout_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_login"
+            android:layout_marginTop="5dp">
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:textSize="15dp"
+                android:text="로그인"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/letter"
+                android:background="@drawable/room"
+                />
+            <!--            체크박스추가-->
+            <CheckBox
+                android:id="@+id/cb_autoLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_login"
+                android:text="자동 로그인"
+                android:fontFamily="@font/welcome"
+                android:layout_marginTop="10dp"
+                android:textSize="13dp" />
+
+
+            <!--            회원가입 버튼-->
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_login"
+                android:layout_marginTop="17dp"
+                android:layout_marginRight="3dp"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:layout_alignParentRight="true"
+                android:text="회원가입"
+                android:background="#00ff0000"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/gray"
+                android:textSize="13dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+
+
+
+
+</RelativeLayout>

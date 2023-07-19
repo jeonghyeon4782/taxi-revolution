@@ -3,7 +3,7 @@
         android:id="@+id/action_guardianNum"
         android:enabled="true"
         android:icon="@drawable/baseline_family_restroom_24"
-        android:title="보호자번호" />
+        android:title="안심연락처" />
     <item
         android:id="@+id/action_record"
         android:enabled="true"
@@ -18,7 +18,7 @@
         android:id="@+id/action_board"
         android:enabled="true"
         android:icon="@drawable/baseline_dashboard_24"
-        android:title="합승" />
+        android:title="카풀" />
     <item
         android:id="@+id/action_taxiStop"
         android:enabled="true"

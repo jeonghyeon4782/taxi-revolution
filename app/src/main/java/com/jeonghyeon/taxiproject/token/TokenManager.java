@@ -16,6 +16,7 @@ public class TokenManager {
         sharedPreferences = context.getSharedPreferences(TOKEN_PREFS_NAME, Context.MODE_PRIVATE);
     }
 
+    // 토큰 저장
     public void saveTokens(String accessToken, String refreshToken) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(ACCESS_TOKEN_KEY, accessToken);

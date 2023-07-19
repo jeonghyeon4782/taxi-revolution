@@ -267,7 +267,7 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onFailure(Call<ResponseDto<List<TaxiStandResponseDto>>> call, Throwable t) {
-                // API 호출이 실패한 경우에 대한 처리 작성
+                showToast("API 호출 실패");
             }
         });
     }

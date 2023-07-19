@@ -4,92 +4,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="20dp"
     tools:context=".fragment.BoardingCheckFragment"
     android:gravity="center">
 
+
+    <!-- txt_number추가-->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/txt_vehicleNum"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="차량번호"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="25sp" />
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:fontFamily="@font/welcome"/>
 
         <EditText
             android:id="@+id/et_vehicleNum"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:importantForAccessibility="yes"
+            android:background="@drawable/room"
             android:minHeight="48dp"
-            android:gravity="center"
+            android:textColor="@color/black"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:textSize="15dp"
+            android:fontFamily="@font/welcome"
             android:textStyle="bold"
-            android:textSize="25sp"
             tools:ignore="SpeakableTextPresentCheck" />
 
     </LinearLayout>
 
+
+    <!--  txt_time추가-->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
+        >
 
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/txt_boardingTime"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="승차시간"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:fontFamily="@font/welcome" />
 
         <EditText
             android:id="@+id/et_boardingTime"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:background="@drawable/room"
             android:importantForAccessibility="yes"
             android:minHeight="48dp"
-            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="15dp"
+            android:fontFamily="@font/welcome"
             android:textStyle="bold"
-            android:textSize="25sp"
             tools:ignore="SpeakableTextPresentCheck" />
 
     </LinearLayout>
 
+
+    <!--   txt_location추가-->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/txt_boardingLocation"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="승차위치"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="25sp" />
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:fontFamily="@font/welcome" />
 
         <EditText
             android:id="@+id/et_boardingLocation"
-            android:layout_width="0dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:importantForAccessibility="yes"
             android:minHeight="48dp"
-            android:gravity="center"
+            android:background="@drawable/room"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            android:textColorHint="@color/gray"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            android:fontFamily="@font/welcome"
             android:textStyle="bold"
-            android:textSize="25sp"
             tools:ignore="SpeakableTextPresentCheck" />
 
     </LinearLayout>
@@ -106,9 +125,10 @@
             android:id="@+id/btn_boarding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
-            android:textSize="25dp"
-            android:textStyle="bold"
+            android:background="@drawable/button"
+            android:textSize="15dp"
+            android:fontFamily="@font/welcome"
+            android:textColor="@color/letter"
             android:text="승차" />
 
     </LinearLayout>

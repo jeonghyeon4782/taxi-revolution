@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ public class GuardianFragment extends Fragment {
 
     // 화면 요소
     private EditText etGuardianNum;
-    private ImageView btnAddGuardian;
+    private Button btnAddGuardian;
     private RecyclerView recyclerView;
     private TextView txtFrequency;
     private ImageView btnIncrease, btnDecrease;

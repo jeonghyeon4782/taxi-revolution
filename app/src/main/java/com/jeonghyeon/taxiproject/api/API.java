@@ -1,8 +1,8 @@
 package com.jeonghyeon.taxiproject.api;
 
 import com.jeonghyeon.taxiproject.dto.response.MemberResponseDto;
-import com.jeonghyeon.taxiproject.dto.request.LoginRequest;
-import com.jeonghyeon.taxiproject.dto.request.RegisterRequest;
+import com.jeonghyeon.taxiproject.dto.request.LoginRequestDto;
+import com.jeonghyeon.taxiproject.dto.request.RegisterRequestDto;
 import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
 import com.jeonghyeon.taxiproject.dto.response.TaxiStandResponseDto;
 import com.jeonghyeon.taxiproject.dto.response.TokenResponseDto;
@@ -11,9 +11,12 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface API {
 
@@ -24,8 +27,23 @@ public interface API {
     Call<ResponseDto<List<TaxiStandResponseDto>>> findAllTaxiStand();
 
     @POST("/api/auth/login")
-    Call<ResponseDto<TokenResponseDto>> login(@Body LoginRequest loginRequest);
+    Call<ResponseDto<TokenResponseDto>> login(@Body LoginRequestDto loginRequestDto);
 
     @POST("/api/auth/register")
-    Call<ResponseDto<String>> register(@Body RegisterRequest registerRequest);
+    Call<ResponseDto<String>> register(@Body RegisterRequestDto registerRequestDto);
+
+    @GET("/api/auth/check-memberId/{memberId}")
+    Call<ResponseDto<Boolean>> duplicateCheckMemberId(@Path("memberId") String memberId);
+
+    @GET("api/auth/check-nickname/{nickname}")
+    Call<ResponseDto<Boolean>> duplicateCheckNickname(@Path("nickname") String nickname);
+
+    @PUT("/api/member/update-password/{password}")
+    Call<ResponseDto<Boolean>> updatePassword(@Header("Authorization") String authorization, @Path("password") String password);
+
+    @PUT("/api/member/update-nickname/{nickname}")
+    Call<ResponseDto<Boolean>> updateNickname(@Header("Authorization") String authorization, @Path("nickname") String nickname);
+
+    @DELETE("/api/member")
+    Call<ResponseDto<Boolean>> deleteMyInfo(@Header("Authorization") String authorization);
 }

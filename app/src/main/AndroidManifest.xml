@@ -22,9 +22,15 @@
         android:theme="@style/Theme.TaxiProject"
         tools:targetApi="31" >
 
+<!--        개발용 키-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBZdojylqaGWv1allbESdX9-5bA115eVBw"/>
+
+        <!--        배포용 키-->
+<!--        <meta-data-->
+<!--            android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="AIzaSyDZfdCDc1mtlxfw-yY1EChQEyLao3oMIyU"/>-->
 
         <activity
             android:name=".activity.MainActivity"

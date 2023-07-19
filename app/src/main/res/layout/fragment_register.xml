@@ -1,40 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragment.RegisterFragment">
+    android:fontFamily="@font/welcome"
+    tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/et_id"
+    <!--    로고 레이아웃-->
+    <RelativeLayout
+        android:id="@+id/layout_logo"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="-20dp"
+        android:layout_height="120dp">
+        <TextView
+            android:id="@+id/txt_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:text="      안녕하세요\n택시혁명 입니다."
+            android:textColor="@color/black"
+            android:fontFamily="@font/welcome"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="ID 입력"/>
+        android:layout_below="@+id/layout_logo"
+        android:layout_centerVertical="true"
+        android:padding="30dp">
+        <!--    아이디 레이아웃추가-->
+        <RelativeLayout
+            android:id="@+id/layout_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
 
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="비밀번호 입력"/>
+            <!--        id추가-->
+            <TextView
+                android:id="@+id/txt_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아이디"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/welcome"
+                />
+            <EditText
+                android:id="@+id/et_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_id"
+                android:layout_marginTop="5dp"
+                android:hint="아이디를 입력하세요."
+                android:padding="12dp"
+                android:textColorHint="@color/gray"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                android:background="@drawable/room"
+                android:fontFamily="@font/welcome"/>
 
-    <EditText
-        android:id="@+id/et_nickname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="닉네임 입력"/>
 
-    <EditText
-        android:id="@+id/et_gender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="성별 입력"/>
+            <!--        중복버튼-->
+            <Button
+                android:id="@+id/btn_duplicateCheckMemberId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_id"
+                android:layout_alignParentRight="true"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/letter"
+                android:background="#00ff0000"
+                android:backgroundTint="@color/white"
+                android:padding="10dp"
+                android:text="중복" />
+        </RelativeLayout>
 
 
-    <Button
-        android:id="@+id/btn_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="회원가입"/>
 
-</LinearLayout>
+        <!--    비밀번호 레이아웃 추가-->
+        <RelativeLayout
+            android:id="@+id/layout_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_id"
+            android:layout_marginTop="15dp">
+
+            <!--        pw추가-->
+            <TextView
+                android:id="@+id/txt_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호"
+                android:fontFamily="@font/welcome"
+                android:textSize="13dp"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_password"
+                android:hint="비밀번호를 입력하세요."
+                android:inputType="textPassword"
+                android:layout_marginTop="5dp"
+                android:padding="12dp"
+                android:textColorHint="@color/gray"
+                android:fontFamily="@font/welcome"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                android:background="@drawable/room" />
+
+            <!--            비밀번호 보이기 버튼-->
+            <Button
+                android:id="@+id/btn_showPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:background="#00ff0000"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="표시"
+                android:textColor="@color/letter"
+                android:fontFamily="@font/welcome" />
+        </RelativeLayout>
+
+        <!--    닉네임레이아웃추가-->
+        <RelativeLayout
+            android:id="@+id/layout_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_pw"
+            android:layout_marginTop="15dp">
+
+            <!--        nickname추가-->
+            <TextView
+                android:id="@+id/txt_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="닉네임"
+                android:textSize="13dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/et_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_nickname"
+                android:layout_marginTop="5dp"
+                android:hint="닉네임을 입력하세요."
+                android:padding="12dp"
+                android:fontFamily="@font/welcome"
+                android:textColorHint="@color/gray"
+                android:textSize="13dp"
+                android:textColor="@color/black"
+                android:background="@drawable/room" />
+
+
+            <!--        중복버튼-->
+            <Button
+                android:id="@+id/btn_duplicateCheckNickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_nickname"
+                android:layout_alignParentRight="true"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/letter"
+                android:background="#00ff0000"
+                android:backgroundTint="@color/white"
+                android:padding="10dp"
+                android:text="중복" />
+        </RelativeLayout>
+
+        <!--        체크 , 버튼 레이아웃-->
+        <RelativeLayout
+            android:id="@+id/layout_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_nickname"
+            android:layout_marginTop="15dp">
+            <RadioGroup
+                android:id="@+id/rdo_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <RadioButton
+                    android:id="@+id/rdo_woman"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="여성"
+                    android:padding="15dp"
+                    android:textSize="13dp"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/welcome"
+                    android:textColor="@drawable/selector_radio_text"
+                    android:button="@null"
+                    android:background="@drawable/selector_radio_button"
+                    android:checked="true">
+
+                </RadioButton>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="49dp"
+                    android:layout_toRightOf="@+id/rdo_woman"
+                    android:background="@color/lightgray"/>
+                <RadioButton
+                    android:id="@+id/rdo_man"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="남성"
+                    android:textSize="13dp"
+                    android:padding="15dp"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/selector_radio_text"
+                    android:background="@drawable/selector_radio_button"
+                    android:button="@null"
+                    android:fontFamily="@font/welcome"
+                    />
+
+            </RadioGroup>
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rdo_gender"
+                android:layout_marginTop="100dp"
+                android:textSize="15dp"
+                android:text="회원가입"
+                android:textColor="@color/letter"
+                android:fontFamily="@font/welcome"
+                android:background="@drawable/room" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

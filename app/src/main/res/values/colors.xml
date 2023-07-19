@@ -8,6 +8,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="mainYellow">#EFE185</color>
-    <color name="selected_color">#FF000000</color>
+    <!--    selected color 색변경-->
+    <color name="selected_color">#006EC5</color>
     <color name="unselected_color">#969696</color>
+
+    <!--    색 추가-->
+    <color name="gray">#A0A0A0</color>
+    <color name="lightgray">#EBE9E9</color>
+    <color name="letter">#006EC5</color>
 </resources>
