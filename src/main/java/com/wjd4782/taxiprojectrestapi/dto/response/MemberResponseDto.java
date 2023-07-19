@@ -1,4 +1,4 @@
-package com.wjd4782.taxiprojectrestapi.dto.info;
+package com.wjd4782.taxiprojectrestapi.dto.response;
 
 import com.wjd4782.taxiprojectrestapi.domain.Member;
 import lombok.AllArgsConstructor;
@@ -8,13 +8,13 @@ import lombok.Data;
 @Builder
 @Data
 @AllArgsConstructor
-public class MemberResponse {
+public class MemberResponseDto {
     private String memberId;
     private String nickName;
     private int gender;
 
     // domain >> dto
-    public MemberResponse(Member member) {
+    public MemberResponseDto(Member member) {
         this.memberId = member.getMemberId();
         this.nickName = member.getNickname();
         this.gender = member.getGender();

@@ -10,9 +10,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(java.lang.Exception.class)
     public ResponseDto<String> handleException(Exception ex) {
-
-        ResponseDto<String> errorResponse = new ResponseDto<String>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), null);
-
+        ResponseDto<String> errorResponse = new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), null);
         return errorResponse;
     }
 }

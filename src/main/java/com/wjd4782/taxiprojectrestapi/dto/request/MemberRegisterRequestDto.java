@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberLoginRequest {
+public class MemberRegisterRequestDto {
     private String memberId;
     private String password;
+    private String nickname;
+    private int gender; // 남자 : 0, 여자 : 1
 }

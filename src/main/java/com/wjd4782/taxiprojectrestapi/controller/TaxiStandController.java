@@ -1,6 +1,6 @@
 package com.wjd4782.taxiprojectrestapi.controller;
 
-import com.wjd4782.taxiprojectrestapi.dto.info.TaxiStandResponse;
+import com.wjd4782.taxiprojectrestapi.dto.response.TaxiStandResponseDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.ResponseDto;
 import com.wjd4782.taxiprojectrestapi.service.TaxiStandService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ public class TaxiStandController {
 
     // 택시 승차장 모든 데이터 가져오기
     @GetMapping("")
-    public ResponseDto<List<TaxiStandResponse>> getAllTaxiStand() {
-        ResponseDto<List<TaxiStandResponse>> responseDto = taxiStandService.findAll();
+    public ResponseDto<List<TaxiStandResponseDto>> getAllTaxiStand() {
+        ResponseDto<List<TaxiStandResponseDto>> responseDto = taxiStandService.findAll();
         return responseDto;
     }
 }

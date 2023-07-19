@@ -1,6 +1,6 @@
 package com.wjd4782.taxiprojectrestapi.token;
 
-import com.wjd4782.taxiprojectrestapi.dto.info.TokenResponse;
+import com.wjd4782.taxiprojectrestapi.dto.response.TokenResponseDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -32,7 +32,7 @@ public class JwtTokenProvider {
     }
 
     // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
-    public TokenResponse generateToken(Authentication authentication) {
+    public TokenResponseDto generateToken(Authentication authentication) {
 
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
@@ -56,7 +56,7 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        return TokenResponse.builder()
+        return TokenResponseDto.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

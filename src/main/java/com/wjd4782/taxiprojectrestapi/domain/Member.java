@@ -43,9 +43,13 @@ public class Member implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
     
-    // 회원정보 수정
-    public void update(String password, String nickname) {
+    // 비밀번호 수정
+    public void updatePassword(String password) {
         this.password = password;
+    }
+
+    // 닉네임 수정
+    public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
 
