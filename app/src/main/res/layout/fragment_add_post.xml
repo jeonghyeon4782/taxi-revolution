@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/layout_write"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+        <View
+            android:id="@+id/vw_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/lightgray"/>
+
+
+        <!--        모집상태 변경-->
+        <Button
+            android:id="@+id/btn_recruitmentStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vw_line"
+            android:layout_marginTop="10dp"
+            android:text="모집상태"
+            android:minHeight="35dp"
+            android:textColor="@color/letter"
+            android:fontFamily="@font/welcome"
+            android:textSize="15dp"
+            android:background="@drawable/room"/>
+        <Button
+            android:id="@+id/btn_recruiting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_recruitmentStatus"
+            android:text="모집중"
+            android:minHeight="35dp"
+            android:textColor="@color/letter"
+            android:fontFamily="@font/welcome"
+            android:textSize="15dp"
+            android:background="@drawable/room"
+            />
+        <Button
+            android:id="@+id/btn_recruitmentComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_recruiting"
+            android:text="모집완료"
+            android:minHeight="35dp"
+            android:textColor="@color/letter"
+            android:fontFamily="@font/welcome"
+            android:textSize="15dp"
+            android:background="@drawable/room" />
+
+
+        <!--        인원 변경-->
+
+        <Button
+            android:id="@+id/btn_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vw_line"
+            android:layout_toRightOf="@+id/btn_recruitmentStatus"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:text="인원"
+            android:minHeight="35dp"
+            android:textColor="@color/letter"
+            android:fontFamily="@font/welcome"
+            android:textSize="15dp"
+            android:background="@drawable/room"/>
+
+
+
+
+
+        <!--        제목입력-->
+
+        <EditText
+            android:id="@+id/et_inputTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_recruitmentStatus"
+            android:layout_marginTop="10dp"
+            android:hint="제목을 입력해주세요"
+            android:textSize="20dp"
+            android:fontFamily="@font/welcome"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/lightgray"
+            android:textColorHint="@color/gray"/>
+        <TextView
+            android:id="@+id/txt_departure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_inputTitle"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:text="출발지"
+            android:textSize="15dp"
+            android:fontFamily="@font/welcome"
+            android:textColor="@color/black"/>
+
+
+
+        <ImageView
+            android:id="@+id/ivw_departure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_departure"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/departure_circle" />
+        <EditText
+            android:id="@+id/et_departure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_departure"
+            android:layout_toRightOf="@+id/ivw_departure"
+            android:layout_marginLeft="5dp"
+            android:hint="출발지를 입력해주세요"
+            android:textSize="18dp"
+            android:fontFamily="@font/welcome"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/lightgray"
+            android:textColorHint="@color/gray"/>
+
+        <!--        검색 , 내위치 레이아웃-->
+        <RelativeLayout
+            android:id="@+id/layout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_departure"
+            android:layout_alignParentRight="true">
+            <ImageButton
+                android:id="@+id/btn_nowlocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/baseline_my_location_24"
+                android:background="#00ff0000"/>
+            <Button
+                android:id="@+id/btn_departure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/btn_nowlocation"
+                android:background="#00ff0000"
+                android:minWidth="20dp"
+                android:minHeight="20dp"
+                android:text="검색"
+                android:textSize="15dp"
+                android:padding="10dp"
+                android:textColor="@color/letter"
+                android:fontFamily="@font/welcome" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/txt_arrival"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_departure"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:text="도착지"
+            android:textSize="15dp"
+            android:fontFamily="@font/welcome"
+            android:textColor="@color/black"/>
+        <ImageView
+            android:id="@+id/ivw_arrival"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_arrival"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/arrival_circle" />
+        <EditText
+            android:id="@+id/et_arrival"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_arrival"
+            android:layout_toRightOf="@+id/ivw_arrival"
+            android:layout_marginLeft="5dp"
+            android:hint="도착지를 입력해주세요"
+            android:textSize="18dp"
+            android:fontFamily="@font/welcome"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/lightgray"
+            android:textColorHint="@color/gray"/>
+        <Button
+            android:id="@+id/btn_arrival"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_arrival"
+            android:layout_alignParentRight="true"
+            android:background="#00ff0000"
+            android:minWidth="20dp"
+            android:minHeight="20dp"
+            android:text="검색"
+            android:textSize="15dp"
+            android:padding="10dp"
+            android:textColor="@color/letter"
+            android:fontFamily="@font/welcome" />
+
+        <TextView
+            android:id="@+id/txt_departureTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_arrival"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:text="출발 시간"
+            android:textSize="15dp"
+            android:fontFamily="@font/welcome"
+            android:textColor="@color/black"/>
+
+
+        <ImageView
+            android:id="@+id/ivw_departureTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_departureTime"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/baseline_access_time_24"/>
+
+        <Button
+            android:id="@+id/btn_departureDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_departureTime"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_toRightOf="@+id/ivw_departureTime"
+            android:minHeight="30dp"
+            android:minWidth="60dp"
+            android:text="날짜"
+            android:textSize="13dp"
+            android:textColor="@color/letter"
+            android:fontFamily="@font/welcome"
+            android:background="@drawable/editbutton"/>
+        <Button
+            android:id="@+id/btn_departureTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_departureTime"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_toRightOf="@+id/btn_departureDate"
+            android:minHeight="30dp"
+            android:minWidth="60dp"
+            android:text="시간"
+            android:textSize="13dp"
+            android:textColor="@color/letter"
+            android:fontFamily="@font/welcome"
+            android:background="@drawable/editbutton"/>
+
+
+
+        <View
+            android:id="@+id/vw_line2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/btn_departureDate"
+            android:layout_marginTop="10dp"
+            android:background="@color/lightgray"/>
+
+
+        <!--        글작성칸 레이아웃-->
+        <RelativeLayout
+            android:id="@+id/layout_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vw_line2"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:id="@+id/txt_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:text="추가사항"
+                android:textSize="18dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/et_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_input"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:hint="내용을 입력해주세요(최대 300자)"
+                android:textSize="15dp"
+                android:padding="8dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/black"
+                android:background="@drawable/editbutton"
+                android:textColorHint="@color/gray"
+                android:lines="10" android:gravity="top|left" android:inputType="textMultiLine"
+                android:scrollHorizontally="false"
+                android:minWidth="10.0dip"
+                android:maxWidth="5.0dip"/>
+
+            <Button
+                android:id="@+id/btn_writeComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:textSize="15dp"
+                android:text="작성완료"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/letter"
+                android:background="@drawable/room"
+                />
+        </RelativeLayout>
+
+
+
+
+
+
+
+        <RelativeLayout
+            android:id="@+id/layout_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/btn_departureDate"
+            android:padding="15dp"
+            android:background="@color/white"
+            android:layout_below="@+id/btn_departureTime">
+            <NumberPicker
+                android:id="@+id/np_hours"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.Picker"
+                android:padding="15dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/room" />
+            <TextView
+                android:id="@+id/txt_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/np_hours"
+                android:textColor="@color/letter"
+                android:layout_marginTop="80dp"
+                android:layout_marginLeft="7dp"
+                android:text="시"/>
+            <NumberPicker
+                android:id="@+id/np_minute"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/room"
+                android:layout_toRightOf="@+id/txt_hours"
+                android:theme="@style/AppTheme.Picker" />
+            <TextView
+                android:id="@+id/txt_minute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/np_minute"
+                android:textColor="@color/letter"
+                android:layout_marginTop="80dp"
+                android:layout_marginLeft="7dp"
+                android:text="분"/>
+            <Button
+                android:id="@+id/btn_timeok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/np_hours"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
+                android:text="완료"
+                android:minWidth="50dp"
+                android:minHeight="35dp"
+                android:textColor="@color/letter"
+                android:fontFamily="@font/welcome"
+                android:textSize="15dp"
+                android:background="@drawable/room" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layout_calender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_departureDate">
+            <CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/room" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layout_numberok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_number"
+            android:background="@drawable/room"
+            android:layout_toRightOf="@+id/btn_recruitmentStatus"
+            android:padding="15dp">
+            <NumberPicker
+                android:id="@+id/numberpicker"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:theme="@style/AppTheme.Picker"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/room" />
+            <TextView
+                android:id="@+id/np_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/numberpicker"
+                android:layout_marginTop="84dp"
+                android:layout_marginLeft="3dp"
+                android:textSize="15dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/letter"
+                android:text="명"/>
+            <Button
+                android:id="@+id/btn_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/numberpicker"
+
+                android:layout_marginTop="15dp"
+                android:text="완료"
+                android:minWidth="50dp"
+                android:minHeight="35dp"
+                android:textColor="@color/letter"
+                android:fontFamily="@font/welcome"
+                android:textSize="15dp"
+                android:background="@drawable/room"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

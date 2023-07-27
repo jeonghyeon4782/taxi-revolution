@@ -1,8 +1,10 @@
 package com.jeonghyeon.taxiproject.api;
 
+import com.jeonghyeon.taxiproject.dto.request.PostAddRequestDto;
 import com.jeonghyeon.taxiproject.dto.response.MemberResponseDto;
 import com.jeonghyeon.taxiproject.dto.request.LoginRequestDto;
 import com.jeonghyeon.taxiproject.dto.request.RegisterRequestDto;
+import com.jeonghyeon.taxiproject.dto.response.PostResponseDto;
 import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
 import com.jeonghyeon.taxiproject.dto.response.TaxiStandResponseDto;
 import com.jeonghyeon.taxiproject.dto.response.TokenResponseDto;
@@ -46,4 +48,10 @@ public interface API {
 
     @DELETE("/api/member")
     Call<ResponseDto<Boolean>> deleteMyInfo(@Header("Authorization") String authorization);
+
+    @GET("/api/post")
+    Call<ResponseDto<List<PostResponseDto>>> getAllPost(@Header("Authorization") String authorization);
+
+    @POST("/api/post")
+    Call<ResponseDto<Boolean>> addPost(@Header("Authorization") String authorization, @Body PostAddRequestDto requestDto);
 }

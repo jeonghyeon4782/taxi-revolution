@@ -29,6 +29,7 @@ import com.jeonghyeon.taxiproject.fragment.BoardingCheckFragment;
 import com.jeonghyeon.taxiproject.fragment.GuardianFragment;
 import com.jeonghyeon.taxiproject.fragment.LoginFragment;
 import com.jeonghyeon.taxiproject.fragment.MemberInfoFragment;
+import com.jeonghyeon.taxiproject.fragment.NoticeBoardFragment;
 import com.jeonghyeon.taxiproject.fragment.RecognizeFragment;
 import com.jeonghyeon.taxiproject.fragment.RecordFragment;
 import com.jeonghyeon.taxiproject.fragment.RidingFragment;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private AlightingCheckFragment alightingCheckFragment; // 하차 확인 화면
     private BoardingCheckFragment boardingCheckFragment; // 승차 확인 화면
     private RidingFragment ridingFragment; // 승차 중 화면
+    private NoticeBoardFragment noticeBoardFragment;
 
     private TextView logo;
 
@@ -72,6 +74,28 @@ public class MainActivity extends AppCompatActivity {
     private String nickname;
     private int gender;
     private int index = 0;
+
+    private String departureLocation;
+    private String arrivalLocation;
+
+    // 출발지와 도착지 설정하는 메서드
+    public void setDepartureLocation(String location) {
+        this.departureLocation = location;
+    }
+
+    public void setArrivalLocation(String location) {
+        this.arrivalLocation = location;
+    }
+
+    // 출발지와 도착지 설정하는 메서드
+    public String getDepartureLocation() {
+        return departureLocation;
+    }
+
+    // 출발지와 도착지 설정하는 메서드
+    public String getArrivalLocation() {
+        return arrivalLocation;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         boardingCheckFragment = new BoardingCheckFragment();
         alightingCheckFragment = new AlightingCheckFragment();
         ridingFragment = new RidingFragment();
+        noticeBoardFragment = new NoticeBoardFragment();
 
         // main.xml 요소 초기화
         infoImageView = findViewById(R.id.infoImageView);
@@ -122,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         chatImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 채팅 버튼을 클릭했을 때의 동작 구현
+
             }
         });
 
@@ -145,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.action_board: // 합승 게시판
                         bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
+                        logo.setText("카풀");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.containers, noticeBoardFragment).commit();
                         return true;
                     case R.id.action_taxi: // 승차
                         bottomNavigationView.getMenu().setGroupCheckable(0, true, true);

@@ -1,0 +1,179 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <!--   검색 레이아웃-->
+        <RelativeLayout
+            android:id="@+id/Layout_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--        검색 입력칸-->
+            <EditText
+                android:id="@+id/et_destinationLocation"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/room"
+                android:hint="택시혁명 통합 검색"
+                android:inputType="text"
+                android:paddingLeft="20dp"
+                android:textColor="@color/gray"
+                android:textSize="15dp" />
+
+            <ImageButton
+                android:id="@+id/btn_destinationLocation"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="27dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="Image Button"
+                android:scaleType="fitCenter"
+                android:src="@drawable/search" />
+
+
+        </RelativeLayout>
+
+        <!--        정렬 레아이웃-->
+        <RelativeLayout
+            android:id="@+id/layout_sort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Layout_search"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btn_distancesort"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:background="#00ff0000"
+                android:layout_alignParentRight="true"
+                android:drawableRight="@drawable/baseline_sort_24"
+                android:text="최신순"
+                android:textColor="@color/gray"
+                android:textSize="15dp" />
+
+
+
+
+
+            <!--                리사이클뷰 넣는곳-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/btn_distancesort" />
+
+
+
+            <Button
+                android:id="@+id/btn_new"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_distancesort"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/room"
+                android:fontFamily="@font/welcome"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="최신순"
+                android:textColor="@color/gray" />
+
+            <Button
+                android:id="@+id/btn_distance"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_new"
+                android:background="@drawable/room"
+                android:fontFamily="@font/welcome"
+                android:layout_alignParentRight="true"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="거리순"
+                android:textColor="@color/gray" />
+            <Button
+                android:id="@+id/btn_departureTime"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_distance"
+                android:background="@drawable/room"
+                android:fontFamily="@font/welcome"
+                android:layout_alignParentRight="true"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="출발시간순"
+                android:textColor="@color/gray" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/layout_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <View
+                android:id="@+id/vw_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/lightgray"/>
+
+            <Button
+                android:id="@+id/btn_mypost"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/btn_write"
+                android:layout_below="@+id/vw_line"
+                android:background="@drawable/room"
+                android:fontFamily="@font/welcome"
+                android:layout_marginRight="10dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="내가 쓴 글"
+                android:textColor="@color/letter" />
+
+            <Button
+                android:id="@+id/btn_write"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/vw_line"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/room"
+                android:fontFamily="@font/welcome"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="글쓰기"
+                android:textColor="@color/letter" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
