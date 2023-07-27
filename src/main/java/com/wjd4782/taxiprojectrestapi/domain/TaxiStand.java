@@ -5,12 +5,12 @@ import lombok.*;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class TaxiStand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // primary key
+    private Long taxiStandId; // primary key
 
     @Column(name = "latitude", nullable = false)
     private double latitude; // 위도

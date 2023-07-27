@@ -20,7 +20,7 @@ public class TaxiStandController {
     // 택시 승차장 모든 데이터 가져오기
     @GetMapping("")
     public ResponseDto<List<TaxiStandResponseDto>> getAllTaxiStand() {
-        ResponseDto<List<TaxiStandResponseDto>> responseDto = taxiStandService.findAll();
+        ResponseDto<List<TaxiStandResponseDto>> responseDto = taxiStandService.getAllTaxiStand();
         return responseDto;
     }
 }

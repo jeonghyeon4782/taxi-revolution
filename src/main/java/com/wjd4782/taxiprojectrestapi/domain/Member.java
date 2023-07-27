@@ -1,7 +1,7 @@
 package com.wjd4782.taxiprojectrestapi.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Member implements UserDetails {
 
@@ -40,9 +38,21 @@ public class Member implements UserDetails {
 
     // 권한
     @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
     private List<String> roles = new ArrayList<>();
-    
+
+    // 게시글 1:N
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
+    @Builder
+    public Member(String memberId, String password, String nickname, int gender, List<String> roles) {
+        this.memberId = memberId;
+        this.password = password;
+        this.nickname = nickname;
+        this.gender = gender;
+        this.roles = roles;
+    }
+
     // 비밀번호 수정
     public void updatePassword(String password) {
         this.password = password;

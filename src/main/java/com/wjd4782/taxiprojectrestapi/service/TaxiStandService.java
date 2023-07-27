@@ -18,7 +18,7 @@ public class TaxiStandService {
     private final TaxiStandRepository taxiStandRepository;
 
     @Transactional
-    public ResponseDto<List<TaxiStandResponseDto>> findAll() {
+    public ResponseDto<List<TaxiStandResponseDto>> getAllTaxiStand() {
         List<TaxiStandResponseDto> taxiStands = taxiStandRepository.findAll()
                 .stream() // 리스트를 스트림으로 변환
                 .map(TaxiStandResponseDto::new) // map() 메소드를 사용하여 각 taxiStand를 TaxiStandResponse 객체로 변환
