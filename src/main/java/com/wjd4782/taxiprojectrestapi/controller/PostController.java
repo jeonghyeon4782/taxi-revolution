@@ -38,16 +38,23 @@ public class PostController {
         ResponseDto<List<PostResponseDto>> responseDto = postService.getAllMyPost(authentication.getName());
         return responseDto;
     }
-    
+
+    // 특정 글 조회
+    @GetMapping("/{postId}")
+    public ResponseDto<PostResponseDto> getPost(@PathVariable("postId") Long postId) {
+        ResponseDto<PostResponseDto> responseDto = postService.getPost(postId);
+        return responseDto;
+    }
+
     // 글 수정
-    @PutMapping("{postId}")
+    @PutMapping("/{postId}")
     public ResponseDto<Boolean> updatePost(@RequestBody PostUpdateRequestDto requestDto, @PathVariable("postId") Long postId) {
         ResponseDto<Boolean> responseDto = postService.updatePost(requestDto, postId);
         return responseDto;
     }
 
     // 글 삭제
-    @DeleteMapping("{postId}")
+    @DeleteMapping("/{postId}")
     public ResponseDto<Boolean> deleteMyInfo(@PathVariable("postId") Long postId) {
         ResponseDto<Boolean> responseDto = postService.deletePost(postId);
         return responseDto;

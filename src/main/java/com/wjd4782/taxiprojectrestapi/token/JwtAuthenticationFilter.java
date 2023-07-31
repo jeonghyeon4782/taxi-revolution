@@ -60,11 +60,14 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     // 예외 처리를 수행할 URL 패턴을 확인하는 메서드
     private boolean isLoginOrSignUpRequest(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
+        String requestMethod = request.getMethod();
+        boolean isGetRequestForApiPost = requestMethod.equalsIgnoreCase("GET") && requestURI.equals("/api/post");
         return requestURI.contains("/api/auth/login")
                 || requestURI.contains("/api/auth/register")
                 || requestURI.contains("/api/taxiStand")
                 || requestURI.matches(".*/api/auth/check-memberId/[^/]+")
-                || requestURI.matches(".*/api/auth/check-nickname/[^/]+");
+                || requestURI.matches(".*/api/auth/check-nickname/[^/]+")
+                || isGetRequestForApiPost;
     }
 
     // Request Header 에서 토큰 정보 추출

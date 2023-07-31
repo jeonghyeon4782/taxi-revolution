@@ -1,7 +1,6 @@
 package com.wjd4782.taxiprojectrestapi.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

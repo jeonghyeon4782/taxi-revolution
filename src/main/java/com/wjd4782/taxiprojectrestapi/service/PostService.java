@@ -6,12 +6,10 @@ import com.wjd4782.taxiprojectrestapi.dto.request.PostAddRequestDto;
 import com.wjd4782.taxiprojectrestapi.dto.request.PostUpdateRequestDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.PostResponseDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.ResponseDto;
-import com.wjd4782.taxiprojectrestapi.dto.response.TaxiStandResponseDto;
 import com.wjd4782.taxiprojectrestapi.repository.MemberRepository;
 import com.wjd4782.taxiprojectrestapi.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +48,7 @@ public class PostService {
                     .departureLocation(requestDto.getDepartureLocation())
                     .destinationLocation(requestDto.getDestinationLocation())
                     .recruitmentStatus(requestDto.getRecruitmentStatus())
-                    .remainSeat(requestDto.getAllSeat() - 1)
+                    .remainSeat(1)
                     .allSeat(requestDto.getAllSeat())
                     .departureTime(departureTime)
                     .createTime(createTime)
@@ -83,10 +80,18 @@ public class PostService {
         return responseDto;
     }
 
+    // 특정 게시글 조회
+    public ResponseDto<PostResponseDto> getPost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(()
+                -> new EntityNotFoundException("해당하는 게시물을 찾을 수 없습니다."));
+        PostResponseDto responseDto = new PostResponseDto(post);
+        return new ResponseDto<>(HttpStatus.OK.value(), "글 조회 성공", responseDto);
+    }
+
     // 글 수정
     @Transactional
-    public ResponseDto<Boolean> updatePost(PostUpdateRequestDto requestDto, Long memberId) {
-        Post post = postRepository.findById(memberId).orElseThrow(()
+    public ResponseDto<Boolean> updatePost(PostUpdateRequestDto requestDto, Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(()
                 -> new EntityNotFoundException("해당하는 게시물을 찾을 수 없습니다."));
         post.updatePost(requestDto);
         return new ResponseDto<>(HttpStatus.OK.value(), "게시글 수정 성공", true);

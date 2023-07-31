@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                    .requestMatchers("/api/auth/**", "/api/taxiStand").permitAll() // 로그인, 회원가입, 택시승강장 찾기는 허용
+                    .requestMatchers("/api/auth/**", "/api/taxiStand", "/api/post").permitAll() // 로그인, 회원가입, 택시승강장 찾기는 허용
                     .anyRequest().authenticated()
                 .and()
                     .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
