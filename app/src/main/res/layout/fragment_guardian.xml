@@ -23,6 +23,7 @@
             <!--        글자 크기 조절 , 이미지 변경-->
             <EditText
                 android:id="@+id/et_guardianNum"
+                android:inputType="number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

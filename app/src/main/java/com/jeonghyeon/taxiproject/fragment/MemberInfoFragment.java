@@ -72,7 +72,7 @@ public class MemberInfoFragment extends Fragment {
             gender = args.getString("gender");
             etId.setText(memberId);
             etNickname.setText(nickname);
-            if (gender == "0") {
+            if (gender.equals("0")) {
                 etGender.setText("여자");
             } else {
                 etGender.setText("남자");

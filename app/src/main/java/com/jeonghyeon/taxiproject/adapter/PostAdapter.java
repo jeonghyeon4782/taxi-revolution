@@ -25,6 +25,16 @@ import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecordViewHolder> {
 
+    public interface OnItemClickListener {
+        void onItemClick(PostResponseDto post);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     private List<PostResponseDto> posts;
     private List<PostResponseDto> backUpPosts; // 원본 복원
 
@@ -67,7 +77,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecordViewHold
     @Override
     public RecordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_post, parent, false);
-        return new RecordViewHolder(view);
+        RecordViewHolder viewHolder = new RecordViewHolder(view);
+
+        // Set the click listener for each item view
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    int position = viewHolder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        onItemClickListener.onItemClick(posts.get(position));
+                    }
+                }
+            }
+        });
+
+        return viewHolder;
     }
 
     @Override

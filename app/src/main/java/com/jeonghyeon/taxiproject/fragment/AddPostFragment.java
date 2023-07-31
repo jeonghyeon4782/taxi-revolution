@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
@@ -32,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AddPostFragment extends Fragment {
 
     private String status, date;
-    private int groupCount = 0;
+    private String groupCount;
 
     private EditText etInputTitle, etContent;
     private ImageButton btnNowLocation;
@@ -97,6 +96,14 @@ public class AddPostFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) getActivity();
         etDeparture.setText(mainActivity.getDepartureLocation());
         etArrival.setText(mainActivity.getArrivalLocation());
+        etInputTitle.setText(mainActivity.getTitlee());
+        etContent.setText(mainActivity.getContents());
+        btn_departureTime.setText(mainActivity.getTime());
+        btn_recruitmentStatus.setText(mainActivity.getStatus());
+        btn_number.setText(mainActivity.getGroupCount());
+        btn_departureDate.setText(mainActivity.getYear());
+        status = mainActivity.getStatus();
+        groupCount = mainActivity.getGroupCount();
 
         mainActivity.updateTextView("카풀 > 글쓰기");
 
@@ -124,7 +131,6 @@ public class AddPostFragment extends Fragment {
         np_minute.setOnLongPressUpdateInterval(100);
 
 
-
         // 시간
         btn_departureTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,19 +138,18 @@ public class AddPostFragment extends Fragment {
                 if (date == null) {
                     showToast("날짜를 입력하세요");
                 } else {
-                    if(tcount == 0) {
+                    if (tcount == 0) {
                         layout_time.setVisibility(View.VISIBLE);
                         np_hours.setVisibility(View.VISIBLE);
                         np_minute.setVisibility(View.VISIBLE);
                         btn_timeok.setVisibility(View.VISIBLE);
-                        tcount=1;
-                    }
-                    else{
+                        tcount = 1;
+                    } else {
                         layout_time.setVisibility(View.INVISIBLE);
                         np_hours.setVisibility(View.INVISIBLE);
                         np_minute.setVisibility(View.INVISIBLE);
                         btn_timeok.setVisibility(View.INVISIBLE);
-                        tcount=0;
+                        tcount = 0;
                     }
                 }
             }
@@ -154,19 +159,18 @@ public class AddPostFragment extends Fragment {
         btn_timeok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                date = date + " " + String.valueOf(np_hours.getValue() + ":" + String.valueOf(np_minute.getValue()) + ":00");
-                btn_departureTime.setText(String.valueOf(np_hours.getValue() +"시 "+ String.valueOf(np_minute.getValue())+"분"));
+                // MainActivity 인스턴스 가져오기
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.setfTime(String.valueOf(np_hours.getValue() + ":" + String.valueOf(np_minute.getValue()) + ":00"));
+                mainActivity.setTime(String.valueOf(np_hours.getValue() + "시 " + String.valueOf(np_minute.getValue()) + "분"));
+                btn_departureTime.setText(String.valueOf(np_hours.getValue() + "시 " + String.valueOf(np_minute.getValue()) + "분"));
                 np_hours.setVisibility(View.INVISIBLE);
                 np_minute.setVisibility(View.INVISIBLE);
                 layout_time.setVisibility(View.INVISIBLE);
                 btn_timeok.setVisibility(View.INVISIBLE);
-                tcount=0;
+                tcount = 0;
             }
         });
-
-
-
-
 
 
         btn_recruiting.setVisibility(View.INVISIBLE);
@@ -178,19 +182,14 @@ public class AddPostFragment extends Fragment {
         btn_recruitmentStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etArrival.getText().toString().isEmpty() || etDeparture.getText().toString().isEmpty()) {
-                    showToast("출발지와 목적지부터 선택하세요");
+                if (rcount == 0) {
+                    btn_recruiting.setVisibility(View.VISIBLE);
+                    btn_recruitmentComplete.setVisibility(View.VISIBLE);
+                    rcount = 1;
                 } else {
-                    if(rcount == 0) {
-                        btn_recruiting.setVisibility(View.VISIBLE);
-                        btn_recruitmentComplete.setVisibility(View.VISIBLE);
-                        rcount=1;
-                    }
-                    else{
-                        btn_recruiting.setVisibility(View.INVISIBLE);
-                        btn_recruitmentComplete.setVisibility(View.INVISIBLE);
-                        rcount=0;
-                    }
+                    btn_recruiting.setVisibility(View.INVISIBLE);
+                    btn_recruitmentComplete.setVisibility(View.INVISIBLE);
+                    rcount = 0;
                 }
             }
         });
@@ -199,11 +198,13 @@ public class AddPostFragment extends Fragment {
         btn_recruiting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity mainActivity = (MainActivity) getActivity();
                 status = btn_recruiting.getText().toString();
-                btn_recruitmentStatus.setText(btn_recruiting.getText());
+                mainActivity.setStatus(status);
+                btn_recruitmentStatus.setText(status);
                 btn_recruiting.setVisibility(View.INVISIBLE);
                 btn_recruitmentComplete.setVisibility(View.INVISIBLE);
-                rcount=0;
+                rcount = 0;
             }
         });
 
@@ -211,11 +212,13 @@ public class AddPostFragment extends Fragment {
         btn_recruitmentComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity mainActivity = (MainActivity) getActivity();
                 status = btn_recruitmentComplete.getText().toString();
-                btn_recruitmentStatus.setText(btn_recruitmentComplete.getText());
+                mainActivity.setStatus(status);
+                btn_recruitmentStatus.setText(status);
                 btn_recruiting.setVisibility(View.INVISIBLE);
                 btn_recruitmentComplete.setVisibility(View.INVISIBLE);
-                rcount=0;
+                rcount = 0;
             }
         });
 
@@ -229,23 +232,19 @@ public class AddPostFragment extends Fragment {
         btn_number.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etArrival.getText().toString().isEmpty() || etDeparture.getText().toString().isEmpty()) {
-                    showToast("출발지와 목적지부터 선택하세요");
+                if (ncount == 0) {
+                    layout_numberok.setVisibility(View.VISIBLE);
+                    numberPicker.setVisibility(View.VISIBLE);
+                    btn_ok.setVisibility(View.VISIBLE);
+                    ncount = 1;
                 } else {
-                    if(ncount == 0) {
-                        layout_numberok.setVisibility(View.VISIBLE);
-                        numberPicker.setVisibility(View.VISIBLE);
-                        btn_ok.setVisibility(View.VISIBLE);
-                        ncount=1;
-                    }
-                    else{
-                        layout_numberok.setVisibility(View.INVISIBLE);
-                        numberPicker.setVisibility(View.INVISIBLE);
-                        btn_ok.setVisibility(View.INVISIBLE);
-                        ncount=0;
-                    }
+                    layout_numberok.setVisibility(View.INVISIBLE);
+                    numberPicker.setVisibility(View.INVISIBLE);
+                    btn_ok.setVisibility(View.INVISIBLE);
+                    ncount = 0;
                 }
             }
+
         });
 
 
@@ -266,12 +265,14 @@ public class AddPostFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                groupCount = numberPicker.getValue();
-                btn_number.setText(String.valueOf(numberPicker.getValue()+"명"));
+                MainActivity mainActivity = (MainActivity) getActivity();
+                groupCount = String.valueOf(numberPicker.getValue());
+                mainActivity.setGroupCount(groupCount);
+                btn_number.setText(String.valueOf(groupCount));
                 layout_numberok.setVisibility(View.INVISIBLE);
                 btn_ok.setVisibility(View.INVISIBLE);
                 numberPicker.setVisibility(View.INVISIBLE);
-                ncount=0;
+                ncount = 0;
             }
         });
 
@@ -282,29 +283,26 @@ public class AddPostFragment extends Fragment {
         btn_departureDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etArrival.getText().toString().isEmpty() || etDeparture.getText().toString().isEmpty()) {
-                    showToast("출발지와 목적지부터 선택하세요");
+                if (ccount == 0) {
+                    calendarView.setVisibility(View.VISIBLE);
+                    ccount = 1;
                 } else {
-                    if(ccount == 0) {
-                        calendarView.setVisibility(View.VISIBLE);
-                        ccount=1;
-                    }
-                    else{
-                        calendarView.setVisibility(View.INVISIBLE);
-                        ccount=0;
-                    }
+                    calendarView.setVisibility(View.INVISIBLE);
+                    ccount = 0;
                 }
             }
+
         });
 
 
         //달력 클릭시
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener()
-        {
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth)
-            {
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                MainActivity mainActivity = (MainActivity) getActivity();
                 date = String.format("%d-%d-%d", year, month + 1, dayOfMonth);
+                mainActivity.setfYear(String.format("%d-%d-%d", year, month + 1, dayOfMonth));
+                mainActivity.setYear(String.format("%d / %d / %d", year, month + 1, dayOfMonth));
                 btn_departureDate.setText(String.format("%d / %d / %d", year, month + 1, dayOfMonth));
                 calendarView.setVisibility(View.INVISIBLE);
                 ccount = 0;
@@ -312,23 +310,13 @@ public class AddPostFragment extends Fragment {
         });
 
 
+        // 작성 완료 버튼
         btnWriteComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etInputTitle.getText().toString().isEmpty()
-                        || etContent.getText().toString().isEmpty()
-                        || etDeparture.getText().toString().isEmpty()
-                        || etArrival.getText().toString().isEmpty()
-                        || status.isEmpty()
-                        || groupCount == 0
-                        || date.isEmpty()) {
-                    showToast("모든 항목을 입력해주세요."); // Show toast if any field is empty
-                    return;
-                }
-
-                fetchAddPost(etInputTitle.getText().toString(), etContent.getText().toString(), etDeparture.getText().toString(), etArrival.getText().toString(), status, groupCount, date);
-
                 MainActivity mainActivity = (MainActivity) getActivity();
+
+                fetchAddPost(etInputTitle.getText().toString(), etContent.getText().toString(), etDeparture.getText().toString(), etArrival.getText().toString(), status, Integer.parseInt(groupCount), mainActivity.getfYear() + " " + mainActivity.getfTime());
 
                 // RidingFragment 생성 및 설정
                 NoticeBoardFragment noticeBoardFragment = new NoticeBoardFragment();
@@ -340,7 +328,6 @@ public class AddPostFragment extends Fragment {
                             .replace(R.id.containers, noticeBoardFragment)
                             .addToBackStack(null)
                             .commit();
-                    showToast("게시글 작성 완료");
                 }
             }
         });
@@ -350,6 +337,9 @@ public class AddPostFragment extends Fragment {
             public void onClick(View v) {
 
                 MainActivity mainActivity = (MainActivity) getActivity();
+
+                mainActivity.setTitlee(etInputTitle.getText().toString());
+                mainActivity.setContents(etContent.getText().toString());
 
                 // RidingFragment 생성 및 설정
                 DepartureSearchFragment departureSearchFragment = new DepartureSearchFragment();
@@ -369,6 +359,9 @@ public class AddPostFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) getActivity();
+
+                mainActivity.setTitlee(etInputTitle.getText().toString());
+                mainActivity.setContents(etContent.getText().toString());
 
                 // RidingFragment 생성 및 설정
                 ArrivalSearchFragment arrivalSearchFragment = new ArrivalSearchFragment();
@@ -419,12 +412,36 @@ public class AddPostFragment extends Fragment {
                 public void onResponse(Call<ResponseDto<Boolean>> call, Response<ResponseDto<Boolean>> response) {
                     if (response.isSuccessful()) {
                         ResponseDto<Boolean> responseDto = response.body();
-                        if (responseDto != null && responseDto.getData() != null) {
-                            Boolean aBoolean = responseDto.getData();
+                        int statusCode = responseDto.getStatus();
 
+                        if (statusCode == 200) {
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            mainActivity.setfTime(null);
+                            mainActivity.setfYear(null);
+                            mainActivity.setYear("날짜");
+                            mainActivity.setTime("시간");
+                            mainActivity.setGroupCount("인원");
+                            mainActivity.setStatus("모집상태");
+                            mainActivity.setContents(null);
+                            mainActivity.setTitlee(null);
+                            mainActivity.setDepartureLocation(null);
+                            mainActivity.setArrivalLocation(null);
+                            showToast("글 작성 완료");
+
+                        } else if (statusCode == 423) { // 만료된 토큰이라면?
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            LoginFragment loginFragment = new LoginFragment();
+                            if (mainActivity != null) {
+                                mainActivity.getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.containers, loginFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+                        } else {
+                            String msg = responseDto.getMsg();
+                            showToast(msg);
                         }
-                    } else {
-                        showToast("API 호출 실패");
                     }
                 }
 

@@ -58,7 +58,7 @@ public class NoticeBoardFragment extends Fragment {
     private ImageButton btnBtn;
     private Button btn_distancesort, btn_departureTime, btn_new, btn_distance; // 정렬 버튼 , 출발시간순 , 최신순 , 거리순
     private int dcount = 0;
-    private Button btnWrite;
+    private Button btnWrite, btnMyPost;
     private LocationManager locationManager;
     private LocationListener locationListener;
 
@@ -89,6 +89,7 @@ public class NoticeBoardFragment extends Fragment {
         btn_new = (Button) view.findViewById(R.id.btn_new);
         btn_distance = (Button) view.findViewById(R.id.btn_distance);
         btnWrite = view.findViewById(R.id.btn_write);
+        btnMyPost = view.findViewById(R.id.btn_mypost);
 
 
         btn_departureTime.setVisibility(View.INVISIBLE);
@@ -99,6 +100,22 @@ public class NoticeBoardFragment extends Fragment {
 
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.updateTextView("카풀");
+        etEt.setText(null);
+
+
+
+        if (!isAccessTokenAvailable()) {
+            btnMyPost.setVisibility(View.GONE);
+            btnWrite.setVisibility(View.GONE);
+        }
+
+        postAdapter.setOnItemClickListener(new PostAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(PostResponseDto post) {
+                // Handle click event here
+                openDetailPostFragment(post);
+            }
+        });
 
         btnWrite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,19 +219,6 @@ public class NoticeBoardFragment extends Fragment {
 
     private void fetchPosts() {
         String accessToken = tokenManager.getAccessToken();
-
-        if (accessToken == null) {
-            MainActivity mainActivity = (MainActivity) getActivity();
-            LoginFragment loginFragment = new LoginFragment();
-            if (mainActivity != null) {
-                mainActivity.getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.containers, loginFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-            showToast("로그인이 필요합니다");
-        } else {
             // Retrofit 객체 생성
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
@@ -225,52 +229,29 @@ public class NoticeBoardFragment extends Fragment {
             API apiService = retrofit.create(API.class);
 
             // API 호출
-            Call<ResponseDto<List<PostResponseDto>>> call = apiService.getAllPost("Bearer " + accessToken);
+            Call<ResponseDto<List<PostResponseDto>>> call = apiService.getAllPost();
             call.enqueue(new Callback<ResponseDto<List<PostResponseDto>>>() {
                 @Override
                 public void onResponse(Call<ResponseDto<List<PostResponseDto>>> call, Response<ResponseDto<List<PostResponseDto>>> response) {
                     if (response.isSuccessful()) {
                         ResponseDto<List<PostResponseDto>> responseDto = response.body();
+                        if (responseDto != null && responseDto.getData() != null) {
+                            List<PostResponseDto> postList = responseDto.getData();
 
-                        int statusCode = responseDto.getStatus();
-                        String msg = responseDto.getMsg();
-
-                        if (statusCode == 200) {
-                            if (responseDto != null && responseDto.getData() != null) {
-                                List<PostResponseDto> postList = responseDto.getData();
-
-                                // Filter the posts with recruitmentStatus "모집완료"
-                                List<PostResponseDto> filteredPosts = new ArrayList<>();
-                                for (PostResponseDto post : postList) {
-                                    if ("모집중".equals(post.getRecruitmentStatus())) {
-                                        filteredPosts.add(post);
-                                    }
+                            // Filter the posts with recruitmentStatus "모집완료"
+                            List<PostResponseDto> filteredPosts = new ArrayList<>();
+                            for (PostResponseDto post : postList) {
+                                if ("모집중".equals(post.getRecruitmentStatus())) {
+                                    filteredPosts.add(post);
                                 }
+                            }
 
-                                // postList를 RecyclerView에 표시하는 코드 작성
-                                postAdapter.setPosts(filteredPosts);
-                                postAdapter.setBackUpPosts(filteredPosts);
-                                sortByCreateTimeInRecyclerView();
-                            }
-                            showToast(msg);
-                        } else if (statusCode == 423) { // 만료된 토큰이라면?
-                            MainActivity mainActivity = (MainActivity) getActivity();
-                            LoginFragment loginFragment = new LoginFragment();
-                            if (mainActivity != null) {
-                                mainActivity.getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.containers, loginFragment)
-                                        .addToBackStack(null)
-                                        .commit();
-                            }
-                            showToast("로그인이 필요합니다");
-                        } else {
-                            msg = responseDto.getMsg();
-                            showToast(msg);
+                            // postList를 RecyclerView에 표시하는 코드 작성
+                            postAdapter.setPosts(filteredPosts);
+                            postAdapter.setBackUpPosts(filteredPosts);
+                            sortByCreateTimeInRecyclerView();
                         }
-                    }
-
-                    else {
+                    } else {
                         showToast("API 호출 실패");
                     }
                 }
@@ -281,7 +262,7 @@ public class NoticeBoardFragment extends Fragment {
                 }
             });
         }
-    }
+
 
     // 거리순 정렬
     private void sortByDistanceInRecyclerView(Location currentLocation) {
@@ -438,5 +419,39 @@ public class NoticeBoardFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private boolean isAccessTokenAvailable() {
+        String accessToken = tokenManager.getAccessToken();
+        return accessToken != null;
+    }
+
+    private void openDetailPostFragment(PostResponseDto post) {
+        // Create DetailPostFragment instance and pass the postID as an argument
+        DetailPostFragment detailPostFragment = new DetailPostFragment();
+        Bundle args = new Bundle();
+        args.putLong("postId", post.getPostId());
+        args.putString("title", post.getTitle());
+        args.putString("content", post.getContent());
+        args.putString("departureLocation", post.getDepartureLocation());
+        args.putString("nickname", post.getNickname());
+        args.putString("destinationLocation", post.getDestinationLocation());
+        args.putString("recruitmentStatus", post.getRecruitmentStatus());
+        args.putString("departureTime", post.getDepartureTime());
+        args.putString("createTime", post.getCreateTime());
+        args.putInt("remainSeat", post.getRemainSeat());
+        args.putInt("allSeat", post.getAllSeat());
+        args.putInt("gender", post.getGender());
+        detailPostFragment.setArguments(args);
+
+        // Replace the current fragment with DetailPostFragment
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.containers, detailPostFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 }

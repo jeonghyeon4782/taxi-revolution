@@ -123,7 +123,6 @@ public class DepartureSearchFragment extends Fragment implements OnMapReadyCallb
                                 if (location != null) {
                                     LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                                     // Get the detailed address from the current location
-                                    System.out.println(departureLocation);
                                     departureLocation = getDetailedAddress(currentLatLng);
 
                                     // Clear the map and add a marker for the current location

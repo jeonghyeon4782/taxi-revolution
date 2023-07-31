@@ -50,7 +50,7 @@ public interface API {
     Call<ResponseDto<Boolean>> deleteMyInfo(@Header("Authorization") String authorization);
 
     @GET("/api/post")
-    Call<ResponseDto<List<PostResponseDto>>> getAllPost(@Header("Authorization") String authorization);
+    Call<ResponseDto<List<PostResponseDto>>> getAllPost();
 
     @POST("/api/post")
     Call<ResponseDto<Boolean>> addPost(@Header("Authorization") String authorization, @Body PostAddRequestDto requestDto);

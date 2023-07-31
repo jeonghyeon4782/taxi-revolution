@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_recruitmentStatus"
             android:layout_marginTop="10dp"
-            android:hint="제목을 입력해주세요"
+            android:hint="ex) 한경대 >> 중앙대"
             android:textSize="20dp"
             android:fontFamily="@font/welcome"
             android:textColor="@color/black"
@@ -116,7 +116,6 @@
             android:layout_below="@+id/txt_departure"
             android:layout_toRightOf="@+id/ivw_departure"
             android:layout_marginLeft="5dp"
-            android:hint="출발지를 입력해주세요"
             android:textSize="18dp"
             android:fontFamily="@font/welcome"
             android:textColor="@color/black"
@@ -130,14 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_departure"
             android:layout_alignParentRight="true">
-            <ImageButton
-                android:id="@+id/btn_nowlocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/baseline_my_location_24"
-                android:background="#00ff0000"/>
+
             <Button
                 android:id="@+id/btn_departure"
                 android:layout_width="wrap_content"
@@ -177,7 +169,6 @@
             android:layout_below="@+id/txt_arrival"
             android:layout_toRightOf="@+id/ivw_arrival"
             android:layout_marginLeft="5dp"
-            android:hint="도착지를 입력해주세요"
             android:textSize="18dp"
             android:fontFamily="@font/welcome"
             android:textColor="@color/black"
@@ -235,7 +226,7 @@
             android:textSize="13dp"
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
-            android:background="@drawable/editbutton"/>
+            android:background="@drawable/room"/>
         <Button
             android:id="@+id/btn_departureTime"
             android:layout_width="wrap_content"
@@ -252,7 +243,7 @@
             android:textSize="13dp"
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
-            android:background="@drawable/editbutton"/>
+            android:background="@drawable/room"/>
 
 
 
@@ -406,7 +397,7 @@
             <NumberPicker
                 android:id="@+id/numberpicker"
                 android:layout_width="80dp"
-                android:layout_height="wrap_content"
+                android:layout_height="140dp"
                 android:padding="15dp"
                 android:theme="@style/AppTheme.Picker"
                 android:layout_marginLeft="10dp"
@@ -416,7 +407,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/numberpicker"
-                android:layout_marginTop="84dp"
+                android:layout_marginTop="64dp"
                 android:layout_marginLeft="3dp"
                 android:textSize="15dp"
                 android:fontFamily="@font/welcome"

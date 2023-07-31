@@ -7,67 +7,79 @@
 
 
     <!--    RelativeLayout으로 변경-->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/inputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
-
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
+        <RelativeLayout
+            android:id="@+id/Layout_search"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="Google 지도" />
-
-        <!--        글자 크기 조절-->
-        <EditText
-            android:id="@+id/positionEditText"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="주소를 입력하세요"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:drawableStart="@drawable/baseline_location2_on_24"
-            android:drawableLeft="@drawable/baseline_location2_on_24"
-            android:drawablePadding="5dp"
-            android:textSize="20dp"
-            android:paddingLeft="5dp"
-            android:background="@drawable/room"
-            android:textColor="@color/gray"
-            android:inputType="text" />
-
-        <ImageButton
-            android:id="@+id/btn_nowlocation"
-            android:layout_alignParentRight="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="65dp"
-            android:background="#00ff0000"
-            android:src="@drawable/baseline_my_location_24" />
-
-        <ImageButton
-            android:id="@+id/positionButton"
-            android:layout_alignParentRight="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/search"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="28dp"
-            android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:contentDescription="Image Button" />
-
-        <Button
-            android:id="@+id/btn_complete"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:text="완료"/>
+            android:layout_weight="1">
 
+            <!--            지도-->
 
-    </RelativeLayout>
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Google 지도" />
+            <!--        글자 크기 조절-->
+            <EditText
+                android:id="@+id/positionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="주소를 입력하세요"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:drawableStart="@drawable/baseline_location2_on_24"
+                android:drawableLeft="@drawable/baseline_location2_on_24"
+                android:drawablePadding="5dp"
+                android:textSize="20dp"
+                android:paddingLeft="5dp"
+                android:background="@drawable/room"
+                android:textColor="@color/gray"
+                android:inputType="text" />
+
+            <ImageButton
+                android:id="@+id/btn_nowlocation"
+                android:layout_alignParentRight="true"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="65dp"
+                android:background="#00ff0000"
+                android:src="@drawable/baseline_my_location_24" />
+
+            <ImageButton
+                android:id="@+id/positionButton"
+                android:layout_alignParentRight="true"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/search"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="28dp"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:contentDescription="Image Button" />
+
+            <Button
+                android:id="@+id/btn_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="15dp"
+                android:layout_alignParentBottom="true"
+                android:textSize="15dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/letter"
+                android:background="@drawable/room"
+                android:text="출발지로 설정"/>
+        </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>
