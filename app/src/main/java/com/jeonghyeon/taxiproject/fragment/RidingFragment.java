@@ -81,7 +81,6 @@ public class RidingFragment extends Fragment implements OnMapReadyCallback, Goog
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,15 +129,20 @@ public class RidingFragment extends Fragment implements OnMapReadyCallback, Goog
         sos_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(count == 0) {
-                    police_btn.setVisibility(View.VISIBLE);
-                    fire_btn.setVisibility(View.VISIBLE);
-                    count=1;
-                }
-                else{
-                    police_btn.setVisibility(View.INVISIBLE);
-                    fire_btn.setVisibility(View.INVISIBLE);
-                    count=0;
+                if (isUpdatingLocation) {
+                    if(count == 0) {
+                        police_btn.setVisibility(View.VISIBLE);
+                        fire_btn.setVisibility(View.VISIBLE);
+                        count=1;
+                    }
+                    else{
+                        police_btn.setVisibility(View.INVISIBLE);
+                        fire_btn.setVisibility(View.INVISIBLE);
+                        count=0;
+                    }
+                } else {
+                    showToast("주행을 시작해주세요");
+                    return;
                 }
             }
         });
@@ -229,7 +233,7 @@ public class RidingFragment extends Fragment implements OnMapReadyCallback, Goog
             }
         });
 
-// 위치 업데이트를 시작하기 위한 초기화
+        // 위치 업데이트를 시작하기 위한 초기화
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
         locationCallback = new LocationCallback() {
             @Override

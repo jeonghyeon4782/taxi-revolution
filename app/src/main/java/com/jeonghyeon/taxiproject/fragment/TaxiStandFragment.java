@@ -234,7 +234,7 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
     private void fetchDataFromAPI() {
         // Retrofit 객체 생성
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://58.121.164.22:8000/") // 스프링부트 API의 기본 URL을 설정
+                .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

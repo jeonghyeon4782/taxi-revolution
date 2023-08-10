@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
@@ -54,13 +55,15 @@ public class NoticeBoardFragment extends Fragment {
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private TokenManager tokenManager; // TokenManager 객체 추가
-    private EditText etEt;
-    private ImageButton btnBtn;
+    private EditText etEt1, etEt2;
+    private ImageButton btnBtn1, btnBtn2;
     private Button btn_distancesort, btn_departureTime, btn_new, btn_distance; // 정렬 버튼 , 출발시간순 , 최신순 , 거리순
     private int dcount = 0;
     private Button btnWrite, btnMyPost;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private static final float MAX_DISTANCE = 1000; // 1km
 
     public NoticeBoardFragment() {
         // Required empty public constructor
@@ -72,12 +75,14 @@ public class NoticeBoardFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notice_board, container, false);
 
-        etEt = view.findViewById(R.id.et_destinationLocation);
-        btnBtn = view.findViewById(R.id.btn_destinationLocation);
+        etEt1 = view.findViewById(R.id.et_departure);
+        etEt2 = view.findViewById(R.id.et_arrival);
+        btnBtn1 = view.findViewById(R.id.btn_departure);
+        btnBtn2 = view.findViewById(R.id.btn_arrival);
+        swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.refresh_layout);
 
         tokenManager = new TokenManager(requireContext());
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -100,20 +105,42 @@ public class NoticeBoardFragment extends Fragment {
 
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.updateTextView("카풀");
-        etEt.setText(null);
-
-
+        etEt1.setText(null);
+        etEt2.setText(null);
 
         if (!isAccessTokenAvailable()) {
             btnMyPost.setVisibility(View.GONE);
             btnWrite.setVisibility(View.GONE);
         }
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchPosts();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         postAdapter.setOnItemClickListener(new PostAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(PostResponseDto post) {
                 // Handle click event here
                 openDetailPostFragment(post);
+            }
+        });
+
+        btnMyPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                MyPostFragment myPostFragment = new MyPostFragment();
+                if (mainActivity != null) {
+                    mainActivity.getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.containers, myPostFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
             }
         });
 
@@ -127,11 +154,7 @@ public class NoticeBoardFragment extends Fragment {
 
                 if (mainActivity != null) {
                     // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
-                    mainActivity.getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.containers, addPostFragment)
-                            .addToBackStack(null)
-                            .commit();
+                    mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.containers, addPostFragment).addToBackStack(null).commit();
                 }
             }
         });
@@ -189,6 +212,7 @@ public class NoticeBoardFragment extends Fragment {
                 }
             }
         });
+
         //     출발시간순 버튼 클릭시
         btn_departureTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,13 +228,64 @@ public class NoticeBoardFragment extends Fragment {
 
         fetchPosts();
 
-        btnBtn.setOnClickListener(new View.OnClickListener() {
+        // btnBtn1 버튼 클릭 시
+        btnBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputText = etEt.getText().toString().trim();
-                postAdapter.filterPosts(inputText);
-                btn_distancesort.setText("최신순");
-                sortByCreateTimeInRecyclerView();
+                String enteredLocation = etEt1.getText().toString();
+                if (!enteredLocation.isEmpty()) {
+                    // 지오코딩 작업 수행하여 위도와 경도 얻기
+                    Geocoder geocoder = new Geocoder(requireContext());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocationName(enteredLocation, 1);
+                        if (!addresses.isEmpty()) {
+                            Address address = addresses.get(0);
+                            double latitude = address.getLatitude();
+                            double longitude = address.getLongitude();
+                            filterPostsByDepartureLocation1(latitude, longitude);
+                            sortByCreateTimeInRecyclerView();
+                            btn_distancesort.setText("최신순");
+
+                        } else {
+                            showToast("위치를 찾을 수 없습니다.");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        showToast("지오코딩 오류.");
+                    }
+                } else {
+                    showToast("위치를 입력하세요.");
+                }
+            }
+        });
+
+        // btnBtn2 버튼 클릭 시
+        btnBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String enteredLocation = etEt2.getText().toString();
+                if (!enteredLocation.isEmpty()) {
+                    // 지오코딩 작업 수행하여 위도와 경도 얻기
+                    Geocoder geocoder = new Geocoder(requireContext());
+                    try {
+                        List<Address> addresses = geocoder.getFromLocationName(enteredLocation, 1);
+                        if (!addresses.isEmpty()) {
+                            Address address = addresses.get(0);
+                            double latitude = address.getLatitude();
+                            double longitude = address.getLongitude();
+                            filterPostsByDepartureLocation2(latitude, longitude);
+                            sortByCreateTimeInRecyclerView();
+                            btn_distancesort.setText("최신순");
+                        } else {
+                            showToast("위치를 찾을 수 없습니다.");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        showToast("지오코딩 오류.");
+                    }
+                } else {
+                    showToast("위치를 입력하세요.");
+                }
             }
         });
 
@@ -219,49 +294,47 @@ public class NoticeBoardFragment extends Fragment {
 
     private void fetchPosts() {
         String accessToken = tokenManager.getAccessToken();
-            // Retrofit 객체 생성
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://58.121.164.22:8000/") // 스프링부트 API의 기본 URL을 설정
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+        // Retrofit 객체 생성
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
+                .addConverterFactory(GsonConverterFactory.create()).build();
 
-            // API 인터페이스 생성
-            API apiService = retrofit.create(API.class);
+        // API 인터페이스 생성
+        API apiService = retrofit.create(API.class);
 
-            // API 호출
-            Call<ResponseDto<List<PostResponseDto>>> call = apiService.getAllPost();
-            call.enqueue(new Callback<ResponseDto<List<PostResponseDto>>>() {
-                @Override
-                public void onResponse(Call<ResponseDto<List<PostResponseDto>>> call, Response<ResponseDto<List<PostResponseDto>>> response) {
-                    if (response.isSuccessful()) {
-                        ResponseDto<List<PostResponseDto>> responseDto = response.body();
-                        if (responseDto != null && responseDto.getData() != null) {
-                            List<PostResponseDto> postList = responseDto.getData();
+        // API 호출
+        Call<ResponseDto<List<PostResponseDto>>> call = apiService.getAllPost();
+        call.enqueue(new Callback<ResponseDto<List<PostResponseDto>>>() {
+            @Override
+            public void onResponse(Call<ResponseDto<List<PostResponseDto>>> call, Response<ResponseDto<List<PostResponseDto>>> response) {
+                if (response.isSuccessful()) {
+                    ResponseDto<List<PostResponseDto>> responseDto = response.body();
+                    if (responseDto != null && responseDto.getData() != null) {
+                        List<PostResponseDto> postList = responseDto.getData();
 
-                            // Filter the posts with recruitmentStatus "모집완료"
-                            List<PostResponseDto> filteredPosts = new ArrayList<>();
-                            for (PostResponseDto post : postList) {
-                                if ("모집중".equals(post.getRecruitmentStatus())) {
-                                    filteredPosts.add(post);
-                                }
+                        // Filter the posts with recruitmentStatus "모집완료"
+                        List<PostResponseDto> filteredPosts = new ArrayList<>();
+                        for (PostResponseDto post : postList) {
+                            if ("모집중".equals(post.getRecruitmentStatus())) {
+                                filteredPosts.add(post);
                             }
-
-                            // postList를 RecyclerView에 표시하는 코드 작성
-                            postAdapter.setPosts(filteredPosts);
-                            postAdapter.setBackUpPosts(filteredPosts);
-                            sortByCreateTimeInRecyclerView();
                         }
-                    } else {
-                        showToast("API 호출 실패");
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseDto<List<PostResponseDto>>> call, Throwable t) {
+                        // postList를 RecyclerView에 표시하는 코드 작성
+                        postAdapter.setPosts(filteredPosts);
+                        postAdapter.setBackUpPosts(filteredPosts);
+                        sortByCreateTimeInRecyclerView();
+                    }
+                } else {
                     showToast("API 호출 실패");
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDto<List<PostResponseDto>>> call, Throwable t) {
+                showToast("API 호출 실패");
+            }
+        });
+    }
 
 
     // 거리순 정렬
@@ -354,7 +427,6 @@ public class NoticeBoardFragment extends Fragment {
             }
         }
 
-        // Sort futurePosts in ascending order of departure time proximity to the current time
         Collections.sort(futurePosts, new Comparator<PostResponseDto>() {
             @Override
             public int compare(PostResponseDto post1, PostResponseDto post2) {
@@ -379,7 +451,6 @@ public class NoticeBoardFragment extends Fragment {
             }
         });
 
-        // Combine futurePosts and pastPosts, with futurePosts first
         List<PostResponseDto> sortedPosts = new ArrayList<>();
         sortedPosts.addAll(futurePosts);
         sortedPosts.addAll(pastPosts);
@@ -447,11 +518,85 @@ public class NoticeBoardFragment extends Fragment {
         // Replace the current fragment with DetailPostFragment
         MainActivity mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            mainActivity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.containers, detailPostFragment)
-                    .addToBackStack(null)
-                    .commit();
+            mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.containers, detailPostFragment).addToBackStack(null).commit();
         }
+    }
+
+    // 출발지 검색 주소 비교
+    private void filterPostsByDepartureLocation1(double latitude, double longitude) {
+        List<PostResponseDto> filteredPosts = new ArrayList<>();
+        // 지오코더 초기화
+        Geocoder geocoder = new Geocoder(requireContext());
+
+        Location userLocation = new Location("");
+        userLocation.setLatitude(latitude);
+        userLocation.setLongitude(longitude);
+
+        for (PostResponseDto post : postAdapter.getBackUpPosts()) {
+            try {
+                List<Address> departureAddresses = geocoder.getFromLocationName(post.getDepartureLocation(), 1);
+                if (!departureAddresses.isEmpty()) {
+                    Address departureLocation = departureAddresses.get(0);
+                    double departureLatitude = departureLocation.getLatitude();
+                    double departureLongitude = departureLocation.getLongitude();
+
+                    // 출발지와 사용자 위치 간의 거리 계산
+                    Location departureLocationObj = new Location("");
+                    departureLocationObj.setLatitude(departureLatitude);
+                    departureLocationObj.setLongitude(departureLongitude);
+
+                    float distance = userLocation.distanceTo(departureLocationObj);
+
+                    // 일정 거리 이내의 게시글을 필터링
+                    if (distance <= MAX_DISTANCE) { // MAX_DISTANCE는 원하는 거리로 설정하세요
+                        filteredPosts.add(post);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // 게시글 리스트 업데이트 및 어댑터에 알리기
+        postAdapter.setPosts(filteredPosts);
+    }
+
+    // 도착지 검색 주소 비교
+    private void filterPostsByDepartureLocation2(double latitude, double longitude) {
+        List<PostResponseDto> filteredPosts = new ArrayList<>();
+        // 지오코더 초기화
+        Geocoder geocoder = new Geocoder(requireContext());
+
+        Location userLocation = new Location("");
+        userLocation.setLatitude(latitude);
+        userLocation.setLongitude(longitude);
+
+        for (PostResponseDto post : postAdapter.getBackUpPosts()) {
+            try {
+                List<Address> arrivalAddresses = geocoder.getFromLocationName(post.getDestinationLocation(), 1);
+                if (!arrivalAddresses.isEmpty()) {
+                    Address arrivalLocation = arrivalAddresses.get(0);
+                    double arrivalLatitude = arrivalLocation.getLatitude();
+                    double arrivalLongitude = arrivalLocation.getLongitude();
+
+                    // 출발지와 사용자 위치 간의 거리 계산
+                    Location arrivalLocationObj = new Location("");
+                    arrivalLocationObj.setLatitude(arrivalLatitude);
+                    arrivalLocationObj.setLongitude(arrivalLongitude);
+
+                    float distance = userLocation.distanceTo(arrivalLocationObj);
+
+                    // 일정 거리 이내의 게시글을 필터링
+                    if (distance <= MAX_DISTANCE) { // MAX_DISTANCE는 원하는 거리로 설정하세요
+                        filteredPosts.add(post);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // 게시글 리스트 업데이트 및 어댑터에 알리기
+        postAdapter.setPosts(filteredPosts);
     }
 }

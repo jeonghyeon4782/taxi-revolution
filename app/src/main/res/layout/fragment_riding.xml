@@ -4,44 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/sos_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/border"
-        android:drawableBottom="@drawable/emergencyxml"
-        android:padding="10dp"
-        android:text="SOS" />
 
-    <Button
-        android:id="@+id/police_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@id/fire_btn"
-        android:background="@drawable/border"
-        android:drawableBottom="@drawable/policexml"
-        android:padding="10dp"
-        android:text="112" />
-
-    <Button
-        android:id="@+id/fire_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@id/sos_btn"
-        android:background="@drawable/border"
-        android:drawableBottom="@drawable/ambulancexml"
-        android:padding="10dp"
-        android:text="119" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
@@ -49,16 +14,89 @@
         android:layout_height="match_parent"
         android:contentDescription="Google 지도" />
 
-    <Button
-        android:id="@+id/btn_startAndStop"
-        android:layout_width="wrap_content"
+    <!--    하단 버튼 레이아웃-->
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:background="@drawable/rounded_button"
-        android:text="전송 시작" />
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentBottom="true">
+
+
+        <!--        112버튼-->
+        <Button
+            android:id="@+id/police_btn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="7dp"
+            android:textColor="@color/letter"
+            android:background="@drawable/button"
+            android:drawableStart="@drawable/policexml"
+            android:drawableLeft="@drawable/policexml"
+            android:textSize="15dp"
+            android:padding="15dp"
+            android:drawablePadding="-10dp"
+            android:fontFamily="@font/welcome"
+            android:text="112" />
+
+        <!--        119버튼-->
+        <Button
+            android:id="@+id/fire_btn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/police_btn"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="7dp"
+            android:textColor="@color/letter"
+            android:textAlignment="center"
+            android:background="@drawable/button"
+            android:textSize="15dp"
+            android:padding="15dp"
+            android:fontFamily="@font/welcome"
+            android:drawablePadding="-10dp"
+            android:drawableLeft="@drawable/ambulancexml"
+            android:drawableStart="@drawable/ambulancexml"
+            android:text="119" />
+
+
+        <!--        sos버튼-->
+        <Button
+            android:id="@+id/sos_btn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fire_btn"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/letter"
+            android:background="@drawable/button"
+            android:drawableLeft="@drawable/emergencyxml"
+            android:drawableStart="@drawable/emergencyxml"
+            android:textSize="15dp"
+            android:padding="15dp"
+            android:fontFamily="@font/welcome"
+            android:textAlignment="center"
+            android:drawablePadding="-10dp"
+            android:text="SOS" />
+
+
+        <!--        전송 시작 버튼-->
+        <Button
+            android:id="@+id/btn_startAndStop"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fire_btn"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:textSize="15dp"
+            android:padding="15dp"
+            android:fontFamily="@font/welcome"
+            android:drawableLeft="@drawable/baseline_location_on_24"
+            android:drawableStart="@drawable/baseline_location_on_24"
+            android:textColor="@color/letter"
+            android:textAlignment="center"
+            android:background="@drawable/button"
+            android:text="전송 시작" />
+    </RelativeLayout>
 
 </RelativeLayout>

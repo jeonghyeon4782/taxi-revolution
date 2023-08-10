@@ -1,7 +1,13 @@
 package com.jeonghyeon.taxiproject.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,9 +17,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeonghyeon.taxiproject.R;
 
-public class DetailPostFragment extends Fragment {
+import java.io.IOException;
+import java.util.List;
+
+public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
+
+    private MapView mapView_arrival, mapView_departure;
+    private GoogleMap googleMap_arrival, googleMap_departure;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     private Long postId; // primary key
     private String title; // 제목
@@ -68,6 +89,29 @@ public class DetailPostFragment extends Fragment {
         genderImageView = view.findViewById(R.id.genderImageView);
         contentTextView = view.findViewById(R.id.contentTextView);
 
+        // FusedLocationProviderClient 초기화
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+
+        mapView_arrival = view.findViewById(R.id.map_arrival);
+        mapView_arrival.onCreate(savedInstanceState);
+        mapView_arrival.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                googleMap_arrival = googleMap;
+                DetailPostFragment.this.onMapReady(googleMap); // onMapReady 호출
+            }
+        });
+
+        mapView_departure = view.findViewById(R.id.map_departure);
+        mapView_departure.onCreate(savedInstanceState);
+        mapView_departure.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                googleMap_departure = googleMap;
+                DetailPostFragment.this.onMapReady(googleMap); // onMapReady 호출
+            }
+        });
+
         Bundle args = getArguments();
         if (args != null) {
             postId = args.getLong("postId");
@@ -102,6 +146,81 @@ public class DetailPostFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView_arrival.onResume();
+        mapView_departure.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView_arrival.onPause();
+        mapView_departure.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView_arrival.onDestroy();
+        mapView_departure.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView_arrival.onLowMemory();
+        mapView_arrival.onLowMemory();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        if (map == googleMap_arrival) {
+            LatLng destinationLatLng = getLocationFromAddress(destinationLocation);
+
+            if (destinationLatLng != null) {
+                map.addMarker(new MarkerOptions()
+                        .position(destinationLatLng)
+                        .title("도착지"));
+
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16));
+            } else {
+                showToast("도착지 주소를 찾을 수 없습니다.");
+            }
+        } else if (map == googleMap_departure) {
+            LatLng departureLatLng = getLocationFromAddress(departureLocation);
+
+            if (departureLatLng != null) {
+                map.addMarker(new MarkerOptions()
+                        .position(departureLatLng)
+                        .title("출발지"));
+
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(departureLatLng, 16));
+            } else {
+                showToast("출발지 주소를 찾을 수 없습니다.");
+            }
+        }
+    }
+
+    private LatLng getLocationFromAddress(String strAddress) {
+        Geocoder geocoder = new Geocoder(requireContext());
+        List<Address> addressList;
+        LatLng latLng = null;
+
+        try {
+            addressList = geocoder.getFromLocationName(strAddress, 1);
+            if (addressList != null && !addressList.isEmpty()) {
+                Address address = addressList.get(0);
+                latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return latLng;
     }
 
     // toast 보여주기

@@ -4,9 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,31 +15,79 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!--        출발지 입력칸-->
+
+
+            <ImageView
+                android:id="@+id/ivw_departure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/departure_circle" />
             <!--        검색 입력칸-->
             <EditText
-                android:id="@+id/et_destinationLocation"
+                android:id="@+id/et_departure"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/room"
-                android:hint="통합 검색 ex) 한경대"
-                android:inputType="text"
-                android:paddingLeft="20dp"
-                android:textColor="@color/gray"
-                android:textSize="15dp" />
-
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/ivw_departure"
+                android:textSize="18dp"
+                android:padding="5dp"
+                android:hint="출발지를 입력하세요"
+                android:background="@drawable/massage"
+                android:paddingLeft="5dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/black"
+                android:textColorHint="@color/lightgray"/>
             <ImageButton
-                android:id="@+id/btn_destinationLocation"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:id="@+id/btn_departure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="27dp"
-                android:layout_marginRight="10dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="Image Button"
-                android:scaleType="fitCenter"
-                android:src="@drawable/search" />
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/baseline_location2_on_24"
+                android:background="#00ff0000"/>
 
+
+
+            <!--        도착지 입력칸-->
+
+
+            <ImageView
+                android:id="@+id/ivw_arrival"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_below="@+id/ivw_departure"
+                android:src="@drawable/arrival_circle"/>
+            <!--        검색 입력칸-->
+            <EditText
+                android:id="@+id/et_arrival"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/ivw_departure"
+                android:layout_below="@+id/et_departure"
+                android:textSize="18dp"
+                android:padding="5dp"
+                android:hint="도착지를 입력하세요"
+                android:paddingLeft="5dp"
+                android:background="@drawable/massage"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/black"
+                android:textColorHint="@color/lightgray"/>
+            <ImageButton
+                android:id="@+id/btn_arrival"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/et_departure"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="13dp"
+                android:src="@drawable/baseline_location2_on_24"
+                android:background="#00ff0000"/>
 
         </RelativeLayout>
 
@@ -54,7 +99,6 @@
             android:layout_below="@+id/Layout_search"
             android:layout_marginBottom="10dp"
             android:layout_weight="1">
-
             <Button
                 android:id="@+id/btn_distancesort"
                 android:layout_width="100dp"
@@ -66,18 +110,19 @@
                 android:textColor="@color/gray"
                 android:textSize="15dp" />
 
-
-
-
-
-            <!--                리사이클뷰 넣는곳-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/btn_distancesort" />
+                android:layout_below="@+id/btn_distancesort"
+                android:id='@+id/refresh_layout'>
 
+                <!--                리사이클뷰 넣는곳-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <Button
                 android:id="@+id/btn_new"
@@ -93,7 +138,6 @@
                 android:paddingBottom="10dp"
                 android:text="최신순"
                 android:textColor="@color/gray" />
-
             <Button
                 android:id="@+id/btn_distance"
                 android:layout_width="100dp"
@@ -154,7 +198,6 @@
                 android:paddingBottom="10dp"
                 android:text="내가 쓴 글"
                 android:textColor="@color/letter" />
-
             <Button
                 android:id="@+id/btn_write"
                 android:layout_width="100dp"

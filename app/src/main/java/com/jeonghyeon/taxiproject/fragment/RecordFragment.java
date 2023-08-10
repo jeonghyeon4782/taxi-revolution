@@ -12,6 +12,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.roomDB.RoomDB;
@@ -28,6 +29,7 @@ public class RecordFragment extends Fragment {
     private List<Record> recordList;
     private RoomDB database;
     private TextView tvEmptyList;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public RecordFragment() {
 
@@ -43,6 +45,7 @@ public class RecordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_record, container, false);
+        swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.refresh_layout);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         tvEmptyList = view.findViewById(R.id.tv_emptyList);
@@ -50,6 +53,15 @@ public class RecordFragment extends Fragment {
         recordList = new ArrayList<>();
         recordAdapter = new RecordAdapter(recordList, requireContext());
         recyclerView.setAdapter(recordAdapter);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchRecordsFromDatabase();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return view;
     }
 

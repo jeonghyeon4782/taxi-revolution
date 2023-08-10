@@ -56,23 +56,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecordViewHold
         return backUpPosts;
     }
 
-    public void filterPosts(String inputText) {
-        if (inputText.isEmpty()) {
-            setPosts(backUpPosts);
-        } else {
-            List<PostResponseDto> filteredList = new ArrayList<>();
-            for (PostResponseDto post : backUpPosts) {
-                if (post.getContent().toLowerCase().contains(inputText.toLowerCase()) ||
-                        post.getTitle().toLowerCase().contains(inputText.toLowerCase()) ||
-                        post.getDepartureLocation().toLowerCase().contains(inputText.toLowerCase()) ||
-                        post.getDestinationLocation().toLowerCase().contains(inputText.toLowerCase())) {
-                    filteredList.add(post);
-                }
-            }
-            setPosts(filteredList);
-        }
-    }
-
     @NonNull
     @Override
     public RecordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

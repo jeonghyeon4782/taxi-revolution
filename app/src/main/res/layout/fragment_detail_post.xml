@@ -178,24 +178,29 @@
                 android:textSize="18dp"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/map_departure"
+
+            <FrameLayout
+                android:id="@+id/map_departure_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginLeft="10dp"
-                android:text="지도가 나올 화면 입니다"
-                android:background="@color/lightgray"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/departureLocationTextView"/>
+                android:layout_below="@+id/departureLocationTextView">
 
+                <!-- 출발지 지도 -->
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/map_departure"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightgray"/>
 
-
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/txt_arrival"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/map_departure"
+                android:layout_below="@+id/map_departure_wrapper"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:text="도착지"
@@ -221,17 +226,16 @@
                 android:textSize="18dp"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/black"/>
-            <TextView
+
+            <com.google.android.gms.maps.MapView
                 android:id="@+id/map_arrival"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:layout_below="@+id/destinationLocationTextView"
                 android:layout_marginLeft="10dp"
-                android:text="지도가 나올 화면 입니다"
-                android:background="@color/lightgray"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/destinationLocationTextView"/>
-
-
+                android:clickable="true"
+                android:layout_marginTop="7dp"
+                android:background="@color/lightgray" />
 
             <TextView
                 android:id="@+id/txt_departureTime"
@@ -299,25 +303,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:textSize="15dp"
-                android:text="채팅방 입장"
+                android:text="쪽지 전송"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/letter"
                 android:background="@drawable/room"
                 />
-
-
-
         </RelativeLayout>
-
-
-
-
-
-
-
     </RelativeLayout>
-
-
-
-
 </RelativeLayout>

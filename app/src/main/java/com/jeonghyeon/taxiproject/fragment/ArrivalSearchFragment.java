@@ -100,7 +100,6 @@ public class ArrivalSearchFragment extends Fragment implements OnMapReadyCallbac
                 AddPostFragment addPostFragment = new AddPostFragment();
 
                 if (mainActivity != null) {
-                    mainActivity.setArrivalLocation(arrivalLocation);
                     // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
                     mainActivity.getSupportFragmentManager()
                             .beginTransaction()
@@ -124,7 +123,6 @@ public class ArrivalSearchFragment extends Fragment implements OnMapReadyCallbac
                                 if (location != null) {
                                     LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                                     // Get the detailed address from the current location
-                                    System.out.println(arrivalLocation);
                                     arrivalLocation = getDetailedAddress(currentLatLng);
 
                                     // Clear the map and add a marker for the current location

@@ -99,7 +99,6 @@ public class DepartureSearchFragment extends Fragment implements OnMapReadyCallb
                 AddPostFragment addPostFragment = new AddPostFragment();
 
                 if (mainActivity != null) {
-                    mainActivity.setDepartureLocation(departureLocation);
                     // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
                     mainActivity.getSupportFragmentManager()
                             .beginTransaction()

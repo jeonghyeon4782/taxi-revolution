@@ -28,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AddPostFragment extends Fragment {
+public class AddPostFragment extends Fragment implements ArrivalSearchDialogFragment.OnCompleteListener, DepartureSearchDialogFragment.OnCompleteListener{
 
     private String status, date;
     private String groupCount;
@@ -94,17 +94,6 @@ public class AddPostFragment extends Fragment {
 
 
         MainActivity mainActivity = (MainActivity) getActivity();
-        etDeparture.setText(mainActivity.getDepartureLocation());
-        etArrival.setText(mainActivity.getArrivalLocation());
-        etInputTitle.setText(mainActivity.getTitlee());
-        etContent.setText(mainActivity.getContents());
-        btn_departureTime.setText(mainActivity.getTime());
-        btn_recruitmentStatus.setText(mainActivity.getStatus());
-        btn_number.setText(mainActivity.getGroupCount());
-        btn_departureDate.setText(mainActivity.getYear());
-        status = mainActivity.getStatus();
-        groupCount = mainActivity.getGroupCount();
-
         mainActivity.updateTextView("카풀 > 글쓰기");
 
         etDeparture.setEnabled(false);
@@ -160,10 +149,8 @@ public class AddPostFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // MainActivity 인스턴스 가져오기
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.setfTime(String.valueOf(np_hours.getValue() + ":" + String.valueOf(np_minute.getValue()) + ":00"));
-                mainActivity.setTime(String.valueOf(np_hours.getValue() + "시 " + String.valueOf(np_minute.getValue()) + "분"));
                 btn_departureTime.setText(String.valueOf(np_hours.getValue() + "시 " + String.valueOf(np_minute.getValue()) + "분"));
+                date = date + " " + (String.valueOf(np_hours.getValue() + ":" + String.valueOf(np_minute.getValue()) + ":" + "00"));
                 np_hours.setVisibility(View.INVISIBLE);
                 np_minute.setVisibility(View.INVISIBLE);
                 layout_time.setVisibility(View.INVISIBLE);
@@ -198,9 +185,7 @@ public class AddPostFragment extends Fragment {
         btn_recruiting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) getActivity();
                 status = btn_recruiting.getText().toString();
-                mainActivity.setStatus(status);
                 btn_recruitmentStatus.setText(status);
                 btn_recruiting.setVisibility(View.INVISIBLE);
                 btn_recruitmentComplete.setVisibility(View.INVISIBLE);
@@ -212,9 +197,7 @@ public class AddPostFragment extends Fragment {
         btn_recruitmentComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) getActivity();
                 status = btn_recruitmentComplete.getText().toString();
-                mainActivity.setStatus(status);
                 btn_recruitmentStatus.setText(status);
                 btn_recruiting.setVisibility(View.INVISIBLE);
                 btn_recruitmentComplete.setVisibility(View.INVISIBLE);
@@ -265,9 +248,7 @@ public class AddPostFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) getActivity();
                 groupCount = String.valueOf(numberPicker.getValue());
-                mainActivity.setGroupCount(groupCount);
                 btn_number.setText(String.valueOf(groupCount));
                 layout_numberok.setVisibility(View.INVISIBLE);
                 btn_ok.setVisibility(View.INVISIBLE);
@@ -299,10 +280,7 @@ public class AddPostFragment extends Fragment {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                MainActivity mainActivity = (MainActivity) getActivity();
                 date = String.format("%d-%d-%d", year, month + 1, dayOfMonth);
-                mainActivity.setfYear(String.format("%d-%d-%d", year, month + 1, dayOfMonth));
-                mainActivity.setYear(String.format("%d / %d / %d", year, month + 1, dayOfMonth));
                 btn_departureDate.setText(String.format("%d / %d / %d", year, month + 1, dayOfMonth));
                 calendarView.setVisibility(View.INVISIBLE);
                 ccount = 0;
@@ -314,9 +292,47 @@ public class AddPostFragment extends Fragment {
         btnWriteComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) getActivity();
+                String recruitmentStatus = btn_recruitmentStatus.getText().toString();
+                String groupCountText = btn_number.getText().toString();
+                String departureTimeText = btn_departureTime.getText().toString();
+                String departureDateText = btn_departureDate.getText().toString();
+                String departure = etDeparture.getText().toString();
+                String arrival = etArrival.getText().toString();
+                String title = etInputTitle.getText().toString();
+                String combinedDateTime = null;
 
-                fetchAddPost(etInputTitle.getText().toString(), etContent.getText().toString(), etDeparture.getText().toString(), etArrival.getText().toString(), status, Integer.parseInt(groupCount), mainActivity.getfYear() + " " + mainActivity.getfTime());
+                if (recruitmentStatus.equals("모집상태")) {
+                    showToast("모집상태를 선택하세요");
+                    return; // 검사를 중단하고 더 이상 진행하지 않음
+                }
+                if (groupCountText.equals("인원")) {
+                    showToast("인원수를 선택하세요");
+                    return;
+                }
+                if (title.isEmpty()) {
+                    showToast("제목을 입력하세요");
+                    return;
+                }
+                if (departure.isEmpty()) {
+                    showToast("출발지를 선택하세요");
+                    return;
+                }
+
+                if (arrival.isEmpty()) {
+                    showToast("도착지를 선택하세요");
+                    return;
+                }
+                if (departureDateText.equals("날짜")) {
+                    showToast("날짜를 선택하세요");
+                    return;
+                }
+                if (departureTimeText.equals("시간")) {
+                    showToast("시간을 선택하세요");
+                    return;
+                }
+
+                MainActivity mainActivity = (MainActivity) getActivity();
+                fetchAddPost(etInputTitle.getText().toString(), etContent.getText().toString(), etDeparture.getText().toString(), etArrival.getText().toString(), btn_recruitmentStatus.getText().toString(), Integer.parseInt(groupCountText), date);
 
                 // RidingFragment 생성 및 설정
                 NoticeBoardFragment noticeBoardFragment = new NoticeBoardFragment();
@@ -335,47 +351,20 @@ public class AddPostFragment extends Fragment {
         btnDeparture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                MainActivity mainActivity = (MainActivity) getActivity();
-
-                mainActivity.setTitlee(etInputTitle.getText().toString());
-                mainActivity.setContents(etContent.getText().toString());
-
-                // RidingFragment 생성 및 설정
-                DepartureSearchFragment departureSearchFragment = new DepartureSearchFragment();
-
-                if (mainActivity != null) {
-                    // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
-                    mainActivity.getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.containers, departureSearchFragment)
-                            .addToBackStack(null)
-                            .commit();
-                }
+                DepartureSearchDialogFragment dialogFragment = new DepartureSearchDialogFragment();
+                dialogFragment.show(getChildFragmentManager(), "departure_search_dialog");
             }
         });
 
         btnArrival.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity mainActivity = (MainActivity) getActivity();
-
-                mainActivity.setTitlee(etInputTitle.getText().toString());
-                mainActivity.setContents(etContent.getText().toString());
-
-                // RidingFragment 생성 및 설정
-                ArrivalSearchFragment arrivalSearchFragment = new ArrivalSearchFragment();
-
-                if (mainActivity != null) {
-                    // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
-                    mainActivity.getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.containers, arrivalSearchFragment)
-                            .addToBackStack(null)
-                            .commit();
-                }
+                ArrivalSearchDialogFragment dialogFragment = new ArrivalSearchDialogFragment();
+                dialogFragment.show(getChildFragmentManager(), "arrival_search_dialog");
             }
         });
+
+
 
         return view;
     }
@@ -398,7 +387,7 @@ public class AddPostFragment extends Fragment {
         } else {
             // Retrofit 객체 생성
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://58.121.164.22:8000/") // 스프링부트 API의 기본 URL을 설정
+                    .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
@@ -413,19 +402,9 @@ public class AddPostFragment extends Fragment {
                     if (response.isSuccessful()) {
                         ResponseDto<Boolean> responseDto = response.body();
                         int statusCode = responseDto.getStatus();
+                        String msg = responseDto.getMsg();
 
                         if (statusCode == 200) {
-                            MainActivity mainActivity = (MainActivity) getActivity();
-                            mainActivity.setfTime(null);
-                            mainActivity.setfYear(null);
-                            mainActivity.setYear("날짜");
-                            mainActivity.setTime("시간");
-                            mainActivity.setGroupCount("인원");
-                            mainActivity.setStatus("모집상태");
-                            mainActivity.setContents(null);
-                            mainActivity.setTitlee(null);
-                            mainActivity.setDepartureLocation(null);
-                            mainActivity.setArrivalLocation(null);
                             showToast("글 작성 완료");
 
                         } else if (statusCode == 423) { // 만료된 토큰이라면?
@@ -438,8 +417,8 @@ public class AddPostFragment extends Fragment {
                                         .addToBackStack(null)
                                         .commit();
                             }
+                            showToast(msg);
                         } else {
-                            String msg = responseDto.getMsg();
                             showToast(msg);
                         }
                     }
@@ -456,5 +435,19 @@ public class AddPostFragment extends Fragment {
     // toast 보여주기
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    // onComplete 메서드를 구현합니다.
+    @Override
+    public void onArrivalComplete(String arrivalLocation) {
+        // etArrival 필드의 값을 설정합니다.
+        etArrival.setText(arrivalLocation);
+    }
+
+    // onComplete 메서드를 구현합니다.
+    @Override
+    public void onComplete(String departureLocation) {
+        // etArrival 필드의 값을 설정합니다.
+        etDeparture.setText(departureLocation);
     }
 }

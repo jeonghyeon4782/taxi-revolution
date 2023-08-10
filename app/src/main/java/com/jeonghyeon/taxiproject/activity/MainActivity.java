@@ -73,93 +73,6 @@ public class MainActivity extends AppCompatActivity {
     private int gender;
     private int index = 0;
 
-    private String departureLocation;
-    private String arrivalLocation;
-    private String status = "모집상태", groupCount = "인원", titlee, contents, time = "시간", year = "날짜";
-    private String fYear, fTime;
-
-    public String getfYear() {
-        return fYear;
-    }
-
-    public void setfYear(String fYear) {
-        this.fYear = fYear;
-    }
-
-    public String getfTime() {
-        return fTime;
-    }
-
-    public void setfTime(String fTime) {
-        this.fTime = fTime;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getGroupCount() {
-        return groupCount;
-    }
-
-    public void setGroupCount(String groupCount) {
-        this.groupCount = groupCount;
-    }
-
-    public String getTitlee() {
-        return titlee;
-    }
-
-    public void setTitlee(String title) {
-        this.titlee = title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-    // 출발지와 도착지 설정하는 메서드
-    public void setDepartureLocation(String location) {
-        this.departureLocation = location;
-    }
-
-    public void setArrivalLocation(String location) {
-        this.arrivalLocation = location;
-    }
-
-    // 출발지와 도착지 설정하는 메서드
-    public String getDepartureLocation() {
-        return departureLocation;
-    }
-
-    // 출발지와 도착지 설정하는 메서드
-    public String getArrivalLocation() {
-        return arrivalLocation;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -287,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Retrofit 객체 생성
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://58.121.164.22:8000/") // 스프링부트 API의 기본 URL을 설정
+                    .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 

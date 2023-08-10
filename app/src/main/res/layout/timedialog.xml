@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:gravity="center_horizontal">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <NumberPicker
+            android:id="@+id/np_hours"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.Picker" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시"
+            android:textSize="15dp"
+            android:textColor="@color/letter"
+            android:fontFamily="@font/welcome"/>
+        <NumberPicker
+            android:id="@+id/np_minutes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:theme="@style/AppTheme.Picker" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="분"
+            android:textSize="15dp"
+            android:textColor="@color/letter"
+            android:fontFamily="@font/welcome"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_timeok"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="확인"
+            android:textSize="15dp"
+            android:minHeight="30dp"
+            android:padding="15dp"
+            android:textColor="@color/letter"
+            android:fontFamily="@font/welcome"
+            android:background="@drawable/room"/>
+<!--        <Button-->
+<!--            android:id="@+id/btn_timecancel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="취소"-->
+<!--            android:textSize="15dp"-->
+<!--            android:textColor="@color/letter"-->
+<!--            android:fontFamily="@font/welcome"-->
+<!--            android:background="@drawable/room"/>-->
+    </LinearLayout>
+
+
+</LinearLayout>
