@@ -55,7 +55,7 @@ public class PostController {
 
     // 글 삭제
     @DeleteMapping("/{postId}")
-    public ResponseDto<Boolean> deleteMyInfo(@PathVariable("postId") Long postId) {
+    public ResponseDto<Boolean> deletePost(@PathVariable("postId") Long postId) {
         ResponseDto<Boolean> responseDto = postService.deletePost(postId);
         return responseDto;
     }

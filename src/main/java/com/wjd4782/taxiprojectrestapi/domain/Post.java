@@ -74,7 +74,6 @@ public class Post {
         this.destinationLocation = requestDto.getDestinationLocation();
         this.recruitmentStatus = requestDto.getRecruitmentStatus();
         this.allSeat = requestDto.getAllSeat();
-        this.remainSeat = requestDto.getAllSeat() - 1;
         this.departureTime = departureTime;
     }
 }

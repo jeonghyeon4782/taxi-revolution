@@ -28,6 +28,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         // Request Header 에서 JWT 토큰 추출
         String token = resolveToken((HttpServletRequest) request);
 
+
         // 로그인 및 회원가입, 택시 승강장 요청은 토큰 검증 skip
         if (isLoginOrSignUpRequest((HttpServletRequest) request)) {
             chain.doFilter(request, response);
