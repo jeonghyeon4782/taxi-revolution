@@ -96,21 +96,21 @@
                 android:drawablePadding="5dp"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/gray" />
-            <Button
-                android:id="@+id/btn_block"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/recruitmentStatusTextView"
-                android:layout_alignParentRight="true"
-                android:background="#00ff0000"
-                android:minWidth="20dp"
-                android:layout_marginTop="5dp"
-                android:minHeight="20dp"
-                android:text="차단"
-                android:textSize="15dp"
-                android:padding="10dp"
-                android:textColor="@color/letter"
-                android:fontFamily="@font/welcome" />
+<!--            <Button-->
+<!--                android:id="@+id/btn_block"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/recruitmentStatusTextView"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:background="#00ff0000"-->
+<!--                android:minWidth="20dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:minHeight="20dp"-->
+<!--                android:text="차단"-->
+<!--                android:textSize="15dp"-->
+<!--                android:padding="10dp"-->
+<!--                android:textColor="@color/letter"-->
+<!--                android:fontFamily="@font/welcome" />-->
             <View
                 android:id="@+id/vw_line2"
                 android:layout_width="match_parent"

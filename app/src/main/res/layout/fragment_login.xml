@@ -102,15 +102,15 @@
                 android:background="@drawable/room"
                 />
             <!--            체크박스추가-->
-            <CheckBox
-                android:id="@+id/cb_autoLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_login"
-                android:text="자동 로그인"
-                android:fontFamily="@font/welcome"
-                android:layout_marginTop="10dp"
-                android:textSize="13dp" />
+<!--            <CheckBox-->
+<!--                android:id="@+id/cb_autoLogin"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/btn_login"-->
+<!--                android:text="자동 로그인"-->
+<!--                android:fontFamily="@font/welcome"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:textSize="13dp" />-->
 
 
             <!--            회원가입 버튼-->
