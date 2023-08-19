@@ -18,8 +18,8 @@
 - JPA, Spring Security, JWT
 
 ### DB 설계
-- https://www.erdcloud.com/d/zcg8b3WtfprAT4s8m
-<img width="80%" src="https://github.com/jeonghyeon4782/jeonghyeon4782/assets/102511188/dca2152a-9a0d-47f9-bc2f-f880d5cc6c92"/>
+![erd](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/9fed7c00-ab6f-49b4-86a5-07b0e7331c07)
+
 
 ### API 설계
 - 미완성
