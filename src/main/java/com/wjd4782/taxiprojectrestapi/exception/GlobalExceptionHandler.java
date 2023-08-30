@@ -1,4 +1,4 @@
-package com.wjd4782.taxiprojectrestapi.Exception;
+package com.wjd4782.taxiprojectrestapi.exception;
 
 import com.wjd4782.taxiprojectrestapi.dto.response.ResponseDto;
 import org.springframework.http.HttpStatus;

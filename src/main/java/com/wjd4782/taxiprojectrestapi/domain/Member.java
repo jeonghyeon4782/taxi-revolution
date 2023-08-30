@@ -43,6 +43,10 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
+    // 소속 1:N
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Belong> belongs = new ArrayList<>();
+
     @Builder
     public Member(String memberId, String password, String nickname, int gender, List<String> roles) {
         this.memberId = memberId;

@@ -1,11 +1,13 @@
 package com.wjd4782.taxiprojectrestapi.service;
 
+import com.wjd4782.taxiprojectrestapi.domain.Belong;
 import com.wjd4782.taxiprojectrestapi.domain.Member;
 import com.wjd4782.taxiprojectrestapi.domain.Post;
 import com.wjd4782.taxiprojectrestapi.dto.request.PostAddRequestDto;
 import com.wjd4782.taxiprojectrestapi.dto.request.PostUpdateRequestDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.PostResponseDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.ResponseDto;
+import com.wjd4782.taxiprojectrestapi.repository.BelongRepository;
 import com.wjd4782.taxiprojectrestapi.repository.MemberRepository;
 import com.wjd4782.taxiprojectrestapi.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,6 +30,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+    private final BelongRepository belongRepository;
 
     // 글 작성
     @Transactional
@@ -54,6 +57,14 @@ public class PostService {
                     .createTime(createTime)
                     .member(member)
                     .build());
+
+        Belong belong = belongRepository.save(
+                Belong.builder()
+                        .member(member)
+                        .post(post)
+                        .authority(0)
+                        .build());
+
         return new ResponseDto<>(HttpStatus.OK.value(), "글 작성 성공", true);
     }
 

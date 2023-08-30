@@ -2,10 +2,13 @@ package com.wjd4782.taxiprojectrestapi.domain;
 
 import com.wjd4782.taxiprojectrestapi.dto.request.PostUpdateRequestDto;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -32,7 +35,7 @@ public class Post {
     private String recruitmentStatus; // 모집상태
 
     @Column(name = "remainSeat", nullable = false)
-    private int remainSeat; // 남은 좌석
+    private int remainSeat; // 참여 좌석
 
     @Column(name = "AllSeat", nullable = false)
     private int allSeat; // 총 좌석
@@ -46,6 +49,10 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member; // 글쓴이
+
+    // 소속 1:N
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Belong> belongs = new ArrayList<>();
 
     @Builder
     public Post(String title, String content, String departureLocation, String destinationLocation, String recruitmentStatus, int remainSeat, int allSeat, Timestamp departureTime, Timestamp createTime, Member member) {
