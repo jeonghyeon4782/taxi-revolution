@@ -63,6 +63,8 @@ public class PostService {
                         .member(member)
                         .post(post)
                         .authority(0)
+                        .nickname(member.getNickname())
+                        .gender(member.getGender())
                         .build());
 
         return new ResponseDto<>(HttpStatus.OK.value(), "글 작성 성공", true);

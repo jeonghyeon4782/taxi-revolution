@@ -1,8 +1,6 @@
 package com.wjd4782.taxiprojectrestapi.controller;
 
-import com.wjd4782.taxiprojectrestapi.domain.Belong;
-import com.wjd4782.taxiprojectrestapi.dto.request.PostAddRequestDto;
-import com.wjd4782.taxiprojectrestapi.dto.response.PostResponseDto;
+import com.wjd4782.taxiprojectrestapi.dto.response.BelongPostResponseDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.ResponseDto;
 import com.wjd4782.taxiprojectrestapi.service.BelongService;
 import lombok.RequiredArgsConstructor;
@@ -27,15 +25,15 @@ public class BelongController {
 
     // 소속 삭제
     @DeleteMapping("/{belongId}")
-    public ResponseDto<Boolean> deletePost(@PathVariable("belongId") Long belongId) {
+    public ResponseDto<Boolean> deleteBelong(@PathVariable("belongId") Long belongId) {
         ResponseDto<Boolean> responseDto = belongService.deleteBelong(belongId);
         return responseDto;
     }
 
-    // 나의 모든 소속 조회
-//    @GetMapping("/mine")
-//    public ResponseDto<List<PostResponseDto>> getAllMyPost(Authentication authentication) {
-//        ResponseDto<List<PostResponseDto>> responseDto = postService.getAllMyPost(authentication.getName());
-//        return responseDto;
-//    }
+    // 나의 소속 조회
+    @GetMapping("/mine")
+    public ResponseDto<List<BelongPostResponseDto>> getBelongPost(Authentication authentication) {
+        ResponseDto<List<BelongPostResponseDto>> responseDto = belongService.getBelongPost(authentication.getName());
+        return responseDto;
+    }
 }

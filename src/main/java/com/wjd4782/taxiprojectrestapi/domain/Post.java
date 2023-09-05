@@ -83,4 +83,14 @@ public class Post {
         this.allSeat = requestDto.getAllSeat();
         this.departureTime = departureTime;
     }
+
+    // 인원 증가
+    public void plusSeat() {
+        this.remainSeat = this.remainSeat + 1;
+    }
+
+    // 인원 감소
+    public void minusSeat() {
+        this.remainSeat = this.remainSeat - 1;
+    }
 }

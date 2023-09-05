@@ -27,10 +27,18 @@ public class Belong {
     @Column(name = "authority")
     private int authority; // 0 : 방장, 1 : 일반
 
+    @Column(name = "nickname")
+    private String nickname;
+
+    @Column(name = "gender")
+    private int gender;
+
     @Builder
-    public Belong(Member member, Post post, int authority) {
+    public Belong(Member member, Post post, int authority, String nickname, int gender) {
         this.member = member;
         this.post = post;
         this.authority = authority;
+        this.gender = gender;
+        this.nickname = nickname;
     }
 }
