@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?><!-- item_record.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    android:background="@drawable/room"
+    android:padding="20dp">
+
+
+
+    <RelativeLayout
+        android:id="@+id/layout_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--        닉네임,모집중 레이아웃-->
+        <RelativeLayout
+            android:id="@+id/layout_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/recruitmentStatusTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/welcome"
+                android:text="모집중"
+                android:textColor="@color/letter"
+                android:textSize="15dp" />
+
+
+            <TextView
+                android:id="@+id/remainSeatTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_toRightOf="@+id/recruitmentStatusTextView"
+                android:fontFamily="@font/welcome"
+                android:text="1"
+                android:textColor="@color/letter"
+                android:textSize="15dp" />
+            <TextView
+                android:id="@+id/slash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@+id/remainSeatTextView"
+                android:fontFamily="@font/welcome"
+                android:text="/"
+                android:textColor="@color/letter"
+                android:textSize="15dp" />
+            <TextView
+                android:id="@+id/allSeatTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@+id/slash"
+                android:fontFamily="@font/welcome"
+                android:text="4"
+                android:textColor="@color/letter"
+                android:textSize="15dp" />
+
+
+        </RelativeLayout>
+
+        <!--        제목 , 위치, 출발시간 레이아웃-->
+        <RelativeLayout
+            android:id="@+id/layout_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_profile">
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="서울 > 대전 TXT 4인팟(할인)"
+                android:textSize="20dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/black"/>
+
+
+            <ImageView
+                android:id="@+id/ivw_departure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titleTextView"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/departure_circle" />
+            <TextView
+                android:id="@+id/departureLocationTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titleTextView"
+                android:layout_toRightOf="@+id/ivw_departure"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:text="카카오프렌즈 서울역점"
+                android:textSize="18dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/black"/>
+            <Button
+                android:id="@+id/myButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_alignParentRight="true"
+                android:text="버튼"
+                android:textSize="15dp"
+                android:background="#00ffffff"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/letter"/>
+
+            <ImageView
+                android:id="@+id/ivw_arrival"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/departureLocationTextView"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/arrival_circle" />
+            <TextView
+                android:id="@+id/destinationLocationTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/departureLocationTextView"
+                android:layout_toRightOf="@+id/ivw_arrival"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:text="경기도 평택시 평택로 51"
+                android:textSize="18dp"
+                android:fontFamily="@font/welcome"
+                android:textColor="@color/black"/>
+
+            <!-- 버튼 추가 -->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/belongMembersRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/destinationLocationTextView" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

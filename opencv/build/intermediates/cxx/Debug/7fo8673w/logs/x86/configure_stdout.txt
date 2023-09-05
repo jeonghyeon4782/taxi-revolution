@@ -14,4 +14,4 @@
 -- Detecting CXX compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: C:/Users/wjd47/Desktop/JeongHyeon/TaxiProjectFrontEnd/opencv/.cxx/Debug/7fo8673w/x86
+-- Build files have been written to: C:/Users/wjd47/Desktop/JeongHyeon/TaxiProject/opencv/.cxx/Debug/7fo8673w/x86

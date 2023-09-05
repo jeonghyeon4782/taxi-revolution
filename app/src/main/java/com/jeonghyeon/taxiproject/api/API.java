@@ -2,6 +2,7 @@ package com.jeonghyeon.taxiproject.api;
 
 import com.jeonghyeon.taxiproject.dto.request.PostAddRequestDto;
 import com.jeonghyeon.taxiproject.dto.request.PostUpdateRequestDto;
+import com.jeonghyeon.taxiproject.dto.response.BelongPostResponseDto;
 import com.jeonghyeon.taxiproject.dto.response.MemberResponseDto;
 import com.jeonghyeon.taxiproject.dto.request.LoginRequestDto;
 import com.jeonghyeon.taxiproject.dto.request.RegisterRequestDto;
@@ -64,4 +65,14 @@ public interface API {
 
     @DELETE("/api/post/{postId}")
     Call<ResponseDto<Boolean>> deletePost(@Header("Authorization") String authorization, @Path("postId") Long postId);
+
+    // 나의 소속 조회
+    @GET("/api/belong/mine")
+    Call<ResponseDto<List<BelongPostResponseDto>>> getBelongPost(@Header("Authorization") String authorization);
+
+    @POST("/api/belong/{postId}")
+    Call<ResponseDto<Boolean>> addBelong(@Header("Authorization") String authorization, @Path("postId") Long postId);
+
+    @DELETE("/api/belong/{belongId}")
+    Call<ResponseDto<Boolean>> deleteBelong(@Header("Authorization") String authorization, @Path("belongId") Long belongId);
 }

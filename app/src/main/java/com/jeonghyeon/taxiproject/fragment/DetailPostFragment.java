@@ -1,21 +1,17 @@
 package com.jeonghyeon.taxiproject.fragment;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -26,9 +22,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeonghyeon.taxiproject.R;
+import com.jeonghyeon.taxiproject.activity.MainActivity;
+import com.jeonghyeon.taxiproject.api.API;
+import com.jeonghyeon.taxiproject.dto.response.BelongPostResponseDto;
+import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
+import com.jeonghyeon.taxiproject.token.TokenManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
 
@@ -60,6 +68,8 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
     private TextView remainSeatTextView;
     private TextView titleTextView;
     private ImageView genderImageView;
+    private Button btnEnter;
+    private TokenManager tokenManager;
 
 
     public DetailPostFragment() {
@@ -88,6 +98,8 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
         titleTextView = view.findViewById(R.id.titleTextView);
         genderImageView = view.findViewById(R.id.genderImageView);
         contentTextView = view.findViewById(R.id.contentTextView);
+        btnEnter = view.findViewById(R.id.btn_Enter);
+        tokenManager = new TokenManager(requireContext());
 
         // FusedLocationProviderClient 초기화
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
@@ -144,6 +156,13 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
         } else {
             genderImageView.setImageResource(R.drawable.baseline_face_6_24);
         }
+
+        btnEnter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addBelongAPI();
+            }
+        });
 
         return view;
     }
@@ -226,5 +245,68 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
     // toast 보여주기
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void addBelongAPI() {
+        String accessToken = tokenManager.getAccessToken();
+        if (accessToken == null) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            LoginFragment loginFragment = new LoginFragment();
+            if (mainActivity != null) {
+                mainActivity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.containers, loginFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            showToast("로그인이 필요합니다");
+        } else {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            API apiService = retrofit.create(API.class);
+            Call<ResponseDto<Boolean>> call = apiService.addBelong("Bearer " + accessToken, postId);
+            call.enqueue(new Callback<ResponseDto<Boolean>>() {
+                @Override
+                public void onResponse(Call<ResponseDto<Boolean>> call, Response<ResponseDto<Boolean>> response) {
+                    if (response.isSuccessful()) {
+                        ResponseDto<Boolean> responseDto = response.body();
+                        int statusCode = responseDto.getStatus();
+                        String msg = responseDto.getMsg();
+                        if (statusCode == 200) {
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            BelongFragment belongFragment = new BelongFragment();
+                            if (mainActivity != null) {
+                                mainActivity.getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.containers, belongFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+                         showToast(msg);
+                        } else if (statusCode == 423) { // 만료된 토큰이라면?
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            LoginFragment loginFragment = new LoginFragment();
+                            if (mainActivity != null) {
+                                mainActivity.getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.containers, loginFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+                            showToast("로그인이 필요합니다");
+                        } else {
+                            showToast(msg);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseDto<Boolean>> call, Throwable t) {
+                    showToast("api 호출 실패");
+                }
+            });
+        }
     }
 }

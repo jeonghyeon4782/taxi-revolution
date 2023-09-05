@@ -298,12 +298,12 @@
                 android:textColor="@color/black"
                 />
             <Button
-                android:id="@+id/btn_writeComplete"
+                android:id="@+id/btn_Enter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:textSize="15dp"
-                android:text="쪽지 전송"
+                android:text="입장"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/letter"
                 android:background="@drawable/room"
