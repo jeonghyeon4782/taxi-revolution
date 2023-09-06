@@ -54,6 +54,10 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Belong> belongs = new ArrayList<>();
 
+    // 댓글 1:N
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
     @Builder
     public Post(String title, String content, String departureLocation, String destinationLocation, String recruitmentStatus, int remainSeat, int allSeat, Timestamp departureTime, Timestamp createTime, Member member) {
         this.title = title;

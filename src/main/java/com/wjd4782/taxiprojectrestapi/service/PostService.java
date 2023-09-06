@@ -63,7 +63,6 @@ public class PostService {
                         .member(member)
                         .post(post)
                         .authority(0)
-                        .nickname(member.getNickname())
                         .gender(member.getGender())
                         .build());
 

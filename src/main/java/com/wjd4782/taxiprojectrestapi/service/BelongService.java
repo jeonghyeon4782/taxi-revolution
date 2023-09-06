@@ -45,7 +45,6 @@ public class BelongService {
                         .member(member)
                         .post(post)
                         .authority(1)
-                        .nickname(member.getNickname())
                         .gender(member.getGender())
                         .build());
         return new ResponseDto<>(HttpStatus.OK.value(), "입장 성공", true);
@@ -63,6 +62,7 @@ public class BelongService {
     }
 
     // 나의 소속 조회
+    @Transactional
     public ResponseDto<List<BelongPostResponseDto>> getBelongPost(String memberId) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
         List<BelongPostResponseDto> belongPostResponseDtos = member.getBelongs().stream()
@@ -71,7 +71,7 @@ public class BelongService {
                     Post post = belong.getPost();
                     List<Belong> membersInPost = post.getBelongs();
                     List<BelongMemberResponseDto> belongMembers = membersInPost.stream()
-                            .map(belongMember -> new BelongMemberResponseDto(belongMember.getBelongId(), belongMember.getNickname(), belongMember.getGender(), belongMember.getAuthority()))
+                            .map(belongMember -> new BelongMemberResponseDto(belongMember.getBelongId(), belongMember.getMember().getNickname(), belongMember.getGender(), belongMember.getAuthority()))
                             .collect(Collectors.toList());
                     return BelongPostResponseDto.builder()
                             .postId(post.getPostId())

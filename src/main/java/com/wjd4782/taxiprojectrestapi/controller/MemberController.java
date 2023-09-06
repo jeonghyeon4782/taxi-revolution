@@ -22,7 +22,7 @@ public class MemberController {
     }
 
     // 유저 정보 찾기
-    @GetMapping("{memberId}")
+    @GetMapping("/{memberId}")
     public ResponseDto<MemberResponseDto> getMemberInfo(@PathVariable("memberId") String memberId) {
         ResponseDto<MemberResponseDto> responseDto = memberService.getMemberInfo(memberId);
         return responseDto;

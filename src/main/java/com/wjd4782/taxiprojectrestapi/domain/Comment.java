@@ -4,37 +4,38 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Belong {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long belongId; // primary key
+    private Long commentId; // primary key
+
+    @Column(name = "content", nullable = false)
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "memberId")
-    private Member member; // 글쓴이
+    private Member member; // 댓글 작성자
 
     @ManyToOne
     @JoinColumn(name = "postId")
     private Post post; // 게시글
 
-    @Column(name = "authority")
-    private int authority; // 0 : 방장, 1 : 일반
-
-    @Column(name = "gender")
-    private int gender;
+    @CreationTimestamp
+    @Column(name = "createAt")
+    private Timestamp createAt;
 
     @Builder
-    public Belong(Member member, Post post, int authority, int gender) {
+    public Comment(String content, Member member, Post post) {
+        this.content = content;
         this.member = member;
         this.post = post;
-        this.authority = authority;
-        this.gender = gender;
     }
 }
