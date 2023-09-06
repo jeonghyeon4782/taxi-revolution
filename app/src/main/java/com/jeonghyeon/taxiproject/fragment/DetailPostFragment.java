@@ -7,11 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -23,14 +27,23 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
+import com.jeonghyeon.taxiproject.adapter.CommentAdapter;
 import com.jeonghyeon.taxiproject.api.API;
-import com.jeonghyeon.taxiproject.dto.response.BelongPostResponseDto;
+import com.jeonghyeon.taxiproject.dto.request.CommentAddRequestDto;
+import com.jeonghyeon.taxiproject.dto.request.PostAddRequestDto;
+import com.jeonghyeon.taxiproject.dto.response.CommentResponseDto;
 import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
 import com.jeonghyeon.taxiproject.token.TokenManager;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,6 +56,10 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView_arrival, mapView_departure;
     private GoogleMap googleMap_arrival, googleMap_departure;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+    private RecyclerView recyclerView;
+    private CommentAdapter commentAdapter;
 
     private Long postId; // primary key
     private String title; // 제목
@@ -70,6 +87,9 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
     private ImageView genderImageView;
     private Button btnEnter;
     private TokenManager tokenManager;
+
+    private EditText commentEditText;
+    private Button postCommentButton;
 
 
     public DetailPostFragment() {
@@ -99,10 +119,20 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
         genderImageView = view.findViewById(R.id.genderImageView);
         contentTextView = view.findViewById(R.id.contentTextView);
         btnEnter = view.findViewById(R.id.btn_Enter);
+        commentEditText = view.findViewById(R.id.commentEditText);
+        postCommentButton = view.findViewById(R.id.postCommentButton);
         tokenManager = new TokenManager(requireContext());
+        swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
 
         // FusedLocationProviderClient 초기화
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        // 어댑터 초기화
+        commentAdapter = new CommentAdapter(new ArrayList<>());
+        recyclerView.setAdapter(commentAdapter);
 
         mapView_arrival = view.findViewById(R.id.map_arrival);
         mapView_arrival.onCreate(savedInstanceState);
@@ -163,6 +193,23 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
                 addBelongAPI();
             }
         });
+
+        postCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCommentAPI(postId, commentEditText.getText().toString());
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getCommentsByPostIdAPI(postId);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        getCommentsByPostIdAPI(postId);
 
         return view;
     }
@@ -305,6 +352,145 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public void onFailure(Call<ResponseDto<Boolean>> call, Throwable t) {
                     showToast("api 호출 실패");
+                }
+            });
+        }
+    }
+
+    private void getCommentsByPostIdAPI(Long postId) {
+        String accessToken = tokenManager.getAccessToken();
+        if (accessToken == null) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            LoginFragment loginFragment = new LoginFragment();
+            if (mainActivity != null) {
+                mainActivity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.containers, loginFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            showToast("로그인이 필요합니다");
+        } else {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            API apiService = retrofit.create(API.class);
+            Call<ResponseDto<List<CommentResponseDto>>> call = apiService.getCommentsByPostId("Bearer " + accessToken, postId);
+            call.enqueue(new Callback<ResponseDto<List<CommentResponseDto>>>() {
+                @Override
+                public void onResponse(Call<ResponseDto<List<CommentResponseDto>>> call, Response<ResponseDto<List<CommentResponseDto>>> response) {
+                    if (response.isSuccessful()) {
+                        ResponseDto<List<CommentResponseDto>> responseDto = response.body();
+                        int statusCode = responseDto.getStatus();
+
+                        if (statusCode == 200) {
+                            List<CommentResponseDto> commentResponseDtos = responseDto.getData();
+
+                            // 댓글 목록을 createAt 필드를 기준으로 최신순으로 정렬합니다.
+                            Collections.sort(commentResponseDtos, new Comparator<CommentResponseDto>() {
+                                @Override
+                                public int compare(CommentResponseDto comment1, CommentResponseDto comment2) {
+                                    // createAt 필드를 Date 형식으로 파싱한 후, 역순으로 정렬합니다.
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                                    try {
+                                        Date date1 = sdf.parse(comment1.getCreateAt());
+                                        Date date2 = sdf.parse(comment2.getCreateAt());
+                                        return date2.compareTo(date1);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                        return 0;
+                                    }
+                                }
+                            });
+
+                            // 정렬된 댓글 목록을 어댑터에 설정합니다.
+                            commentAdapter.setData(commentResponseDtos);
+                        } else if (statusCode == 423) { // 만료된 토큰이라면?
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            LoginFragment loginFragment = new LoginFragment();
+                            if (mainActivity != null) {
+                                mainActivity.getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.containers, loginFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+                            showToast("로그인이 필요합니다");
+                        } else {
+                            String msg = responseDto.getMsg();
+                            showToast(msg);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseDto<List<CommentResponseDto>>> call, Throwable t) {
+                    showToast("api 호출 실패");
+                }
+            });
+        }
+    }
+
+    private void addCommentAPI(Long postId, String content) {
+        String accessToken = tokenManager.getAccessToken();
+        CommentAddRequestDto requestDto = new CommentAddRequestDto(content);
+
+        if (accessToken == null) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            LoginFragment loginFragment = new LoginFragment();
+            if (mainActivity != null) {
+                mainActivity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.containers, loginFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            showToast("로그인이 필요합니다");
+        } else {
+            // Retrofit 객체 생성
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            // API 인터페이스 생성
+            API apiService = retrofit.create(API.class);
+
+            // API 호출
+            Call<ResponseDto<Boolean>> call = apiService.addComment("Bearer " + accessToken, postId, requestDto);
+            call.enqueue(new Callback<ResponseDto<Boolean>>() {
+                @Override
+                public void onResponse(Call<ResponseDto<Boolean>> call, Response<ResponseDto<Boolean>> response) {
+                    if (response.isSuccessful()) {
+                        ResponseDto<Boolean> responseDto = response.body();
+                        int statusCode = responseDto.getStatus();
+                        String msg = responseDto.getMsg();
+
+                        if (statusCode == 200) {
+                            showToast("댓글 작성 완료");
+                            getCommentsByPostIdAPI(postId);
+                            commentEditText.setText("");
+                        } else if (statusCode == 423) { // 만료된 토큰이라면?
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            LoginFragment loginFragment = new LoginFragment();
+                            if (mainActivity != null) {
+                                mainActivity.getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.containers, loginFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+                            showToast(msg);
+                        } else {
+                            showToast(msg);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseDto<Boolean>> call, Throwable t) {
+                    showToast("API 호출 실패");
                 }
             });
         }

@@ -1,313 +1,381 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
-        android:id="@+id/layout_detail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp">
 
-        <!--        닉네임,모집중 레이아웃-->
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <RelativeLayout
-            android:id="@+id/layout_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <View
-                android:id="@+id/vw_line"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/lightgray"/>
-            <TextView
-                android:id="@+id/recruitmentStatusTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/welcome"
-                android:text="모집중"
-                android:textColor="@color/letter"
-                android:textSize="15dp" />
 
-            <TextView
-                android:id="@+id/createTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_alignParentRight="true"
-                android:fontFamily="@font/welcome"
-                android:text="23.07.25 18:00"
-                android:textColor="@color/gray"
-                android:textSize="15dp" />
-
-            <TextView
-                android:id="@+id/remainSeatTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="7dp"
-                android:layout_toRightOf="@+id/recruitmentStatusTextView"
-                android:fontFamily="@font/welcome"
-                android:text="1"
-                android:textColor="@color/letter"
-                android:textSize="15dp" />
-            <TextView
-                android:id="@+id/slash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_toRightOf="@+id/remainSeatTextView"
-                android:fontFamily="@font/welcome"
-                android:text="/"
-                android:textColor="@color/letter"
-                android:textSize="15dp" />
-            <TextView
-                android:id="@+id/allSeatTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_toRightOf="@+id/slash"
-                android:fontFamily="@font/welcome"
-                android:text="4"
-                android:textColor="@color/letter"
-                android:textSize="15dp" />
-            <!--                        성별-->
-
-
-            <ImageView
-                android:id="@+id/genderImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_below="@+id/recruitmentStatusTextView"
-                android:scaleType="fitCenter"
-                android:src="@drawable/baseline_face_4_24" />
-            <TextView
-                android:id="@+id/memberIdTextView"
+            <RelativeLayout
+                android:id="@+id/layout_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/recruitmentStatusTextView"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/genderImageView"
-                android:text="닉네임"
-                android:textSize="15dp"
-                android:drawablePadding="5dp"
-                android:fontFamily="@font/welcome"
-                android:textColor="@color/gray" />
-<!--            <Button-->
-<!--                android:id="@+id/btn_block"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@+id/recruitmentStatusTextView"-->
-<!--                android:layout_alignParentRight="true"-->
-<!--                android:background="#00ff0000"-->
-<!--                android:minWidth="20dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:minHeight="20dp"-->
-<!--                android:text="차단"-->
-<!--                android:textSize="15dp"-->
-<!--                android:padding="10dp"-->
-<!--                android:textColor="@color/letter"-->
-<!--                android:fontFamily="@font/welcome" />-->
-            <View
-                android:id="@+id/vw_line2"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@+id/memberIdTextView"
-                android:background="@color/lightgray"/>
-        </RelativeLayout>
+                android:padding="20dp">
 
-        <!--        제목 , 위치, 출발시간 레이아웃-->
-        <RelativeLayout
-            android:id="@+id/layout_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_profile">
-            <TextView
-                android:id="@+id/titleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="서울 > 대전 TXT 4인팟(할인)"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:fontFamily="@font/welcome"
-                android:textColor="@color/black"/>
-            <!--                        <TextView-->
-            <!--                            android:id="@+id/map_arrival"-->
-            <!--                            android:layout_width="match_parent"-->
-            <!--                            android:layout_height="100dp"-->
-            <!--                            android:layout_marginLeft="10dp"-->
-            <!--                            android:text="지도가 나올 화면 입니다"-->
-            <!--                            android:background="@color/letter"-->
-            <!--                            android:layout_marginTop="10dp"-->
-            <!--                            android:layout_below="@+id/titleTextView"/>-->
-
-            <TextView
-                android:id="@+id/txt_departure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/titleTextView"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:text="출발지"
-                android:textSize="15dp"
-                android:fontFamily="@font/welcome"
-                android:textColor="@color/black"/>
-
-
-
-            <ImageView
-                android:id="@+id/ivw_departure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_departure"
-                android:layout_marginTop="13dp"
-                android:src="@drawable/departure_circle" />
-            <TextView
-                android:id="@+id/departureLocationTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_departure"
-                android:layout_toRightOf="@+id/ivw_departure"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="카카오프렌즈 서울역점"
-                android:textSize="18dp"
-                android:fontFamily="@font/welcome"
-                android:textColor="@color/black"/>
-
-            <FrameLayout
-                android:id="@+id/map_departure_wrapper"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/departureLocationTextView">
-
-                <!-- 출발지 지도 -->
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/map_departure"
+                <!--        닉네임,모집중 레이아웃-->
+                <RelativeLayout
+                    android:id="@+id/layout_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/lightgray"/>
+                    android:layout_height="wrap_content">
+                    <View
+                        android:id="@+id/vw_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/lightgray"/>
+                    <TextView
+                        android:id="@+id/recruitmentStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/welcome"
+                        android:text="모집중"
+                        android:textColor="@color/letter"
+                        android:textSize="15dp" />
 
-            </FrameLayout>
+                    <TextView
+                        android:id="@+id/createTimeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="@font/welcome"
+                        android:text="23.07.25 18:00"
+                        android:textColor="@color/gray"
+                        android:textSize="15dp" />
 
-            <TextView
-                android:id="@+id/txt_arrival"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/map_departure_wrapper"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:text="도착지"
-                android:textSize="15dp"
-                android:fontFamily="@font/welcome"
-                android:textColor="@color/black"/>
-            <ImageView
-                android:id="@+id/ivw_arrival"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_arrival"
-                android:layout_marginTop="13dp"
-                android:src="@drawable/arrival_circle" />
-            <TextView
-                android:id="@+id/destinationLocationTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_arrival"
-                android:layout_toRightOf="@+id/ivw_departure"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="경기도 평택시 평택로 51"
-                android:textSize="18dp"
-                android:fontFamily="@font/welcome"
-                android:textColor="@color/black"/>
+                    <TextView
+                        android:id="@+id/remainSeatTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="7dp"
+                        android:layout_toRightOf="@+id/recruitmentStatusTextView"
+                        android:fontFamily="@font/welcome"
+                        android:text="1"
+                        android:textColor="@color/letter"
+                        android:textSize="15dp" />
+                    <TextView
+                        android:id="@+id/slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@+id/remainSeatTextView"
+                        android:fontFamily="@font/welcome"
+                        android:text="/"
+                        android:textColor="@color/letter"
+                        android:textSize="15dp" />
+                    <TextView
+                        android:id="@+id/allSeatTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@+id/slash"
+                        android:fontFamily="@font/welcome"
+                        android:text="4"
+                        android:textColor="@color/letter"
+                        android:textSize="15dp" />
+                    <!--                        성별-->
 
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/map_arrival"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_below="@+id/destinationLocationTextView"
-                android:layout_marginLeft="10dp"
-                android:clickable="true"
-                android:layout_marginTop="7dp"
-                android:background="@color/lightgray" />
 
-            <TextView
-                android:id="@+id/txt_departureTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/map_arrival"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:text="출발 시간"
-                android:textSize="15dp"
-                android:fontFamily="@font/welcome"
-                android:textColor="@color/black"/>
+                    <ImageView
+                        android:id="@+id/genderImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_below="@+id/recruitmentStatusTextView"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/baseline_face_4_24" />
+                    <TextView
+                        android:id="@+id/memberIdTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/recruitmentStatusTextView"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/genderImageView"
+                        android:text="닉네임"
+                        android:textSize="15dp"
+                        android:drawablePadding="5dp"
+                        android:fontFamily="@font/welcome"
+                        android:textColor="@color/gray" />
+                    <!--            <Button-->
+                    <!--                android:id="@+id/btn_block"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:layout_below="@+id/recruitmentStatusTextView"-->
+                    <!--                android:layout_alignParentRight="true"-->
+                    <!--                android:background="#00ff0000"-->
+                    <!--                android:minWidth="20dp"-->
+                    <!--                android:layout_marginTop="5dp"-->
+                    <!--                android:minHeight="20dp"-->
+                    <!--                android:text="차단"-->
+                    <!--                android:textSize="15dp"-->
+                    <!--                android:padding="10dp"-->
+                    <!--                android:textColor="@color/letter"-->
+                    <!--                android:fontFamily="@font/welcome" />-->
+                    <View
+                        android:id="@+id/vw_line2"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_below="@+id/memberIdTextView"
+                        android:background="@color/lightgray"/>
+                </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/ivw_departureTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txt_departureTime"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/baseline_access_time_24"/>
+                <!--        제목 , 위치, 출발시간 레이아웃-->
+                <RelativeLayout
+                    android:id="@+id/layout_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_profile">
+                    <TextView
+                        android:id="@+id/titleTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="서울 > 대전 TXT 4인팟(할인)"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/welcome"
+                        android:textColor="@color/black"/>
+                    <!--                        <TextView-->
+                    <!--                            android:id="@+id/map_arrival"-->
+                    <!--                            android:layout_width="match_parent"-->
+                    <!--                            android:layout_height="100dp"-->
+                    <!--                            android:layout_marginLeft="10dp"-->
+                    <!--                            android:text="지도가 나올 화면 입니다"-->
+                    <!--                            android:background="@color/letter"-->
+                    <!--                            android:layout_marginTop="10dp"-->
+                    <!--                            android:layout_below="@+id/titleTextView"/>-->
 
-            <TextView
-                android:id="@+id/departureTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_departureTime"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:text="07.25"
-                android:textSize="15dp"
-                android:fontFamily="@font/welcome"
-                android:textColor="@color/black"/>
+                    <TextView
+                        android:id="@+id/txt_departure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/titleTextView"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:text="출발지"
+                        android:textSize="15dp"
+                        android:fontFamily="@font/welcome"
+                        android:textColor="@color/black"/>
 
-            <View
-                android:id="@+id/vw_line3"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@id/departureTimeTextView"
-                android:layout_marginTop="10dp"
-                android:background="@color/lightgray"/>
+
+
+                    <ImageView
+                        android:id="@+id/ivw_departure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_departure"
+                        android:layout_marginTop="13dp"
+                        android:src="@drawable/departure_circle" />
+                    <TextView
+                        android:id="@+id/departureLocationTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_departure"
+                        android:layout_toRightOf="@+id/ivw_departure"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="카카오프렌즈 서울역점"
+                        android:textSize="18dp"
+                        android:fontFamily="@font/welcome"
+                        android:textColor="@color/black"/>
+
+                    <FrameLayout
+                        android:id="@+id/map_departure_wrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@+id/departureLocationTextView">
+
+                        <!-- 출발지 지도 -->
+                        <com.google.android.gms.maps.MapView
+                            android:id="@+id/map_departure"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightgray"/>
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/txt_arrival"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/map_departure_wrapper"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:text="도착지"
+                        android:textSize="15dp"
+                        android:fontFamily="@font/welcome"
+                        android:textColor="@color/black"/>
+                    <ImageView
+                        android:id="@+id/ivw_arrival"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_arrival"
+                        android:layout_marginTop="13dp"
+                        android:src="@drawable/arrival_circle" />
+                    <TextView
+                        android:id="@+id/destinationLocationTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_arrival"
+                        android:layout_toRightOf="@+id/ivw_departure"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="경기도 평택시 평택로 51"
+                        android:textSize="18dp"
+                        android:fontFamily="@font/welcome"
+                        android:textColor="@color/black"/>
+
+                    <com.google.android.gms.maps.MapView
+                        android:id="@+id/map_arrival"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_below="@+id/destinationLocationTextView"
+                        android:layout_marginLeft="10dp"
+                        android:clickable="true"
+                        android:layout_marginTop="7dp"
+                        android:background="@color/lightgray" />
+
+                    <TextView
+                        android:id="@+id/txt_departureTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/map_arrival"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:text="출발 시간"
+                        android:textSize="15dp"
+                        android:fontFamily="@font/welcome"
+                        android:textColor="@color/black"/>
+
+                    <ImageView
+                        android:id="@+id/ivw_departureTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/txt_departureTime"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/baseline_access_time_24"/>
+
+                    <TextView
+                        android:id="@+id/departureTimeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_departureTime"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:text="07.25"
+                        android:textSize="15dp"
+                        android:fontFamily="@font/welcome"
+                        android:textColor="@color/black"/>
+
+                    <View
+                        android:id="@+id/vw_line3"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_below="@id/departureTimeTextView"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/lightgray"/>
+                </RelativeLayout>
+
+
+                <!--            글내용 , 버튼 레이아웃-->
+
+                <RelativeLayout
+                    android:id="@+id/layout_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_title"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:id="@+id/contentTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="고양이와 케이지도 가지고 탑승합니다"
+                        android:textSize="15dp"
+                        android:padding="8dp"
+                        android:fontFamily="@font/welcome"
+                        android:textColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/btn_Enter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/contentTextView"
+                        android:textSize="15dp"
+                        android:text="입장"
+                        android:fontFamily="@font/welcome"
+                        android:textColor="@color/letter"
+                        android:background="@drawable/room" />
+
+                    <!-- 댓글 입력 레이아웃 -->
+                    <LinearLayout
+                        android:id="@+id/commentll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_Enter"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <!-- "댓글" 텍스트 -->
+                        <TextView
+                            android:id="@+id/commentTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="댓글"
+                            android:textSize="15dp"
+                            android:fontFamily="@font/welcome"
+                            android:textColor="@color/black"/>
+
+                        <!-- 댓글 입력란 -->
+                        <EditText
+                            android:id="@+id/commentEditText"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:hint="댓글을 입력하세요"
+                            android:background="@android:color/white"
+                            android:padding="8dp"
+                            android:fontFamily="@font/welcome"
+                            android:textColor="@color/black"/>
+
+                        <!-- "작성" 버튼 -->
+                        <Button
+                            android:id="@+id/postCommentButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="작성"
+                            android:textSize="15dp"
+                            android:fontFamily="@font/welcome"
+                            android:textColor="@color/letter"
+                            android:background="@drawable/room" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/commentll"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/lightgray"
+                        android:nestedScrollingEnabled="false" />
+
+                </RelativeLayout>
+            </RelativeLayout>
         </RelativeLayout>
+    </ScrollView>
 
-
-        <!--            글내용 , 버튼 레이아웃-->
-
-        <RelativeLayout
-            android:id="@+id/layout_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_title"
-            android:layout_marginTop="5dp">
-            <TextView
-                android:id="@+id/contentTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="고양이와 케이지도 가지고 탑승합니다"
-                android:textSize="15dp"
-                android:padding="8dp"
-                android:fontFamily="@font/welcome"
-                android:textColor="@color/black"
-                />
-            <Button
-                android:id="@+id/btn_Enter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:textSize="15dp"
-                android:text="입장"
-                android:fontFamily="@font/welcome"
-                android:textColor="@color/letter"
-                android:background="@drawable/room"
-                />
-        </RelativeLayout>
-    </RelativeLayout>
-</RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

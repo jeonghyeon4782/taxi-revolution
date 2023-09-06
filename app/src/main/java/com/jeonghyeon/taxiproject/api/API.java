@@ -1,8 +1,10 @@
 package com.jeonghyeon.taxiproject.api;
 
+import com.jeonghyeon.taxiproject.dto.request.CommentAddRequestDto;
 import com.jeonghyeon.taxiproject.dto.request.PostAddRequestDto;
 import com.jeonghyeon.taxiproject.dto.request.PostUpdateRequestDto;
 import com.jeonghyeon.taxiproject.dto.response.BelongPostResponseDto;
+import com.jeonghyeon.taxiproject.dto.response.CommentResponseDto;
 import com.jeonghyeon.taxiproject.dto.response.MemberResponseDto;
 import com.jeonghyeon.taxiproject.dto.request.LoginRequestDto;
 import com.jeonghyeon.taxiproject.dto.request.RegisterRequestDto;
@@ -75,4 +77,10 @@ public interface API {
 
     @DELETE("/api/belong/{belongId}")
     Call<ResponseDto<Boolean>> deleteBelong(@Header("Authorization") String authorization, @Path("belongId") Long belongId);
+
+    @GET("/api/comment/{postId}")
+    Call<ResponseDto<List<CommentResponseDto>>> getCommentsByPostId(@Header("Authorization") String authorization, @Path("postId") Long postId);
+
+    @POST("/api/comment/{postId}")
+    Call<ResponseDto<Boolean>> addComment(@Header("Authorization") String authorization, @Path("postId") Long postId, @Body CommentAddRequestDto requestDto);
 }
