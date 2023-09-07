@@ -45,6 +45,7 @@ public class CommentService {
                         .nickname(comment.getMember().getNickname())
                         .createAt(comment.getCreateAt().toString())
                         .content(comment.getContent())
+                        .gender(comment.getMember().getGender())
                         .build())
                 .collect(Collectors.toList());
         ResponseDto<List<CommentResponseDto>> responseDto = new ResponseDto<>(HttpStatus.OK.value(), "댓글 조회 성공", commentResponseDtos);

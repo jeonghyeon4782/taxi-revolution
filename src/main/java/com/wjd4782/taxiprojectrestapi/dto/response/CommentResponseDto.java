@@ -11,12 +11,14 @@ public class CommentResponseDto {
     private String nickname;
     private String createAt;
     private String content;
+    private int gender;
 
     @Builder
-    public CommentResponseDto(Long commentId, String nickname, String createAt, String content) {
+    public CommentResponseDto(Long commentId, String nickname, String createAt, String content, int gender) {
         this.commentId = commentId;
         this.nickname = nickname;
         this.createAt = createAt;
         this.content = content;
+        this.gender = gender;
     }
 }

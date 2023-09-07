@@ -36,8 +36,10 @@ public class BelongService {
         // 이미 해당 회원이 해당 게시물에 소속되어 있는지 확인
         Belong existingBelong = belongRepository.findByMemberAndPost(member, post);
         if (existingBelong != null) {
-            // 이미 소속이 있는 경우에 대한 예외처리
             throw new EntityNotFoundException("이미 해당 게시물에 소속되어 있습니다.");
+        }
+        if (post.getRemainSeat() >= post.getAllSeat()) {
+            throw new IllegalStateException("더 이상 자리가 없습니다.");
         }
         post.plusSeat();
         Belong belong = belongRepository.save(
