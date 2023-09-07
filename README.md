@@ -20,6 +20,3 @@
 ### DB 설계
 ![erd](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/9fed7c00-ab6f-49b4-86a5-07b0e7331c07)
 
-
-### API 설계
-- 미완성
