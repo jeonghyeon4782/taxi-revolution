@@ -3,6 +3,7 @@ package com.jeonghyeon.taxiproject.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,17 +54,24 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         private TextView nicknameTextView;
         private TextView contentTextView;
         private TextView timestampTextView;
+        private ImageView genderImageView;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
             nicknameTextView = itemView.findViewById(R.id.txt_nickname);
             contentTextView = itemView.findViewById(R.id.et_comment);
             timestampTextView = itemView.findViewById(R.id.createTimeTextView);
+            genderImageView = itemView.findViewById(R.id.genderImageView);
         }
 
         public void bind(CommentResponseDto comment) {
             nicknameTextView.setText(comment.getNickname());
             contentTextView.setText(comment.getContent());
+            if (comment.getGender() == 0) {
+                genderImageView.setImageResource(R.drawable.baseline_face_4_24);
+            } else {
+                genderImageView.setImageResource(R.drawable.baseline_face_6_24);
+            }
             // 시간을 "yyyy-MM-dd HH:mm:ss" 형식으로 포맷팅
             String formattedTimestamp = formatDate(comment.getCreateAt(), "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss");
             timestampTextView.setText(formattedTimestamp);

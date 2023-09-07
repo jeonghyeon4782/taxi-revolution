@@ -63,7 +63,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecordViewHold
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_post, parent, false);
         RecordViewHolder viewHolder = new RecordViewHolder(view);
 
-        // Set the click listener for each item view
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

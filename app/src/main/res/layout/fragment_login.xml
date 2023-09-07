@@ -47,7 +47,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
-                android:background="@drawable/room"
+                android:background="@drawable/line"
                 android:fontFamily="@font/welcome"
                 android:hint="아이디를 입력하세요."
                 android:padding="12dp"
@@ -68,7 +68,7 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
                 android:textSize="13dp"
-                android:background="@drawable/room" />
+                android:background="@drawable/line" />
 
 
             <Button
@@ -79,7 +79,7 @@
                 android:layout_alignParentRight="true"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="11dp"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/letter"
                 android:background="#00ff0000"
@@ -102,12 +102,12 @@
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="50dp"
                 android:textSize="15dp"
                 android:text="로그인"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/letter"
-                android:background="@drawable/room"
+                android:background="@drawable/line"
                 />
             <!--            체크박스추가-->
 <!--            <CheckBox-->

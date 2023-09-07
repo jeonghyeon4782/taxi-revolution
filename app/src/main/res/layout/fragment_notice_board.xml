@@ -39,7 +39,7 @@
                 android:paddingLeft="5dp"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/black"
-                android:textColorHint="@color/lightgray"/>
+                android:textColorHint="@color/gray"/>
             <ImageButton
                 android:id="@+id/btn_departure"
                 android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
                 android:background="@drawable/massage"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/black"
-                android:textColorHint="@color/lightgray"/>
+                android:textColorHint="@color/gray"/>
             <ImageButton
                 android:id="@+id/btn_arrival"
                 android:layout_width="wrap_content"
@@ -131,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_distancesort"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/room"
+                android:background="@drawable/line"
                 android:fontFamily="@font/welcome"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
@@ -144,7 +144,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_new"
-                android:background="@drawable/room"
+                android:background="@drawable/line"
                 android:fontFamily="@font/welcome"
                 android:layout_alignParentRight="true"
                 android:minWidth="0dp"
@@ -158,7 +158,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_distance"
-                android:background="@drawable/room"
+                android:background="@drawable/line"
                 android:fontFamily="@font/welcome"
                 android:layout_alignParentRight="true"
                 android:minWidth="0dp"
@@ -177,11 +177,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
 
-            <View
-                android:id="@+id/vw_line"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/lightgray"/>
 
             <Button
                 android:id="@+id/btn_mypost"
@@ -190,7 +185,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toLeftOf="@+id/btn_write"
                 android:layout_below="@+id/vw_line"
-                android:background="@drawable/room"
+                android:background="@drawable/line"
                 android:fontFamily="@font/welcome"
                 android:layout_marginRight="10dp"
                 android:minWidth="0dp"
@@ -206,7 +201,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/vw_line"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/room"
+                android:background="@drawable/line"
                 android:fontFamily="@font/welcome"
                 android:minWidth="0dp"
                 android:minHeight="0dp"

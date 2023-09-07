@@ -1,5 +1,6 @@
 package com.jeonghyeon.taxiproject.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
     private List<PostResponseDto> postList;
     private OnDeleteClickListener onDeleteClickListener;
     private OnModifyClickListener onModifyClickListener;
+    private OnItemClickListener onItemClickListener;
 
     public void setPosts(List<PostResponseDto> posts) {
         this.postList = posts;
@@ -31,6 +33,14 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
 
     public List<PostResponseDto> getPosts() {
         return postList;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(PostResponseDto post);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     public interface OnDeleteClickListener {
@@ -59,7 +69,23 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row_mypost, parent, false);
-        return new ViewHolder(view);
+
+        ViewHolder viewHolder = new ViewHolder(view);
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    int position = viewHolder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Log.d("MyPostAdapter", "클릭한 항목 위치: " + position);
+                        onItemClickListener.onItemClick(postList.get(position));
+                    }
+                }
+            }
+        });
+
+        return viewHolder;
     }
 
     @Override

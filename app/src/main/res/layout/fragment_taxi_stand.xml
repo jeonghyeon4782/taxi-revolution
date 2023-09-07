@@ -19,11 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="주소를 입력하세요"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="60dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:drawableStart="@drawable/baseline_location2_on_24"
-            android:drawableLeft="@drawable/baseline_location2_on_24"
             android:drawablePadding="5dp"
             android:textSize="20dp"
             android:paddingLeft="5dp"
@@ -31,6 +28,17 @@
             android:textColor="@color/gray"
             android:inputType="text"
             android:layout_alignParentTop="true" />
+        <ImageButton
+            android:id="@+id/positionButton"
+            android:layout_alignParentRight="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/baseline_search_24"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="20dp"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:contentDescription="Image Button" />
 
         <!-- MapView를 positionEditText 아래에 배치 -->
         <com.google.android.gms.maps.MapView
@@ -41,17 +49,7 @@
             android:contentDescription="Google 지도" />
 
 
-        <ImageButton
-            android:id="@+id/positionButton"
-            android:layout_alignParentRight="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/search"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="28dp"
-            android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:contentDescription="Image Button" />
+
 
     </RelativeLayout>
 

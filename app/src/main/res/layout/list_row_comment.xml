@@ -2,12 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/room">
+    android:background="@drawable/line">
 
     <RelativeLayout
         android:id="@+id/layout_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
 
         <!--        닉네임,모집중 레이아웃-->
         <RelativeLayout
@@ -21,24 +22,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/btn_delete"
-                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="2dp"
                 android:fontFamily="@font/welcome"
                 android:text="23.07.25 18:00"
                 android:textColor="@color/gray"
                 android:textSize="15dp" />
 
+            <ImageView
+                android:id="@+id/genderImageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="3dp"
+                android:layout_centerVertical="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/baseline_face_4_24"/>
+
             <TextView
                 android:id="@+id/txt_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/genderImageView"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:text="닉네임"
-                android:textSize="15dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@+id/genderImageView"
                 android:fontFamily="@font/welcome"
-                android:textColor="@color/gray" />
+                android:text="닉네임"
+                android:textColor="@color/gray"
+                android:textSize="15dp" />
         </RelativeLayout>
 
         <!--        제목 , 위치, 출발시간 레이아웃-->
@@ -49,30 +60,15 @@
             android:layout_below="@+id/layout_profile">
 
 
-            <ImageView
-                android:id="@+id/ivw_departure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/titleTextView"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/departure_circle" />
 
-
-            <ImageView
-                android:id="@+id/ivw_arrival"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/arrival_circle" />
             <TextView
                 android:id="@+id/et_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/ivw_arrival"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:text="경기도 평택시 평택로 51"
-                android:textSize="18dp"
+                android:layout_marginLeft="10dp"
+                android:text="댓글 내용"
+                android:textSize="16dp"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/black"/>
 

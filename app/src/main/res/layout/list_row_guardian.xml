@@ -36,7 +36,7 @@
             android:textSize="13dp"
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
-            android:padding="16dp"
+            android:padding="15dp"
             android:paddingLeft="32dp"
             android:paddingRight="32dp"
         />

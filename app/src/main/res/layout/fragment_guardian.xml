@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/layout_addGuadian"
+            android:layout_marginTop="10dp"
             android:padding="5dp">
 
             <!--        글자 크기 조절 , 이미지 변경-->
@@ -29,7 +30,6 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/room"
                 android:padding="15dp"
-
                 android:textSize="13dp"
                 android:fontFamily="@font/welcome"
                 android:hint="보호자 번호를 입력하세요."
@@ -50,7 +50,15 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:background="#00ff0000"
-                android:padding="16dp"/>
+                android:padding="14dp"/>
+
+            <!--            회색 줄 추가-->
+            <View
+                android:id="@+id/vw_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/et_guardianNum"
+                android:background="@color/lightgray"/>
 
         </RelativeLayout>
 
@@ -61,6 +69,7 @@
             android:layout_below="@+id/layout_addGuadian"
             android:layout_weight="1"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
             tools:listitem="@layout/list_row_guardian" />
 
 
@@ -70,6 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
             android:padding="5dp">
 
 
@@ -82,22 +92,24 @@
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/black" />
 
+
+            <!--                회색테두리 추가-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/room"
+                android:background="@drawable/line"
                 android:gravity="center"
                 android:id="@+id/layout_cycle">
 
                 <!--           전송 주기 위치 변경, 셀렉터들 글자 크기 조절-->
+
                 <TextView
                     android:id="@+id/txt_frequency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-
                     android:padding="15dp"
                     android:textSize="13dp"
                     android:textStyle="bold"

@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
 import com.jeonghyeon.taxiproject.adapter.MyPostAdapter;
+import com.jeonghyeon.taxiproject.adapter.PostAdapter;
 import com.jeonghyeon.taxiproject.api.API;
 import com.jeonghyeon.taxiproject.dto.request.PostAddRequestDto;
 import com.jeonghyeon.taxiproject.dto.response.PostResponseDto;
@@ -88,6 +89,13 @@ public class MyPostFragment extends Fragment {
             @Override
             public void onModifyClick(PostResponseDto post) {
                 openModifyFragment(post);
+            }
+        });
+
+        postAdapter.setOnItemClickListener(new MyPostAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(PostResponseDto post) {
+                openDetailPostFragment(post);
             }
         });
 
@@ -256,5 +264,30 @@ public class MyPostFragment extends Fragment {
         });
 
         postAdapter.setPosts(currentPosts);
+    }
+
+    private void openDetailPostFragment(PostResponseDto post) {
+        // Create DetailPostFragment instance and pass the postID as an argument
+        DetailPostFragment detailPostFragment = new DetailPostFragment();
+        Bundle args = new Bundle();
+        args.putLong("postId", post.getPostId());
+        args.putString("title", post.getTitle());
+        args.putString("content", post.getContent());
+        args.putString("departureLocation", post.getDepartureLocation());
+        args.putString("nickname", post.getNickname());
+        args.putString("destinationLocation", post.getDestinationLocation());
+        args.putString("recruitmentStatus", post.getRecruitmentStatus());
+        args.putString("departureTime", post.getDepartureTime());
+        args.putString("createTime", post.getCreateTime());
+        args.putInt("remainSeat", post.getRemainSeat());
+        args.putInt("allSeat", post.getAllSeat());
+        args.putInt("gender", post.getGender());
+        detailPostFragment.setArguments(args);
+
+        // Replace the current fragment with DetailPostFragment
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.containers, detailPostFragment).addToBackStack(null).commit();
+        }
     }
 }

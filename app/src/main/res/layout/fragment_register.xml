@@ -63,7 +63,7 @@
                 android:textColorHint="@color/gray"
                 android:textSize="13dp"
                 android:textColor="@color/black"
-                android:background="@drawable/room"
+                android:background="@drawable/line"
                 android:fontFamily="@font/welcome"/>
 
 
@@ -118,7 +118,7 @@
                 android:fontFamily="@font/welcome"
                 android:textSize="13dp"
                 android:textColor="@color/black"
-                android:background="@drawable/room" />
+                android:background="@drawable/line" />
 
             <!--        중복버튼-->
             <Button
@@ -167,7 +167,7 @@
                 android:textColorHint="@color/gray"
                 android:textSize="13dp"
                 android:textColor="@color/black"
-                android:background="@drawable/room" />
+                android:background="@drawable/line" />
 
 
             <!--        중복버튼-->
@@ -195,58 +195,55 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout_nickname"
             android:layout_marginTop="15dp">
+
             <RadioGroup
                 android:id="@+id/rdo_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
+
                 <RadioButton
                     android:id="@+id/rdo_woman"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:text="여성"
-                    android:padding="15dp"
-                    android:textSize="13dp"
-                    android:textAlignment="center"
-                    android:fontFamily="@font/welcome"
-                    android:textColor="@drawable/selector_radio_text"
-                    android:button="@null"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
                     android:background="@drawable/selector_radio_button"
-                    android:checked="true">
-
+                    android:button="@null"
+                    android:checked="true"
+                    android:fontFamily="@font/welcome"
+                    android:text="여성"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/selector_radio_text"
+                    android:textSize="13dp">
                 </RadioButton>
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="49dp"
-                    android:layout_toRightOf="@+id/rdo_woman"
-                    android:background="@color/lightgray"/>
+
                 <RadioButton
                     android:id="@+id/rdo_man"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:text="남성"
-                    android:textSize="13dp"
-                    android:padding="15dp"
-                    android:textAlignment="center"
-                    android:textColor="@drawable/selector_radio_text"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
                     android:background="@drawable/selector_radio_button"
                     android:button="@null"
                     android:fontFamily="@font/welcome"
-                    />
-
+                    android:text="남성"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/selector_radio_text"
+                    android:textSize="13dp">
+                </RadioButton>
             </RadioGroup>
+
             <Button
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rdo_gender"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="70dp"
                 android:textSize="15dp"
                 android:text="회원가입"
                 android:textColor="@color/letter"
                 android:fontFamily="@font/welcome"
-                android:background="@drawable/room" />
+                android:background="@drawable/line" />
         </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

@@ -9,11 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="20dp">
-        <View
-            android:id="@+id/vw_line"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/lightgray"/>
 
 
         <!--        모집상태 변경-->
@@ -28,7 +23,7 @@
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
             android:textSize="15dp"
-            android:background="@drawable/room"/>
+            android:background="@drawable/line"/>
         <Button
             android:id="@+id/btn_recruiting"
             android:layout_width="wrap_content"
@@ -39,7 +34,7 @@
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
             android:textSize="15dp"
-            android:background="@drawable/room"
+            android:background="@drawable/line"
             />
         <Button
             android:id="@+id/btn_recruitmentComplete"
@@ -51,7 +46,7 @@
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
             android:textSize="15dp"
-            android:background="@drawable/room" />
+            android:background="@drawable/line" />
 
 
         <!--        인원 변경-->
@@ -68,7 +63,7 @@
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
             android:textSize="15dp"
-            android:background="@drawable/room"/>
+            android:background="@drawable/line"/>
 
 
 
@@ -228,7 +223,7 @@
             android:textSize="13dp"
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
-            android:background="@drawable/room"/>
+            android:background="@drawable/line"/>
         <Button
             android:id="@+id/btn_departureTime"
             android:layout_width="wrap_content"
@@ -245,7 +240,7 @@
             android:textSize="13dp"
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
-            android:background="@drawable/room"/>
+            android:background="@drawable/line"/>
 
 
 
@@ -287,7 +282,7 @@
                 android:padding="8dp"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/black"
-                android:background="@drawable/editbutton"
+                android:background="@drawable/line"
                 android:textColorHint="@color/gray"
                 android:lines="10" android:gravity="top|left" android:inputType="textMultiLine"
                 android:scrollHorizontally="false"
@@ -300,10 +295,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:textSize="15dp"
-                android:text="작성완료"
+                android:text="수정완료"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/letter"
-                android:background="@drawable/room"
+                android:background="@drawable/line"
                 />
         </RelativeLayout>
 
@@ -319,7 +314,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/btn_departureDate"
             android:padding="15dp"
-            android:background="@color/white"
+            android:background="@drawable/line"
             android:layout_below="@+id/btn_departureTime">
             <NumberPicker
                 android:id="@+id/np_hours"
@@ -386,14 +381,14 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/room" />
+                android:background="@drawable/line" />
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/layout_numberok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_number"
-            android:background="@drawable/room"
+            android:background="@drawable/line"
             android:layout_toRightOf="@+id/btn_recruitmentStatus"
             android:padding="15dp">
             <NumberPicker

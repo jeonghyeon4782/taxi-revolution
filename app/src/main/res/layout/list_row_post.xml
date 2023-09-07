@@ -5,7 +5,7 @@
     android:layout_marginLeft="5dp"
     android:layout_marginTop="5dp"
     android:layout_marginRight="5dp"
-    android:background="@drawable/room"
+    android:background="@drawable/line2"
     android:padding="20dp">
 
 
@@ -21,14 +21,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/recruitmentStatusTextView"
+            <LinearLayout
+                android:id="@+id/recruitment_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/welcome"
-                android:text="모집중"
-                android:textColor="@color/letter"
-                android:textSize="15dp" />
+                android:background="@drawable/recruitmentline"
+                android:padding="5dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/recruitmentStatusTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/welcome"
+                    android:text="모집중"
+                    android:textColor="@color/letter"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/remainSeatTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_toRightOf="@+id/recruitmentStatusTextView"
+                    android:fontFamily="@font/welcome"
+                    android:text="1"
+                    android:textColor="@color/letter"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/slash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/remainSeatTextView"
+                    android:fontFamily="@font/welcome"
+                    android:text="/"
+                    android:textColor="@color/letter"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/allSeatTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@+id/slash"
+                    android:fontFamily="@font/welcome"
+                    android:text="4"
+                    android:textColor="@color/letter"
+                    android:textSize="15dp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/createTimeTextView"
@@ -39,51 +78,19 @@
                 android:text="23.07.25 18:00"
                 android:textColor="@color/gray"
                 android:textSize="15dp" />
-
-            <TextView
-                android:id="@+id/remainSeatTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:layout_toRightOf="@+id/recruitmentStatusTextView"
-                android:fontFamily="@font/welcome"
-                android:text="1"
-                android:textColor="@color/letter"
-                android:textSize="15dp" />
-            <TextView
-                android:id="@+id/slash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_toRightOf="@+id/remainSeatTextView"
-                android:fontFamily="@font/welcome"
-                android:text="/"
-                android:textColor="@color/letter"
-                android:textSize="15dp" />
-            <TextView
-                android:id="@+id/allSeatTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_toRightOf="@+id/slash"
-                android:fontFamily="@font/welcome"
-                android:text="4"
-                android:textColor="@color/letter"
-                android:textSize="15dp" />
-
             <ImageView
                 android:id="@+id/genderImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/recruitmentStatusTextView"
+                android:layout_below="@+id/recruitment_layout"
                 android:scaleType="fitCenter"
                 android:src="@drawable/baseline_face_4_24"/>
             <TextView
                 android:id="@+id/memberIdTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/recruitmentStatusTextView"
+                android:layout_below="@+id/recruitment_layout"
                 android:layout_toRightOf="@+id/genderImageView"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
