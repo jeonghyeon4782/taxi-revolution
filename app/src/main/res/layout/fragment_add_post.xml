@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
@@ -38,7 +39,7 @@
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
             android:textSize="15dp"
-            android:background="@drawable/room"
+            android:background="@color/white"
             />
         <Button
             android:id="@+id/btn_recruitmentComplete"
@@ -50,7 +51,7 @@
             android:textColor="@color/letter"
             android:fontFamily="@font/welcome"
             android:textSize="15dp"
-            android:background="@drawable/room" />
+            android:background="@color/white"/>
 
 
         <!--        인원 변경-->
@@ -385,14 +386,14 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/room" />
+                android:background="@color/white"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/layout_numberok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_number"
-            android:background="@drawable/room"
+            android:background="@color/white"
             android:layout_toRightOf="@+id/btn_recruitmentStatus"
             android:padding="15dp">
             <NumberPicker

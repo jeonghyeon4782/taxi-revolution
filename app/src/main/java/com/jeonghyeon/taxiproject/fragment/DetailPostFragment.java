@@ -175,7 +175,14 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
         departureLocationTextView.setText(departureLocation);
         destinationLocationTextView.setText(destinationLocation);
         recruitmentStatusTextView.setText(recruitmentStatus);
-        departureTimeTextView.setText(departureTime);
+        // SimpleDateFormat을 사용하여 날짜 및 시간을 원하는 형식으로 포맷
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH시mm분", Locale.getDefault());
+        try {
+            Date fDepartureTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(departureTime);
+            departureTimeTextView.setText(dateFormat.format(fDepartureTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         createTimeTextView.setText(createTime);
         remainSeatTextView.setText(String.valueOf(remainSeat));
         allSeatTextView.setText(String.valueOf(allSeat));
@@ -386,24 +393,6 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
 
                         if (statusCode == 200) {
                             List<CommentResponseDto> commentResponseDtos = responseDto.getData();
-
-                            // 댓글 목록을 createAt 필드를 기준으로 최신순으로 정렬합니다.
-                            Collections.sort(commentResponseDtos, new Comparator<CommentResponseDto>() {
-                                @Override
-                                public int compare(CommentResponseDto comment1, CommentResponseDto comment2) {
-                                    // createAt 필드를 Date 형식으로 파싱한 후, 역순으로 정렬합니다.
-                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                                    try {
-                                        Date date1 = sdf.parse(comment1.getCreateAt());
-                                        Date date2 = sdf.parse(comment2.getCreateAt());
-                                        return date2.compareTo(date1);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                        return 0;
-                                    }
-                                }
-                            });
-
                             // 정렬된 댓글 목록을 어댑터에 설정합니다.
                             commentAdapter.setData(commentResponseDtos);
                         } else if (statusCode == 423) { // 만료된 토큰이라면?

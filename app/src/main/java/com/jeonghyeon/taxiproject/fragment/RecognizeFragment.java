@@ -195,10 +195,9 @@ public class RecognizeFragment extends Fragment {
 
                 if (mainActivity != null) {
                     // MainActivity의 프래그먼트 매니저를 사용하여 RidingCheckFragment를 containers에 추가
-                    mainActivity.getSupportFragmentManager()
-                            .beginTransaction()
+                    mainActivity.getSupportFragmentManager().beginTransaction()
                             .replace(R.id.containers, boardingCheckFragment)
-                            .addToBackStack(null) // 이전 화면으로 이동 가능
+                            .addToBackStack(null)
                             .commit();
                 }
             }
@@ -542,7 +541,7 @@ public class RecognizeFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(getContext(), "죄송하지만, 사진촬영 권한이 승인되지 않으면 이앱을 사용할 수 없습니다", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "죄송하지만, 사진촬영 권한이 승인되지 않으면 이앱을 사용할 수 없습니다", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }
         }
@@ -667,7 +666,7 @@ public class RecognizeFragment extends Fragment {
             }
             else {
                 textView.setText("");
-                Toast.makeText(getContext(), "번호판 문자인식에 실패했습니다", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "번호판 문자인식에 실패했습니다", Toast.LENGTH_SHORT).show();
             }
 
             btnTakePicture.setEnabled(true);

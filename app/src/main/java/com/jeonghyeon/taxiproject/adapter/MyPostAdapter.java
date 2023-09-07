@@ -13,7 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.dto.response.PostResponseDto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder>{
     private List<PostResponseDto> postList;
@@ -121,7 +125,6 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
         public void bind(PostResponseDto post) {
             recruitmentStatusTextView.setText(post.getRecruitmentStatus());
             createTimeTextView.setText(post.getCreateTime());
-            departureTimeTextView.setText(post.getDepartureTime());
             departureLocationTextView.setText(post.getDepartureLocation());
             destinationLocationTextView.setText(post.getDestinationLocation());
             memberIdTextView.setText(post.getNickname());
@@ -132,6 +135,14 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
                 genderImageView.setImageResource(R.drawable.baseline_face_4_24);
             } else {
                 genderImageView.setImageResource(R.drawable.baseline_face_6_24);
+            }
+            // SimpleDateFormat을 사용하여 날짜 및 시간을 원하는 형식으로 포맷
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH시mm분", Locale.getDefault());
+            try {
+                Date departureTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(post.getCreateTime());
+                departureTimeTextView.setText(dateFormat.format(departureTime));
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
     }

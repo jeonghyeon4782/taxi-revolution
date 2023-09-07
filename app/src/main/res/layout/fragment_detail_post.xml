@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeRefreshLayout"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -284,8 +285,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
                         android:layout_below="@id/departureTimeTextView"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/lightgray"/>
+                        android:layout_marginTop="30dp"
+                        android:background="@color/lightgray" />
                 </RelativeLayout>
 
 
@@ -302,7 +303,7 @@
                         android:id="@+id/contentTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="20dp"
                         android:text="고양이와 케이지도 가지고 탑승합니다"
                         android:textSize="15dp"
                         android:padding="8dp"
@@ -315,6 +316,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/contentTextView"
                         android:textSize="15dp"
+                        android:layout_marginTop="10dp"
                         android:text="입장"
                         android:fontFamily="@font/welcome"
                         android:textColor="@color/letter"
@@ -326,7 +328,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/btn_Enter"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal">
 
                         <!-- "댓글" 텍스트 -->

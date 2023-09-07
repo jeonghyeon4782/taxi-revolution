@@ -130,7 +130,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 bottomNavigationView.getMenu().setGroupCheckable(0, false, true);
                 logo.setText("나의 소속");
-                getSupportFragmentManager().beginTransaction().replace(R.id.containers, belongFragment).commit();
+                // 애니메이션 효과를 주기 위해 프래그먼트 전환 시 애니메이션을 설정
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.containers, belongFragment)
+                        .commit();
             }
         });
 

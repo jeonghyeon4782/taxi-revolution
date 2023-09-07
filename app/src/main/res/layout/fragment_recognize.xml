@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -57,6 +58,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:orientation="horizontal">
 
             <Button
@@ -68,7 +70,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/welcome"
-                android:background="@drawable/button"
+                android:background="@color/white"
                 android:textColor="@color/letter"
                 android:textSize="15dp"
                 android:text="촬영"
@@ -83,7 +85,7 @@
                 android:layout_marginRight="40dp"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/welcome"
-                android:background="@drawable/button"
+                android:background="@color/white"
                 android:textColor="@color/letter"
                 android:textSize="15dp"
                 android:text="완료"

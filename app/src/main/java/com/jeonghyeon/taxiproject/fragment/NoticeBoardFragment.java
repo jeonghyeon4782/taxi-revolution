@@ -245,16 +245,19 @@ public class NoticeBoardFragment extends Fragment {
                             filterPostsByDepartureLocation1(latitude, longitude);
                             sortByCreateTimeInRecyclerView();
                             btn_distancesort.setText("최신순");
+                            etEt1.setText("");
+                            etEt2.setText("");
+                            showToast("출발지 검색 완료");
 
                         } else {
-                            showToast("위치를 찾을 수 없습니다.");
+                            showToast("위치를 찾을 수 없습니다");
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                        showToast("지오코딩 오류.");
+                        showToast("지오코딩 오류");
                     }
                 } else {
-                    showToast("위치를 입력하세요.");
+                    showToast("위치를 입력하세요");
                 }
             }
         });
@@ -276,15 +279,18 @@ public class NoticeBoardFragment extends Fragment {
                             filterPostsByDepartureLocation2(latitude, longitude);
                             sortByCreateTimeInRecyclerView();
                             btn_distancesort.setText("최신순");
+                            etEt1.setText("");
+                            etEt2.setText("");
+                            showToast("도착지 검색 완료");
                         } else {
-                            showToast("위치를 찾을 수 없습니다.");
+                            showToast("위치를 찾을 수 없습니다");
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                        showToast("지오코딩 오류.");
+                        showToast("지오코딩 오류");
                     }
                 } else {
-                    showToast("위치를 입력하세요.");
+                    showToast("위치를 입력하세요");
                 }
             }
         });

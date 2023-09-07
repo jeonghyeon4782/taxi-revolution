@@ -3,25 +3,17 @@
     android:id="@+id/fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
-
-    <!--    RelativeLayout으로 변경-->
+    <!-- RelativeLayout로 변경 -->
     <RelativeLayout
         android:id="@+id/inputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
 
-
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="Google 지도" />
-
-        <!--        글자 크기 조절-->
+        <!-- EditText를 상단에 배치 -->
         <EditText
             android:id="@+id/positionEditText"
             android:layout_width="match_parent"
@@ -37,7 +29,17 @@
             android:paddingLeft="5dp"
             android:background="@drawable/room"
             android:textColor="@color/gray"
-            android:inputType="text" />
+            android:inputType="text"
+            android:layout_alignParentTop="true" />
+
+        <!-- MapView를 positionEditText 아래에 배치 -->
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/positionEditText"
+            android:contentDescription="Google 지도" />
+
 
         <ImageButton
             android:id="@+id/positionButton"

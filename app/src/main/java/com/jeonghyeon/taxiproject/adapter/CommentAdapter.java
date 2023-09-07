@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jeonghyeon.taxiproject.R;
 import com.jeonghyeon.taxiproject.dto.response.CommentResponseDto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder>{
@@ -61,8 +64,22 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         public void bind(CommentResponseDto comment) {
             nicknameTextView.setText(comment.getNickname());
             contentTextView.setText(comment.getContent());
-            timestampTextView.setText(comment.getCreateAt());
+            // 시간을 "yyyy-MM-dd HH:mm:ss" 형식으로 포맷팅
+            String formattedTimestamp = formatDate(comment.getCreateAt(), "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss");
+            timestampTextView.setText(formattedTimestamp);
         }
     }
 
+    // 날짜 포맷 변경 메서드
+    private String formatDate(String inputDate, String inputFormat, String outputFormat) {
+        try {
+            SimpleDateFormat inputDateFormat = new SimpleDateFormat(inputFormat);
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat(outputFormat);
+            Date date = inputDateFormat.parse(inputDate);
+            return outputDateFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return inputDate; // 변환 실패 시 원본 값을 반환
+        }
+    }
 }

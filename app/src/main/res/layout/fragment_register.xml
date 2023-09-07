@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fontFamily="@font/welcome"
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_logo"
         android:layout_centerVertical="true"
+        android:layout_marginTop="30dp"
         android:padding="30dp">
         <!--    아이디 레이아웃추가-->
         <RelativeLayout
@@ -118,20 +120,22 @@
                 android:textColor="@color/black"
                 android:background="@drawable/room" />
 
-            <!--            비밀번호 보이기 버튼-->
+            <!--        중복버튼-->
             <Button
                 android:id="@+id/btn_showPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginRight="10dp"
+                android:layout_below="@id/txt_password"
                 android:layout_alignParentRight="true"
-                android:background="#00ff0000"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-                android:text="표시"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/welcome"
                 android:textColor="@color/letter"
-                android:fontFamily="@font/welcome" />
+                android:background="#00ff0000"
+                android:backgroundTint="@color/white"
+                android:padding="10dp"
+                android:text="표시" />
         </RelativeLayout>
 
         <!--    닉네임레이아웃추가-->

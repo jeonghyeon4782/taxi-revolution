@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <!--    RelativeLayout으로 변경-->
     <LinearLayout
         android:id="@+id/inputLayout"
         android:layout_width="match_parent"
@@ -20,14 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <!--            지도-->
-
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="Google 지도" />
-            <!--        글자 크기 조절-->
+            <!-- EditText를 상단에 배치 -->
             <EditText
                 android:id="@+id/positionEditText"
                 android:layout_width="match_parent"
@@ -44,6 +35,16 @@
                 android:background="@drawable/room"
                 android:textColor="@color/gray"
                 android:inputType="text" />
+
+            <!-- MapView를 positionEditText 아래에 배치 -->
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/positionEditText"
+                android:contentDescription="Google 지도" />
+
+            <!-- 나머지 버튼 및 뷰 배치 -->
 
             <ImageButton
                 android:id="@+id/btn_nowlocation"
@@ -78,8 +79,8 @@
                 android:textSize="15dp"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/letter"
-                android:background="@drawable/room"
-                android:text="출발지로 설정"/>
+                android:background="@color/white"
+                android:text="출발지로 설정" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -85,7 +85,10 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
                 @Override
                 public void onClick(View v) {
                     BelongMemberResponseDto member = memberList.get(getAdapterPosition());
-                    deleteBelongAPI(member.getBelongId());
+                    if (member.getAuthority() == 1) {
+                        // member.getAuthority()가 0일 때만 작업 수행
+                        deleteBelongAPI(member.getBelongId());
+                    }
                 }
             });
         }
