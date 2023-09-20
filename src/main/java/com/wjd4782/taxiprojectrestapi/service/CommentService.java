@@ -5,6 +5,7 @@ import com.wjd4782.taxiprojectrestapi.domain.Comment;
 import com.wjd4782.taxiprojectrestapi.domain.Member;
 import com.wjd4782.taxiprojectrestapi.domain.Post;
 import com.wjd4782.taxiprojectrestapi.dto.request.CommentAddRequestDto;
+import com.wjd4782.taxiprojectrestapi.dto.request.CommentUpdateRequestDto;
 import com.wjd4782.taxiprojectrestapi.dto.request.PostAddRequestDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.CommentResponseDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.PostResponseDto;
@@ -75,5 +76,14 @@ public class CommentService {
                 -> new EntityNotFoundException("해당하는 댓글을 찾을 수 없습니다."));
         commentRepository.deleteById(commentId);
         return new ResponseDto<>(HttpStatus.OK.value(), "댓글 삭제 성공", true);
+    }
+
+    // 댓글 수정
+    @Transactional
+    public ResponseDto<Boolean> updateComment(Long commentId, CommentUpdateRequestDto requestDto) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(()
+                -> new EntityNotFoundException("해당하는 댓글을 찾을 수 없습니다."));
+        comment.updateComment(requestDto);
+        return new ResponseDto<>(HttpStatus.OK.value(), "댓글 수정 성공", true);
     }
 }

@@ -1,6 +1,7 @@
 package com.wjd4782.taxiprojectrestapi.controller;
 
 import com.wjd4782.taxiprojectrestapi.dto.request.CommentAddRequestDto;
+import com.wjd4782.taxiprojectrestapi.dto.request.CommentUpdateRequestDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.CommentResponseDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.ResponseDto;
 import com.wjd4782.taxiprojectrestapi.service.CommentService;
@@ -35,6 +36,13 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public ResponseDto<Boolean> deletePost(@PathVariable("commentId") Long commentId) {
         ResponseDto<Boolean> responseDto = commentService.deleteComment(commentId);
+        return responseDto;
+    }
+
+    // 댓글 수정
+    @PutMapping("/{commentId}")
+    public ResponseDto<Boolean> updatePost(@PathVariable("commentId") Long commentId, @RequestBody CommentUpdateRequestDto requestDto) {
+        ResponseDto<Boolean> responseDto = commentService.updateComment(commentId, requestDto);
         return responseDto;
     }
 }

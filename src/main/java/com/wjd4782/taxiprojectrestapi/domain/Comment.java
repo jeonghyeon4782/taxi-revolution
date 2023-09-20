@@ -1,5 +1,7 @@
 package com.wjd4782.taxiprojectrestapi.domain;
 
+import com.wjd4782.taxiprojectrestapi.dto.request.CommentUpdateRequestDto;
+import com.wjd4782.taxiprojectrestapi.dto.request.PostUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,5 +39,10 @@ public class Comment {
         this.content = content;
         this.member = member;
         this.post = post;
+    }
+
+    // 댓글 수정
+    public void updateComment(CommentUpdateRequestDto requestDto) {
+        this.content = requestDto.getContent();
     }
 }
