@@ -61,17 +61,46 @@
 
 
 
-            <TextView
+            <EditText
                 android:id="@+id/et_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
+                android:layout_below="@+id/btn_modify"
                 android:text="댓글 내용"
                 android:textSize="16dp"
                 android:fontFamily="@font/welcome"
                 android:textColor="@color/black"/>
 
+            <Button
+                android:id="@+id/btn_modify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00ff0000"
+                android:minWidth="20dp"
+                android:minHeight="20dp"
+                android:text="수정"
+                android:textSize="15dp"
+                android:layout_toLeftOf="@+id/btn_delete"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/letter"
+                android:fontFamily="@font/welcome" />
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="#00ff0000"
+                android:minWidth="20dp"
+                android:minHeight="20dp"
+                android:text="삭제"
+                android:textSize="15dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/letter"
+                android:fontFamily="@font/welcome" />
 
         </RelativeLayout>
     </RelativeLayout>

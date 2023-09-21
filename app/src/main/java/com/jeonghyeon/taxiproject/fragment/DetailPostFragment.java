@@ -30,6 +30,7 @@ import com.jeonghyeon.taxiproject.activity.MainActivity;
 import com.jeonghyeon.taxiproject.adapter.CommentAdapter;
 import com.jeonghyeon.taxiproject.api.API;
 import com.jeonghyeon.taxiproject.dto.request.CommentAddRequestDto;
+import com.jeonghyeon.taxiproject.dto.request.CommentUpdateRequestDto;
 import com.jeonghyeon.taxiproject.dto.request.PostAddRequestDto;
 import com.jeonghyeon.taxiproject.dto.response.CommentResponseDto;
 import com.jeonghyeon.taxiproject.dto.response.ResponseDto;
@@ -90,6 +91,8 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
 
     private EditText commentEditText;
     private Button postCommentButton;
+
+    private boolean isEditingComment = false; // 댓글 수정 모드 여부를 나타내는 변수
 
 
     public DetailPostFragment() {
@@ -204,7 +207,30 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
         postCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addCommentAPI(postId, commentEditText.getText().toString());
+                if (commentEditText.getText().toString().trim().isEmpty()) {
+                    // 텍스트가 공백인 경우, 토스트 메시지 표시
+                    showToast("댓글을 입력하세요");
+                } else {
+                    // 텍스트가 공백이 아닌 경우, 댓글을 추가하는 API 호출
+                    addCommentAPI(postId, commentEditText.getText().toString());
+                }
+            }
+        });
+
+        // 댓글 수정 버튼 클릭 이벤트 처리
+        commentAdapter.setOnCommentUpdateListener(new CommentAdapter.OnCommentUpdateListener() {
+            @Override
+            public void onUpdateComment(String content, Long commentId) {
+                // 댓글 수정 버튼 클릭 시 호출될 메서드를 여기에 구현
+                updateCommentAPI(content, commentId);
+            }
+        });
+
+        // 댓글 수정 버튼 클릭 이벤트 처리
+        commentAdapter.setOnCommentDeleteListener(new CommentAdapter.OnCommentDeleteListener() {
+            @Override
+            public void onDeleteComment(Long commentId) {
+                deleteCommentAPI(commentId);
             }
         });
 
@@ -458,6 +484,136 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
 
                         if (statusCode == 200) {
                             showToast("댓글 작성 완료");
+                            getCommentsByPostIdAPI(postId);
+                            commentEditText.setText("");
+                        } else if (statusCode == 423) { // 만료된 토큰이라면?
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            LoginFragment loginFragment = new LoginFragment();
+                            if (mainActivity != null) {
+                                mainActivity.getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.containers, loginFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+                            showToast(msg);
+                        } else {
+                            showToast(msg);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseDto<Boolean>> call, Throwable t) {
+                    showToast("API 호출 실패");
+                }
+            });
+        }
+    }
+
+    // 댓글 수정
+    private void updateCommentAPI(String content, Long commentId) {
+        String accessToken = tokenManager.getAccessToken();
+        CommentUpdateRequestDto requestDto = new CommentUpdateRequestDto(content);
+
+        if (accessToken == null) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            LoginFragment loginFragment = new LoginFragment();
+            if (mainActivity != null) {
+                mainActivity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.containers, loginFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            showToast("로그인이 필요합니다");
+        } else {
+            // Retrofit 객체 생성
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            // API 인터페이스 생성
+            API apiService = retrofit.create(API.class);
+
+            // API 호출
+            Call<ResponseDto<Boolean>> call = apiService.updateComment("Bearer " + accessToken, requestDto, commentId);
+            call.enqueue(new Callback<ResponseDto<Boolean>>() {
+                @Override
+                public void onResponse(Call<ResponseDto<Boolean>> call, Response<ResponseDto<Boolean>> response) {
+                    if (response.isSuccessful()) {
+                        ResponseDto<Boolean> responseDto = response.body();
+                        int statusCode = responseDto.getStatus();
+                        String msg = responseDto.getMsg();
+
+                        if (statusCode == 200) {
+                            showToast("댓글 수정 완료");
+                            getCommentsByPostIdAPI(postId);
+                            commentEditText.setText("");
+                        } else if (statusCode == 423) { // 만료된 토큰이라면?
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            LoginFragment loginFragment = new LoginFragment();
+                            if (mainActivity != null) {
+                                mainActivity.getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.containers, loginFragment)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+                            showToast(msg);
+                        } else {
+                            showToast(msg);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseDto<Boolean>> call, Throwable t) {
+                    showToast("API 호출 실패");
+                }
+            });
+        }
+    }
+
+    // 댓글 수정
+    private void deleteCommentAPI(Long commentId) {
+        String accessToken = tokenManager.getAccessToken();
+        CommentUpdateRequestDto requestDto = new CommentUpdateRequestDto(content);
+
+        if (accessToken == null) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            LoginFragment loginFragment = new LoginFragment();
+            if (mainActivity != null) {
+                mainActivity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.containers, loginFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            showToast("로그인이 필요합니다");
+        } else {
+            // Retrofit 객체 생성
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            // API 인터페이스 생성
+            API apiService = retrofit.create(API.class);
+
+            // API 호출
+            Call<ResponseDto<Boolean>> call = apiService.deleteComment("Bearer " + accessToken, commentId);
+            call.enqueue(new Callback<ResponseDto<Boolean>>() {
+                @Override
+                public void onResponse(Call<ResponseDto<Boolean>> call, Response<ResponseDto<Boolean>> response) {
+                    if (response.isSuccessful()) {
+                        ResponseDto<Boolean> responseDto = response.body();
+                        int statusCode = responseDto.getStatus();
+                        String msg = responseDto.getMsg();
+
+                        if (statusCode == 200) {
+                            showToast(msg);
                             getCommentsByPostIdAPI(postId);
                             commentEditText.setText("");
                         } else if (statusCode == 423) { // 만료된 토큰이라면?
