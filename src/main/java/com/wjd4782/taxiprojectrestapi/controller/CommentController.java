@@ -20,8 +20,8 @@ public class CommentController {
 
     // 댓글 조회
     @GetMapping("/{postId}")
-    public ResponseDto<List<CommentResponseDto>> getCommentsByPostId(@PathVariable("postId") Long postId) {
-        ResponseDto<List<CommentResponseDto>> responseDto = commentService.getCommentsByPostId(postId);
+    public ResponseDto<List<CommentResponseDto>> getCommentsByPostId(@PathVariable("postId") Long postId, Authentication authentication) {
+        ResponseDto<List<CommentResponseDto>> responseDto = commentService.getCommentsByPostId(postId, authentication.getName());
         return responseDto;
     }
 
@@ -34,14 +34,14 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("/{commentId}")
-    public ResponseDto<Boolean> deletePost(@PathVariable("commentId") Long commentId) {
+    public ResponseDto<Boolean> deleteComment(@PathVariable("commentId") Long commentId) {
         ResponseDto<Boolean> responseDto = commentService.deleteComment(commentId);
         return responseDto;
     }
 
     // 댓글 수정
     @PutMapping("/{commentId}")
-    public ResponseDto<Boolean> updatePost(@PathVariable("commentId") Long commentId, @RequestBody CommentUpdateRequestDto requestDto) {
+    public ResponseDto<Boolean> updateComment(@PathVariable("commentId") Long commentId, @RequestBody CommentUpdateRequestDto requestDto) {
         ResponseDto<Boolean> responseDto = commentService.updateComment(commentId, requestDto);
         return responseDto;
     }

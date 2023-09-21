@@ -38,16 +38,24 @@ public class CommentService {
 
     // 댓글 조회
     @Transactional(readOnly = true)
-    public ResponseDto<List<CommentResponseDto>> getCommentsByPostId(Long postId) {
+    public ResponseDto<List<CommentResponseDto>> getCommentsByPostId(Long postId, String memberId) {
         List<Comment> comments = commentRepository.findByPost_PostId(postId);
         List<CommentResponseDto> commentResponseDtos = comments.stream()
-                .map(comment -> CommentResponseDto.builder()
-                        .commentId(comment.getCommentId())
-                        .nickname(comment.getMember().getNickname())
-                        .createAt(comment.getCreateAt().toString())
-                        .content(comment.getContent())
-                        .gender(comment.getMember().getGender())
-                        .build())
+                .map(comment -> {
+                    CommentResponseDto.CommentResponseDtoBuilder builder = CommentResponseDto.builder()
+                            .commentId(comment.getCommentId())
+                            .nickname(comment.getMember().getNickname())
+                            .createAt(comment.getCreateAt().toString())
+                            .content(comment.getContent())
+                            .gender(comment.getMember().getGender());
+
+                    // 작성자와 memberId가 같을 경우 authority를 1로 설정
+                    if (comment.getMember().getMemberId().equals(memberId)) {
+                        builder.authority(1);
+                    }
+
+                    return builder.build();
+                })
                 .collect(Collectors.toList());
         ResponseDto<List<CommentResponseDto>> responseDto = new ResponseDto<>(HttpStatus.OK.value(), "댓글 조회 성공", commentResponseDtos);
         return responseDto;
