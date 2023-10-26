@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -41,6 +42,7 @@ public class MyPostFragment extends Fragment {
     private RecyclerView recyclerView;
     private MyPostAdapter postAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private int checkNum = 1;
 
     public MyPostFragment() {
 
@@ -60,6 +62,7 @@ public class MyPostFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.refresh_layout);
+        TextView noPostsMessage = view.findViewById(R.id.noPostsMessage);
 
         // 어댑터 초기화
         postAdapter = new MyPostAdapter();
@@ -69,6 +72,12 @@ public class MyPostFragment extends Fragment {
         mainActivity.updateTextView("카풀 > 내가쓴글");
 
         getMyPostAPI();
+
+        if (checkNum == 0) {
+            noPostsMessage.setVisibility(View.VISIBLE); // 메시지 보이기
+        } else {
+            noPostsMessage.setVisibility(View.GONE); // 메시지 숨기기
+        }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -133,6 +142,11 @@ public class MyPostFragment extends Fragment {
                             List<PostResponseDto> postList = responseDto.getData();
                             postAdapter.setData(postList);
                             sortByCreateTimeInRecyclerView();
+                            if (postList.isEmpty()) {
+                                checkNum = 0;
+                            } else {
+                                checkNum = 1;
+                            }
                         } else if (statusCode == 423) { // 만료된 토큰이라면?
                             MainActivity mainActivity = (MainActivity) getActivity();
                             LoginFragment loginFragment = new LoginFragment();

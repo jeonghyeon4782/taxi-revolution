@@ -46,9 +46,9 @@ import androidx.fragment.app.Fragment;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.jeonghyeon.taxiproject.R;
-import com.jeonghyeon.taxiproject.roomDB.RoomDB;
 import com.jeonghyeon.taxiproject.activity.MainActivity;
 import com.jeonghyeon.taxiproject.domain.Guardian;
+import com.jeonghyeon.taxiproject.roomDB.RoomDB;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
@@ -109,7 +109,6 @@ public class RecognizeFragment extends Fragment {
     private static final String TAG = "MAINACTIVITY";
 
     public RecognizeFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -550,6 +549,8 @@ public class RecognizeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        textView.setText("");
+        textView.setHint("ex)123가5678");
         Log.e(TAG, "onResume");
         startBackgroundThread();
         if (textureView.isAvailable()) {
@@ -670,7 +671,7 @@ public class RecognizeFragment extends Fragment {
             }
 
             btnTakePicture.setEnabled(true);
-            btnTakePicture.setText("텍스트 인식");
+            btnTakePicture.setText("촬영");
         }
     }
 }

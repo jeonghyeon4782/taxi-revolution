@@ -5,7 +5,7 @@
     android:layout_marginLeft="5dp"
     android:layout_marginTop="5dp"
     android:layout_marginRight="5dp"
-    android:background="@drawable/room"
+    android:background="@drawable/line2"
     android:padding="20dp">
 
 
@@ -37,32 +37,29 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:background="#00ff0000"
-                android:minWidth="20dp"
-                android:minHeight="20dp"
+                android:minWidth="40dp"
+                android:minHeight="40dp"
                 android:text="삭제"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textColor="@color/letter"
                 android:fontFamily="@font/welcome" />
+
             <Button
                 android:id="@+id/btn_modify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/btn_delete"
                 android:background="#00ff0000"
-                android:minWidth="20dp"
-                android:minHeight="20dp"
+                android:minWidth="40dp"
+                android:minHeight="40dp"
                 android:text="수정"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textColor="@color/letter"
                 android:fontFamily="@font/welcome" />
-
-
-
-
             <TextView
                 android:id="@+id/createTimeTextView"
                 android:layout_width="wrap_content"

@@ -1,7 +1,9 @@
 package com.jeonghyeon.taxiproject.fragment;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -143,6 +145,7 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 googleMap_arrival = googleMap;
+                setMapClickListener(googleMap_arrival);
                 DetailPostFragment.this.onMapReady(googleMap); // onMapReady 호출
             }
         });
@@ -153,6 +156,7 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 googleMap_departure = googleMap;
+                setMapClickListener(googleMap_departure);
                 DetailPostFragment.this.onMapReady(googleMap); // onMapReady 호출
             }
         });
@@ -245,6 +249,28 @@ public class DetailPostFragment extends Fragment implements OnMapReadyCallback {
         getCommentsByPostIdAPI(postId);
 
         return view;
+    }
+
+    private void setMapClickListener(GoogleMap googleMap) {
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                openGoogleMapsApp(latLng);
+            }
+        });
+    }
+
+    private void openGoogleMapsApp(LatLng latLng) {
+        String uri = "geo:" + latLng.latitude + "," + latLng.longitude + "?q=" + latLng.latitude + "," + latLng.longitude;
+        Uri gmmIntentUri = Uri.parse(uri);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps"); // Google 지도 앱 패키지명
+
+        if (mapIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            startActivity(mapIntent);
+        } else {
+            showToast("Google 지도 앱이 설치되어 있지 않습니다.");
+        }
     }
 
     @Override

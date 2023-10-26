@@ -20,6 +20,7 @@ import com.jeonghyeon.taxiproject.adapter.RecordAdapter;
 import com.jeonghyeon.taxiproject.domain.Record;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RecordFragment extends Fragment {
@@ -98,10 +99,12 @@ public class RecordFragment extends Fragment {
     }
 
     private void fetchRecordsFromDatabase() {
-
         recordList.clear();
 
         List<Record> records = database.recordDao().getAll();
+
+        // 리스트를 뒤집어서 최신 탑승 기록이 상단에 표시되도록 함
+        Collections.reverse(records);
 
         recordList.addAll(records);
 

@@ -3,22 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:id='@+id/refresh_layout'>
+    android:id="@+id/refresh_layout">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/line"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_emptyList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="탑승기록이 없습니다."
-        android:layout_gravity="center"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:visibility="gone" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/line" />
+
+        <TextView
+            android:id="@+id/tv_emptyList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="탑승기록이 없습니다."
+            android:layout_centerInParent="true"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

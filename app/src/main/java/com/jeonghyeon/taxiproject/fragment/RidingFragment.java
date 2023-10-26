@@ -420,7 +420,7 @@ public class RidingFragment extends Fragment implements OnMapReadyCallback, Goog
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
                     LatLng currentLatLng = new LatLng(latitude, longitude);
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f));
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17f));
                 }
             });
         }

@@ -92,6 +92,9 @@ public class TaxiStandFragment extends Fragment implements OnMapReadyCallback {
                 String address = etPotion.getText().toString();
                 if (!address.isEmpty()) {
                     LatLng location = getLocationFromAddress(address);
+                    System.out.println("주소(지명)  :  " + address);
+                    System.out.println("위도, 경도  :  " + location);
+
                     if (location != null) {
                         // 내 위치로 표시되었던 마커 제거
                         googleMap.clear();

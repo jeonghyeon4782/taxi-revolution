@@ -368,7 +368,7 @@
                         android:layout_below="@+id/contentTextView"
                         android:textSize="15dp"
                         android:layout_marginTop="10dp"
-                        android:text="소속 입장"
+                        android:text="카풀 입장"
                         android:fontFamily="@font/welcome"
                         android:textColor="@color/letter"
                         android:background="@drawable/line" />

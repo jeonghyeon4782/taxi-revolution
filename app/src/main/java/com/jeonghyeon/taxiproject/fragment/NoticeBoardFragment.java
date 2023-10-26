@@ -1,6 +1,7 @@
 package com.jeonghyeon.taxiproject.fragment;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -64,6 +65,7 @@ public class NoticeBoardFragment extends Fragment {
     private LocationListener locationListener;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static final float MAX_DISTANCE = 1000; // 1km
+    private ProgressDialog progressDialog; // ProgressDialog 변수 추가
 
     public NoticeBoardFragment() {
         // Required empty public constructor
@@ -107,6 +109,11 @@ public class NoticeBoardFragment extends Fragment {
         mainActivity.updateTextView("카풀");
         etEt1.setText(null);
         etEt2.setText(null);
+
+        // ProgressDialog 초기화
+        progressDialog = new ProgressDialog(requireContext());
+        progressDialog.setMessage("로딩 중..."); // 로딩 중 메시지 설정
+        progressDialog.setCancelable(false); // 사용자가 취소하지 못하도록 설정
 
         if (!isAccessTokenAvailable()) {
             btnMyPost.setVisibility(View.GONE);
@@ -162,6 +169,7 @@ public class NoticeBoardFragment extends Fragment {
         btn_distancesort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 if (dcount == 0) {
                     btn_departureTime.setVisibility(View.VISIBLE);
                     btn_new.setVisibility(View.VISIBLE);
@@ -173,6 +181,7 @@ public class NoticeBoardFragment extends Fragment {
                     btn_distance.setVisibility(View.INVISIBLE);
                     dcount = 0;
                 }
+                progressDialog.dismiss();
             }
         });
 
@@ -180,12 +189,14 @@ public class NoticeBoardFragment extends Fragment {
         btn_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 btn_distancesort.setText(btn_new.getText());
                 btn_departureTime.setVisibility(View.INVISIBLE);
                 btn_new.setVisibility(View.INVISIBLE);
                 btn_distance.setVisibility(View.INVISIBLE);
                 dcount = 0;
                 sortByCreateTimeInRecyclerView();
+                progressDialog.dismiss();
             }
         });
 
@@ -193,6 +204,7 @@ public class NoticeBoardFragment extends Fragment {
         btn_distance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 btn_distancesort.setText(btn_distance.getText());
                 btn_departureTime.setVisibility(View.INVISIBLE);
                 btn_new.setVisibility(View.INVISIBLE);
@@ -210,6 +222,7 @@ public class NoticeBoardFragment extends Fragment {
                 } else {
                     ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 }
+                progressDialog.dismiss();
             }
         });
 
@@ -299,6 +312,10 @@ public class NoticeBoardFragment extends Fragment {
     }
 
     private void fetchPosts() {
+
+        // 로딩 화면 표시
+        progressDialog.show();
+
         String accessToken = tokenManager.getAccessToken();
         // Retrofit 객체 생성
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://121.200.87.205:8000/") // 스프링부트 API의 기본 URL을 설정
@@ -312,6 +329,7 @@ public class NoticeBoardFragment extends Fragment {
         call.enqueue(new Callback<ResponseDto<List<PostResponseDto>>>() {
             @Override
             public void onResponse(Call<ResponseDto<List<PostResponseDto>>> call, Response<ResponseDto<List<PostResponseDto>>> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     ResponseDto<List<PostResponseDto>> responseDto = response.body();
                     if (responseDto != null && responseDto.getData() != null) {
@@ -337,6 +355,7 @@ public class NoticeBoardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseDto<List<PostResponseDto>>> call, Throwable t) {
+                progressDialog.dismiss();
                 showToast("API 호출 실패");
             }
         });
@@ -345,6 +364,7 @@ public class NoticeBoardFragment extends Fragment {
 
     // 거리순 정렬
     private void sortByDistanceInRecyclerView(Location currentLocation) {
+        progressDialog.show();
         List<PostResponseDto> currentPosts = postAdapter.getPosts();
         Geocoder geocoder = new Geocoder(requireContext());
 
@@ -380,12 +400,13 @@ public class NoticeBoardFragment extends Fragment {
             }
         });
 
-        // Update the RecyclerView with the sorted list
         postAdapter.setPosts(currentPosts);
+        progressDialog.dismiss();
     }
 
     // 최신순 정렬
     private void sortByCreateTimeInRecyclerView() {
+        progressDialog.show();
         List<PostResponseDto> currentPosts = postAdapter.getPosts();
 
         Collections.sort(currentPosts, new Comparator<PostResponseDto>() {
@@ -405,10 +426,12 @@ public class NoticeBoardFragment extends Fragment {
         });
 
         postAdapter.setPosts(currentPosts);
+        progressDialog.dismiss();
     }
 
     // 출발 시간 순 정렬
     private void sortByDepartureTimeInRecyclerView() {
+        progressDialog.show();
         List<PostResponseDto> currentPosts = postAdapter.getPosts();
         List<PostResponseDto> futurePosts = new ArrayList<>();
         List<PostResponseDto> pastPosts = new ArrayList<>();
@@ -462,6 +485,7 @@ public class NoticeBoardFragment extends Fragment {
         sortedPosts.addAll(pastPosts);
 
         postAdapter.setPosts(sortedPosts);
+        progressDialog.dismiss();
     }
 
     // toast 보여주기
