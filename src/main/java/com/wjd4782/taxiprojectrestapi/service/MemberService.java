@@ -1,6 +1,8 @@
 package com.wjd4782.taxiprojectrestapi.service;
 
+import com.wjd4782.taxiprojectrestapi.domain.Belong;
 import com.wjd4782.taxiprojectrestapi.domain.Member;
+import com.wjd4782.taxiprojectrestapi.domain.Post;
 import com.wjd4782.taxiprojectrestapi.dto.response.MemberResponseDto;
 import com.wjd4782.taxiprojectrestapi.dto.response.ResponseDto;
 import com.wjd4782.taxiprojectrestapi.repository.MemberRepository;
@@ -11,6 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,6 +35,11 @@ public class MemberService {
     @Transactional
     public ResponseDto<Boolean> deleteMember(String memberId) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+        List<Belong> belongs = member.getBelongs();
+        for (Belong belong : belongs) {
+            Post post = belong.getPost();
+            post.minusSeat();
+        }
         memberRepository.deleteByMemberId(memberId);
         return new ResponseDto<>(HttpStatus.OK.value(), "유저 삭제 성공", true);
     }

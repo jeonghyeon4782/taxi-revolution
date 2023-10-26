@@ -79,6 +79,12 @@ public class Post {
     // 게시글 수정
     public void updatePost(PostUpdateRequestDto requestDto) {
         Timestamp departureTime = Timestamp.valueOf(requestDto.getDepartureTime());
+        int newAllSeat = requestDto.getAllSeat();
+
+        if (newAllSeat < this.remainSeat) {
+            throw new IllegalArgumentException("총 좌석 수를 다시 설정해주세요");
+        }
+
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.departureLocation = requestDto.getDepartureLocation();
