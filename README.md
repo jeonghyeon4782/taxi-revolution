@@ -10,6 +10,7 @@
 
 ### 데이터베이스
 - MariaDB(10.5)
+- ROOM DB
 
 ### 사용Tool
 - IntelliJ, Datagrip
@@ -18,5 +19,9 @@
 - JPA, Spring Security, JWT
 
 ### DB 설계
-![erd](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/9fed7c00-ab6f-49b4-86a5-07b0e7331c07)
+- MARIA DB
+![ERD(MARIA)](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/80ac16fe-92fb-4b36-a5e4-2d87e0e2688a)
+- ROOM DB
+![ERD(ROOM)](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/7a323220-d4cd-46ff-b18f-c083fe58092b)
+
 
