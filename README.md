@@ -13,11 +13,8 @@
 ### 기술스택
 - GeoCorder, Retrofit2, OpenCV, Tesseract-OCR, MessageManager
 
-### 기능
-![KakaoTalk_20231013_172105905](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/6a29decc-4c9f-4b0f-8e7d-c600235972c8)
-
 ### 외부 API
 - Google Map
 
-### 작품 화면
-![KakaoTalk_20231015_173531220](https://github.com/jeonghyeon4782/TaxiProjectFrontEnd/assets/102511188/1c726fd4-afcf-4d17-bdb8-732c8d36ad50)
+### 판넬
+![택시혁명](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/2dc9ee5a-9d0e-46a8-95d7-f2bb971dba36)
