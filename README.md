@@ -21,9 +21,6 @@
 ### 판넬
 ![택시혁명](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/2dc9ee5a-9d0e-46a8-95d7-f2bb971dba36)
 
-### 기능
-![KakaoTalk_20231013_172105905](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/6a29decc-4c9f-4b0f-8e7d-c600235972c8)
-
 ### DB 설계
 - MARIA DB
 ![ERD(MARIA)](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/80ac16fe-92fb-4b36-a5e4-2d87e0e2688a)
