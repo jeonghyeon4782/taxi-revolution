@@ -27,6 +27,8 @@
 - ROOM DB
 ![ERD(ROOM)](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/7a323220-d4cd-46ff-b18f-c083fe58092b)
 
+### 판넬
+![택시혁명](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/2dc9ee5a-9d0e-46a8-95d7-f2bb971dba36)
 
 ### 작품 사진
 ![KakaoTalk_20231015_173531220](https://github.com/jeonghyeon4782/TaxiProjectRestApi/assets/102511188/0eda86a4-42f3-47e4-a209-a09b33978990)
