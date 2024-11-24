@@ -1,6 +1,3 @@
-<img src="https://github.com/jeonghyeon4782/taxi-project-back/assets/102511188/59073dd4-1a7e-45af-b337-8c2b29b74c2b">
-</br>
-
 ## 🚕 택시혁명
 **늦은 귀가, 비싼 요금 걱정 NO!**
 </br>
