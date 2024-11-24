@@ -21,7 +21,7 @@
 
 | 프로필 사진 | 이름         | 역할           | 
 |-------------|--------------|----------------|
-| <img src="https://github.com/jeonghyeon4782.png" width="100"> | **장정현** | **Backend, Android** 개발 |
+| <img src="https://github.com/jeonghyeon4782.png" width="100"> | **장정현** | **팀장, Backend, Android** 개발 |
 | <img src="https://github.com/yeonmew.png" width="100"> | **허명훈** | **Android** 개발 |
 | <img src="https://github.com/yeonmew.png" width="100"> | **김수연** | **Android** 개발 |
 
