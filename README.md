@@ -97,8 +97,3 @@
 
 <br/>
 <br/>
-
-## 📝 ERD
-![image](https://github.com/user-attachments/assets/f8a72648-d2aa-40d4-bb73-c1eb220c8be1)
-![image](https://github.com/user-attachments/assets/7fb70e96-0ece-4e12-830d-ce56d8f19368)
-
